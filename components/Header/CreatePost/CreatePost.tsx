@@ -21,7 +21,7 @@ const CreatePost = () => {
   return (
     <div className="m-10 flex justify-center">
       <form
-        onSubmit={(e) => SendPost(e)}
+        onSubmit={(e: React.SyntheticEvent) => SendPost(e)}
         className="flex justify-center flex-col w-[20%] gap-2 text-white"
       >
         <input
