@@ -1,8 +1,10 @@
 import * as React from "react";
-import { GetStaticPaths } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { ArrayOfPostsExample } from "../../components/Posts/AllPosts";
-const PostSite = ({ params }) => {
-  console.log(params);
+interface TempPost {
+  post: string;
+}
+const PostSite = ({ params }: { params: TempPost }) => {
   return (
     <main className="w-screen flex justify-center items-center h-screen">
       <div>{params.post}</div>
@@ -26,8 +28,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
-  console.log(params);
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       params,

@@ -6,9 +6,31 @@ const CreatePost = () => {
   interface PostObject {
     message: string;
     title: string;
+    username: string;
+    CreatedAt: string;
   }
+
+  const GenerateDateString: () => string = () => {
+    let today: Date = new Date();
+    let date: string =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1 <= 9
+        ? "0" + Number(today.getMonth() + 1)
+        : today.getMonth() + 1) +
+      "-" +
+      (today.getDate() <= 9 ? "0" + Number(today.getDate()) : today.getDate());
+    return date;
+  };
+
   const SendPost: (e: any) => Promise<void> = async (e) => {
-    const PostObjectToSend: PostObject = { message, title };
+    let date: string = GenerateDateString();
+    const PostObjectToSend: PostObject = {
+      message,
+      title,
+      username: "siemastian",
+      CreatedAt: date,
+    };
     e.preventDefault();
     await fetch("/api/HandlePostSub", {
       method: "POST",
