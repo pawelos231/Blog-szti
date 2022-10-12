@@ -42,7 +42,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   };
 
   return (
-    <div className="m-10 flex justify-center w-[55%] h-[70%] bg-red-200 rounded text-black">
+    <div className="m-10 flex justify-center w-[55%] h-[70%] rounded text-black">
       <div
         className="absolute left-2 top-2 text-6xl"
         onClick={() => Handle(false)}
@@ -70,7 +70,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             onHandleMessage(e.target.value)
           }
-          className="p-3 rounded-sm text-black"
+          className="p-3 rounded-sm text-black h-[30%]"
           placeholder="message"
         />
         <div className="flex justify-center">

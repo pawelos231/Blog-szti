@@ -37,7 +37,7 @@ const Navbar: () => JSX.Element = () => {
         </ul>
       </nav>
       {clicked ? (
-        <div className="fixed w-screen h-screen backdrop-blur-xl flex justify-center flex-col items-center z-20">
+        <div className="fixed w-screen h-screen backdrop-blur-xl flex justify-center flex-col items-center z-20 bg-black/30 ">
           <CreatePost Handle={Handle} />
         </div>
       ) : null}
