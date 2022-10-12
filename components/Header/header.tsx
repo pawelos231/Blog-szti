@@ -1,6 +1,6 @@
 import * as React from "react";
 import CreatePost from "./CreatePost/CreatePost";
-const Header = () => {
+const Header: () => JSX.Element = () => {
   return (
     <>
       <header className="mt-16 flex justidy-center flex-col items-center">

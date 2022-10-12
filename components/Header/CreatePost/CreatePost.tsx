@@ -1,5 +1,5 @@
 import { useState } from "react";
-const CreatePost = () => {
+const CreatePost: () => JSX.Element = () => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
 

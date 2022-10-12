@@ -9,11 +9,11 @@ export let ArrayOfPostsExample: Array<string> = [
   "2",
   "3",
 ];
-const AllPosts = () => {
+const AllPosts: () => JSX.Element = () => {
   return (
     <div className="w-full flex justify-center mt-10">
       <section className="flex flex-wrap w-[80%] gap-12 justify-center">
-        {ArrayOfPostsExample.map((item, i) => {
+        {ArrayOfPostsExample.map((item: string, i: number) => {
           return (
             <Link href={`/postsPage/${item}`}>
               <div
