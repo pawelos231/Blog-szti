@@ -1,5 +1,4 @@
 import * as React from "react";
-import CreatePost from "./CreatePost/CreatePost";
 const Header: () => JSX.Element = () => {
   return (
     <>
@@ -15,7 +14,6 @@ const Header: () => JSX.Element = () => {
           pablo
         </p>
       </header>
-      <CreatePost />
     </>
   );
 };

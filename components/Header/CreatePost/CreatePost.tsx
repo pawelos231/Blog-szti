@@ -1,7 +1,8 @@
 import { useState } from "react";
-const CreatePost: () => JSX.Element = () => {
+const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
+  //SOMEHOW IMPELEMENT TAGS
 
   interface PostObject {
     message: string;
@@ -41,28 +42,43 @@ const CreatePost: () => JSX.Element = () => {
   };
 
   return (
-    <div className="m-10 flex justify-center">
+    <div className="m-10 flex justify-center w-[55%] h-[70%] bg-red-200 rounded text-black">
+      <div
+        className="absolute left-2 top-2 text-6xl"
+        onClick={() => Handle(false)}
+      >
+        X
+      </div>
       <form
         onSubmit={(e: React.SyntheticEvent) => SendPost(e)}
-        className="flex justify-center flex-col w-[20%] gap-2 text-white"
+        className="flex justify-center flex-col w-[70%] gap-2 text-white"
       >
-        <input
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onHandleMessage(e.target.value)
-          }
-          className="bg-black"
-          type="text"
-          placeholder="message"
-        />
         <input
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onHandleTitle(e.target.value)
           }
-          className="bg-black"
+          className="p-3 rounded-sm text-black"
           type="text"
           placeholder="tytuł"
         />
-        <input type="submit" className="bg-black " />
+        <input
+          className="p-3 rounded-sm text-black"
+          type="text"
+          placeholder="tagi"
+        />
+        <textarea
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            onHandleMessage(e.target.value)
+          }
+          className="p-3 rounded-sm text-black"
+          placeholder="message"
+        />
+        <div className="flex justify-center">
+          <input
+            type="submit"
+            className="bg-white transition-all duration-100 text-black cursor-pointer w-[40%] p-2 hover:bg-black hover:text-white rounded"
+          />
+        </div>
       </form>
     </div>
   );
