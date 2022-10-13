@@ -2,12 +2,15 @@ import { useState } from "react";
 const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
+  const [tags, onHandleTags] = useState<Array<string>>([]);
+  console.log(tags)
   //SOMEHOW IMPELEMENT TAGS
 
   interface PostObject {
     message: string;
     title: string;
     username: string;
+    tags:   Array<string>
     CreatedAt: string;
   }
 
@@ -29,6 +32,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     const PostObjectToSend: PostObject = {
       message,
       title,
+      tags,
       username: "siemastian",
       CreatedAt: date,
     };
@@ -44,7 +48,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   return (
     <div className="m-10 flex justify-center w-[55%] h-[70%] rounded text-black">
       <div
-        className="absolute left-2 top-2 text-6xl"
+        className="absolute left-2 top-2 text-6xl cursor-pointer	"
         onClick={() => Handle(false)}
       >
         X
@@ -62,6 +66,9 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
           placeholder="tytuł"
         />
         <input
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onHandleTags(e.target.value.split(""))
+        }
           className="p-3 rounded-sm text-black"
           type="text"
           placeholder="tagi"
