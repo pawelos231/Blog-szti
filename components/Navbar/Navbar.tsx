@@ -19,15 +19,17 @@ const Navbar: () => JSX.Element = () => {
           </li>
           <li>
             <div className="flex gap-14 items-center">
-              <div className="text-4xl">
+              <div className="text-4xl"> 
                 <Notifications fontSize="inherit" />
               </div>
-              <div className="text-4xl">
+              <div className="text-4xl z-10">
+              <Link href={"/userDetails/userProfile"}>
                 <Person fontSize="inherit" />
+                </Link>
               </div>
 
               <div
-                className="bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10"
+                className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
                 onClick={() => Handle(!clicked)}
               >
                 Napisz
