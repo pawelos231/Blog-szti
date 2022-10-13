@@ -19,12 +19,12 @@ const Navbar: () => JSX.Element = () => {
           </li>
           <li>
             <div className="flex gap-14 items-center">
-              <div className="text-4xl"> 
+              <div className="text-4xl">
                 <Notifications fontSize="inherit" />
               </div>
               <div className="text-4xl z-10">
-              <Link href={"/userDetails/userProfile"}>
-                <Person fontSize="inherit" />
+                <Link href={"/userDetails/userProfile"}>
+                  <Person fontSize="inherit" />
                 </Link>
               </div>
 

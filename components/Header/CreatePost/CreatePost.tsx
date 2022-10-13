@@ -1,11 +1,17 @@
 import { useState } from "react";
 import RespMessage from "./MessageRepsonse/respMessage";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
+
 const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
   const [tags, onHandleTags] = useState<Array<string>>([]);
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
+
 
   interface PostObject {
     message: string;
@@ -60,7 +66,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
 
   return (
     <>
-      <div className="m-10 flex justify-center w-[55%] h-[70%] rounded text-black">
+      <div className="m-10 flex justify-center w-[50%] h-[70%] rounded text-black bg-white">
         <div
           className="absolute left-2 top-2 text-6xl cursor-pointer	"
           onClick={() => Handle(false)}
@@ -69,13 +75,13 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
         </div>
         <form
           onSubmit={(e: React.SyntheticEvent) => SendPost(e)}
-          className="flex justify-center flex-col w-[70%] gap-2 text-white"
+          className="flex justify-center flex-col w-[80%] gap-2 text-white"
         >
           <input
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTitle(e.target.value)
             }
-            className="p-3 rounded-sm text-black"
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300"
             type="text"
             placeholder="tytuł"
           />
@@ -83,23 +89,22 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTags(e.target.value.split("#"))
             }
-            className="p-3 rounded-sm text-black"
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300"
             type="text"
             placeholder="tagi"
           />
-          <textarea
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              onHandleMessage(e.target.value)
-            }
-            className="p-3 rounded-sm text-black h-[30%]"
-            placeholder="message"
+          <ReactQuill
+            value={message}
+            onChange={onHandleMessage}
+            theme="snow"
+            className="text-black"
           />
           {buttonActive ? (
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-12">
               <input
                 id="submitButton"
                 type="submit"
-                className="bg-white transition-all duration-100 text-black cursor-pointer w-[40%] p-2 hover:bg-black hover:text-white rounded"
+                className="bg-white transition-all duration-100 text-black cursor-pointer w-[40%] p-2 hover:bg-black hover:text-white rounded border-[1px] border-gray-300"
               />
             </div>
           ) : null}
