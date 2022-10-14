@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
 
 
-const BlogSchema = new mongoose.Schema({
+const BlogSchema = new Schema({
     Title:  String, 
     CreatedAt: String,
     Tags:   [String],
@@ -11,5 +11,5 @@ const BlogSchema = new mongoose.Schema({
     Message: String,
   });
 
-  module.exports =     mongoose.models.Post || mongoose.model('Blog22', BlogSchema);
+  module.exports = mongoose.models.BlogPosts || mongoose.model('BlogPosts', BlogSchema);
 

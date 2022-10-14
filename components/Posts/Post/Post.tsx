@@ -1,12 +1,9 @@
 import React from "react";
-const Post: ({ item }: { item: string }) => JSX.Element = ({
-  item,
-}: {
-  item: string;
-}) => {
+const Post = ({ item }) => {
+  console.log(item);
   return (
     <div>
-      <h1>{item}</h1>
+      <h1>{item.Title}</h1>
     </div>
   );
 };
