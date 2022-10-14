@@ -1,17 +1,8 @@
 import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 
-interface TempPost {
-  CreatedAt: string;
-  Tags: Array<string>;
-  Message: string;
-  Title: string;
-  Username: string;
-  __v: number;
-  _id: string;
-}
-
-const PostSite = ({ post }: { post: TempPost }) => {
+const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
   return (
     <main className="w-screen flex justify-center items-center h-screen">
       <div>{post.Title}</div>
@@ -23,9 +14,9 @@ export default PostSite;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(`http://localhost:3000/api/GetDataFromPost`);
-  const posts: Array<TempPost> | null = await res.json();
+  const posts: Array<SinglePostFromDatabase> | null = await res.json();
 
-  const paths: any = posts.map((item: TempPost) => {
+  const paths: any = posts.map((item: SinglePostFromDatabase) => {
     return {
       params: { id: String(item._id) },
     };
@@ -45,5 +36,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post,
     },
+    revalidate: 10,
   };
 };
