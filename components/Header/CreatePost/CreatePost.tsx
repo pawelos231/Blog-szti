@@ -12,12 +12,11 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
 
-
   interface PostObject {
-    message: string;
-    title: string;
-    username: string;
-    tags: Array<string>;
+    Message: string;
+    Title: string;
+    Username: string;
+    Tags: Array<string>;
     CreatedAt: string;
   }
   interface ResposnePostAPost {
@@ -49,10 +48,10 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const SendPost: (e: any) => Promise<void> = async (e) => {
     let date: string = GenerateDateString();
     const PostObjectToSend: PostObject = {
-      message,
-      title,
-      tags,
-      username: "siemastian",
+      Message: message,
+      Title: title,
+      Tags: tags,
+      Username: "siemastian",
       CreatedAt: date,
     };
     e.preventDefault();
