@@ -5,7 +5,7 @@ import PostDetails from "../../components/PostDetailsPage/PostDetails";
 import mongoose from "mongoose";
 const BlogPosts = require("../../models/BlogPosts");
 
-const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
+const PostSite = ({ post }: { post: SinglePostFromDatabase  }) => {
   return (
     <main className="w-screen flex justify-center h-screen">
       <PostDetails post={post} />

@@ -2,15 +2,13 @@ import * as React from "react";
 import Image from "next/image";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { useEffect } from "react";
-const PostDetails = ({ post }: { post: SinglePostFromDatabase }) => {
+const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
+  console.log(post);
   useEffect(() => {
     if (document != undefined) {
       document.querySelector("#inner").innerHTML = post.Message;
     }
   }, []);
-  if (post.Title == undefined) {
-    return <div>chujj</div>;
-  }
   return (
     <div className="mt-[12vh]">
       <div className=" overflow-hidden	rounded  height-[50vh] w-[60vw] mb-12 ">
