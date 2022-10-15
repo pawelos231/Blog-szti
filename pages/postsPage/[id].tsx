@@ -6,37 +6,9 @@ import PostDetails from "../../components/PostDetailsPage/PostDetails";
 const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
   return (
     <main className="w-screen flex justify-center h-screen">
-      <PostDetails post={post} />
+      <div></div>
     </main>
   );
 };
 
 export default PostSite;
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(`/api/GetDataFromPost`);
-  const posts: Array<SinglePostFromDatabase> | null = await res.json();
-
-  const paths: any = posts.map((item: SinglePostFromDatabase) => {
-    return {
-      params: { id: String(item._id) },
-    };
-  });
-  return {
-    paths,
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params.id;
-  console.log(id);
-  const res = await fetch(`/api/${id}`);
-  const post = await res.json();
-  return {
-    props: {
-      post,
-    },
-    revalidate: 10,
-  };
-};
