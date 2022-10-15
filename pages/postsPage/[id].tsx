@@ -14,7 +14,7 @@ const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
 export default PostSite;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(`http://localhost:3000/api/GetDataFromPost`);
+  const res = await fetch(`/api/GetDataFromPost`);
   const posts: Array<SinglePostFromDatabase> | null = await res.json();
 
   const paths: any = posts.map((item: SinglePostFromDatabase) => {
@@ -31,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params.id;
   console.log(id);
-  const res = await fetch(`http://localhost:3000/api/${id}`);
+  const res = await fetch(`/api/${id}`);
   const post = await res.json();
   return {
     props: {
