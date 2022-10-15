@@ -12,5 +12,6 @@ const BlogSchema = new Schema({
     Message: String,
   });
 
+
   module.exports = mongoose.models.BlogPostsBlogPostsFromUser || mongoose.model('BlogPostsBlogPostsFromUser', BlogSchema);
 

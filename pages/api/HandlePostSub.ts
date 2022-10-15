@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const data: any = req.body
   const parsedData: any = JSON.parse(data)
-  console.log(parsedData.ShortDesc)
   const source = await BlogPosts.create({
     Message: parsedData.Message, 
     Title: parsedData.Title, 

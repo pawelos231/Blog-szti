@@ -6,8 +6,9 @@ WORKDIR /usr/app
 
 COPY ./ ./
 
-RUN npm install
+RUN npm install --force
 RUN npm run build
 
 EXPOSE 3000
 CMD ["npm", "start"]
+#this file is currently udergoing some changes, it will work in the future
