@@ -14,7 +14,7 @@ const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
 export default PostSite;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const dev = process.env.NODE_ENV !== "production";
+  const dev = process.env.NODE_ENV != "production";
   const server = dev
     ? "http://localhost:3000"
     : "https://blog2-taupe.vercel.app";
@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params.id;
   console.log(id);
-  const dev = process.env.NODE_ENV !== "production";
+  const dev = process.env.NODE_ENV != "production";
   const server = dev
     ? "http://localhost:3000"
     : "https://blog2-taupe.vercel.app";
