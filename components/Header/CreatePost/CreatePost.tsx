@@ -9,13 +9,14 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
   const [tags, onHandleTags] = useState<Array<string>>([]);
+  const [shortOpis, HandleShortOpis] = useState<string>("");
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
-
   interface PostObject {
     Message: string;
     Title: string;
     Username: string;
+    ShortDesc: string;
     Tags: Array<string>;
     CreatedAt: string;
   }
@@ -26,7 +27,9 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const TemporaryComponent: (data: ResposnePostAPost) => void = (data) => {
     setTimeout(() => {
       setResp({});
-      Handle(false);
+      setTimeout(() => {
+        Handle(false);
+      }, 500);
     }, 1000);
     setResp(data);
     SetButtonActive(false);
@@ -51,6 +54,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       Message: message,
       Title: title,
       Tags: tags,
+      ShortDesc: shortOpis,
       Username: "siemastian",
       CreatedAt: date,
     };
@@ -65,7 +69,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
 
   return (
     <>
-      <div className="m-10 flex justify-center w-[50%] h-[70%] rounded text-black bg-white">
+      <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white">
         <div
           className="absolute left-2 top-2 text-6xl cursor-pointer	"
           onClick={() => Handle(false)}
@@ -90,13 +94,21 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             }
             className="p-3 rounded-sm text-black border-[1px] border-gray-300"
             type="text"
-            placeholder="tagi"
+            placeholder="tagi: #siema #gówno"
+          />
+          <textarea
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              HandleShortOpis(e.target.value)
+            }
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300 h-[15%]"
+            placeholder="krótki opis, max 150 znaków"
+            maxLength={150}
           />
           <ReactQuill
             value={message}
             onChange={onHandleMessage}
             theme="snow"
-            className="text-black"
+            className="text-black h-[25%]"
           />
           {buttonActive ? (
             <div className="flex justify-center mt-12">

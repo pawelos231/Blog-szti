@@ -17,7 +17,7 @@ const Post = ({ item }: { item: SinglePostFromDatabase }) => {
       </div>
       <div className="flex w-[100%] justify-between">
         <div className="mt-4 text-gray-600 w-[70%]">
-          {stripTags(item.Message)}
+          {stripTags(item.ShortDesc)}
         </div>
         <div className="overflow-hidden	rounded-lg bg-red-100 w-[260px]">
           <Image
