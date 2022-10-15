@@ -1,7 +1,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
-const BlogPosts = require("./models/BlogPosts")
+const BlogPosts = require("../../models/BlogPosts")
 
 
 
