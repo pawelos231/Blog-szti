@@ -1,11 +1,12 @@
 import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
+import PostDetails from "../../components/PostDetailsPage/PostDetails";
 
 const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
   return (
-    <main className="w-screen flex justify-center items-center h-screen">
-      <div>{post.Title}</div>
+    <main className="w-screen flex justify-center h-screen">
+      <PostDetails post={post} />
     </main>
   );
 };

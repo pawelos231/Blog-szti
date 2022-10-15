@@ -23,6 +23,9 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   interface ResposnePostAPost {
     [x: string]: string;
   }
+  function stripTags(original: string) {
+    return original.replace(/(<([^>]+)>)/gi, "");
+  }
 
   const TemporaryComponent: (data: ResposnePostAPost) => void = (data) => {
     setTimeout(() => {
@@ -47,24 +50,26 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       (today.getDate() <= 9 ? "0" + Number(today.getDate()) : today.getDate());
     return date;
   };
-
+  console.log(stripTags(message));
   const SendPost: (e: any) => Promise<void> = async (e) => {
-    let date: string = GenerateDateString();
-    const PostObjectToSend: PostObject = {
-      Message: message,
-      Title: title,
-      Tags: tags,
-      ShortDesc: shortOpis,
-      Username: "siemastian",
-      CreatedAt: date,
-    };
-    e.preventDefault();
-    await fetch("/api/HandlePostSub", {
-      method: "POST",
-      body: JSON.stringify(PostObjectToSend),
-    })
-      .then((res: Response) => res.json())
-      .then((data: ResposnePostAPost) => TemporaryComponent(data));
+    if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
+      const date: string = GenerateDateString();
+      const PostObjectToSend: PostObject = {
+        Message: message,
+        Title: title,
+        Tags: tags,
+        ShortDesc: shortOpis,
+        Username: "siemastian",
+        CreatedAt: date,
+      };
+      e.preventDefault();
+      await fetch("/api/HandlePostSub", {
+        method: "POST",
+        body: JSON.stringify(PostObjectToSend),
+      })
+        .then((res: Response) => res.json())
+        .then((data: ResposnePostAPost) => TemporaryComponent(data));
+    }
   };
 
   return (
@@ -81,14 +86,17 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
           className="flex justify-center flex-col w-[80%] gap-2 text-white"
         >
           <input
+            maxLength={80}
+            required
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTitle(e.target.value)
             }
             className="p-3 rounded-sm text-black border-[1px] border-gray-300"
             type="text"
-            placeholder="tytuł"
+            placeholder="tytuł, max 80 znaków"
           />
           <input
+            required
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTags(e.target.value.split("#"))
             }
@@ -97,12 +105,13 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             placeholder="tagi: #siema #gówno"
           />
           <textarea
+            required
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               HandleShortOpis(e.target.value)
             }
             className="p-3 rounded-sm text-black border-[1px] border-gray-300 h-[15%]"
-            placeholder="krótki opis, max 150 znaków"
-            maxLength={150}
+            placeholder="krótki opis, max 230 znaków"
+            maxLength={230}
           />
           <ReactQuill
             value={message}
