@@ -2,12 +2,10 @@ import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import PostDetails from "../../components/PostDetailsPage/PostDetails";
-import { server } from "../../config";
 import mongoose from "mongoose";
 const BlogPosts = require("../../models/BlogPosts");
 
 const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
-  console.log(post);
   return (
     <main className="w-screen flex justify-center h-screen">
       <PostDetails post={post} />

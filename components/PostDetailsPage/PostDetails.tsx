@@ -8,6 +8,9 @@ const PostDetails = ({ post }: { post: SinglePostFromDatabase }) => {
       document.querySelector("#inner").innerHTML = post.Message;
     }
   }, []);
+  if (post.Title == undefined) {
+    return <div>chujj</div>;
+  }
   return (
     <div className="mt-[12vh]">
       <div className=" overflow-hidden	rounded  height-[50vh] w-[60vw] mb-12 ">
@@ -26,7 +29,7 @@ const PostDetails = ({ post }: { post: SinglePostFromDatabase }) => {
         <h1 className="text-4xl font-semibold pb-6 ">{post.Title}</h1>
         <p>{post.CreatedAt}</p>
       </div>
-      <div id="inner">siuema</div>
+      <div id="inner"></div>
     </div>
   );
 };
