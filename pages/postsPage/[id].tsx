@@ -5,7 +5,10 @@ import PostDetails from "../../components/PostDetailsPage/PostDetails";
 import mongoose from "mongoose";
 const BlogPosts = require("../../models/BlogPosts");
 
-const PostSite = ({ post }: { post: SinglePostFromDatabase  }) => {
+const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
+  if (Object.keys(post).length === 0) {
+    return <div>sieam</div>;
+  }
   return (
     <main className="w-screen flex justify-center h-screen">
       <PostDetails post={post} />
