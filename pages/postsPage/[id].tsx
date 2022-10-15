@@ -6,9 +6,6 @@ import mongoose from "mongoose";
 const BlogPosts = require("../../models/BlogPosts");
 
 const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
-  if (post.Title == "") {
-    return <div>sieam</div>;
-  }
   return (
     <main className="w-screen flex justify-center h-screen">
       <PostDetails post={post} />

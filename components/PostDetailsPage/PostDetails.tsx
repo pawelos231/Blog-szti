@@ -24,8 +24,8 @@ const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
         />
       </div>
       <div className="flex justify-between">
-        <h1 className="text-4xl font-semibold pb-6 ">{post.Title}</h1>
-        <p>{post.CreatedAt}</p>
+        <h1 className="text-4xl font-semibold pb-6 ">{post?.Title}</h1>
+        <p>{post?.CreatedAt}</p>
       </div>
       <div id="inner"></div>
     </div>
