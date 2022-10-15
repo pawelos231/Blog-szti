@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 const BlogPosts = require("../../models/BlogPosts");
 
 const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
-  if (Object.keys(post).length === 0) {
+  if (post.Title == "") {
     return <div>sieam</div>;
   }
   return (
