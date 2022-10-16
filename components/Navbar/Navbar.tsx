@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { Menu, Notifications, Person } from "@material-ui/icons";
 import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 const Navbar: () => JSX.Element = () => {
+  const [profileObj, setProfileObj] = useState<any>({});
   const [clicked, Handle] = useState<boolean>(false);
+  const Logout = () => {
+    localStorage.clear();
+    setProfileObj({});
+  };
+  console.log(profileObj);
+  useEffect(() => {
+    if (typeof localStorage !== "undefined") {
+      setProfileObj(localStorage.getItem("profile") || "{}");
+    }
+  }, []);
   return (
     <>
       <nav className="z-10 fixed bg-white w-full shadow shadow-grey text-black">
@@ -27,13 +38,28 @@ const Navbar: () => JSX.Element = () => {
                   <Person fontSize="inherit" />
                 </Link>
               </div>
-
-              <div
-                className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
-                onClick={() => Handle(!clicked)}
-              >
-                Napisz
-              </div>
+              {Object.keys(profileObj).length !== 0 ? (
+                <div
+                  className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
+                  onClick={() => Handle(!clicked)}
+                >
+                  Napisz Post
+                </div>
+              ) : null}
+              {Object.keys(profileObj).length === 0 ? (
+                <div className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white">
+                  <Link href={"/userLogin/register"}>
+                    <a>Zaloguj się</a>
+                  </Link>
+                </div>
+              ) : (
+                <div
+                  className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
+                  onClick={() => Logout()}
+                >
+                  Wyloguj się
+                </div>
+              )}
             </div>
           </li>
         </ul>

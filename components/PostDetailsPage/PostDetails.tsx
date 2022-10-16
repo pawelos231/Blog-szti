@@ -5,12 +5,13 @@ import { useEffect } from "react";
 const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
   console.log(post);
   useEffect(() => {
+    console.log(post.Message.split(" ").join());
     if (document != undefined) {
       document.querySelector("#inner").innerHTML = post.Message;
     }
   }, []);
   return (
-    <div className="mt-[12vh]">
+    <div className="mt-[12vh]  max-w-[60vw]">
       <div className=" overflow-hidden	rounded  height-[50vh] w-[60vw] mb-12 ">
         <Image
           src="/dawnofthegreg.jpg"
@@ -27,7 +28,7 @@ const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
         <h1 className="text-4xl font-semibold pb-6 ">{post?.Title}</h1>
         <p>{post?.CreatedAt}</p>
       </div>
-      <div id="inner"></div>
+      <div className="width-[60vw]" id="inner"></div>
     </div>
   );
 };

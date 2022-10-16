@@ -1,7 +1,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
-const BlogPosts = require("../../models/BlogPosts")
+const BlogPosts = require("../../server/models/BlogPosts")
 
 
 
@@ -9,7 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await mongoose.connect(process.env.DATABASE_URL)
 
   const data: any = req.body
+  
   const parsedData: any = JSON.parse(data)
+
   const source = await BlogPosts.create({
     Message: parsedData.Message, 
     Title: parsedData.Title, 
@@ -17,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     CreatedAt: parsedData.CreatedAt, 
     Username: parsedData.Username, 
     ShortDesc: parsedData.ShortDesc})
-  console.log(source)
+
   await source.save()
   
   

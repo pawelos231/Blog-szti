@@ -1,7 +1,6 @@
 import * as React from "react";
 import Post from "./Post/Post";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { CircularProgress } from "@material-ui/core";
 
