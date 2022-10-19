@@ -52,9 +52,10 @@ const Navbar: () => JSX.Element = () => {
                   Napisz Post
                 </div>
               ) : null}
-              {router.pathname == "/userLogin/register" &&
-              "/userLogin/login" ? null : Object.keys(profileObj).length <=
-                2 ? (
+              {router.pathname == "/userLogin/register" ||
+              router.pathname == "/userLogin/login" ? null : Object.keys(
+                  profileObj
+                ).length <= 2 ? (
                 <div className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white">
                   <Link href={"/userLogin/register"}>
                     <a>Zaloguj się</a>
