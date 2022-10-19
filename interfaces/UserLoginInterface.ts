@@ -7,3 +7,7 @@ export interface UserLogin{
     email: string
     password: string
 }
+export interface Token{
+    Name: string
+    Email: string
+}

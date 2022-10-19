@@ -1,16 +1,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  LoggingInterface,
-  ReposneInterface,
-} from "../../interfaces/reponseTypeRegister";
+
 const Register = () => {
   const [name, SetName] = useState<string>("");
   const [password, SetPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [temp, setTemp] = useState<boolean>(false);
-  const [status, setStatus] = useState<number>(0);
+  const [status, setStatus] = useState<number>(2);
   const SendUserDataToVerify = async (e: any) => {
     e.preventDefault();
 
@@ -21,8 +18,9 @@ const Register = () => {
         body: JSON.stringify({ name, email, password }),
       })
         .then((res: Response) => res.json())
-        .then((data: ReposneInterface & LoggingInterface) => {
-          setStatus(data?.status);
+        .then((data: any) => {
+          console.log(data);
+          setStatus(data?.message?.status);
           if (data?.token) {
             localStorage.setItem("profile", data?.token);
           }
@@ -30,8 +28,6 @@ const Register = () => {
             setTemp(false);
           }, 1000);
         });
-
-      console.log(localStorage.getItem("profile"));
     }
   };
   return (
@@ -85,15 +81,15 @@ const Register = () => {
       </div>
       <div className="absolute top-0 mt-32 flex w-screen justify-center  ">
         {temp ? (
-          status !== 0 ? (
-            <div className="text-3xl text-green-700 font-thin p-2 rounded-lg ">
-              udało się dodać uzytkownika
-            </div>
-          ) : (
+          status == 0 ? (
             <div className="text-3xl text-red-700 font-thin p-2 rounded-lg ">
               ten email występuje juz w bazie danych
             </div>
-          )
+          ) : status == 1 ? (
+            <div className="text-3xl text-green-700 font-thin p-2 rounded-lg ">
+              udało się dodać uzytkownika
+            </div>
+          ) : null
         ) : null}
       </div>
     </>

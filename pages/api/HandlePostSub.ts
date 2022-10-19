@@ -2,14 +2,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
 const BlogPosts = require("../../server/models/BlogPosts")
+import {verify} from '../../server/helpers/validateToken'
 
 
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+export default async function handler(req, res: NextApiResponse) {
   await mongoose.connect(process.env.DATABASE_URL)
+  
 
   const data: any = req.body
-  
+  const token = String(req.headers["authorization"])
+  let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+  console.log(decodedData)
+
   const parsedData: any = JSON.parse(data)
 
   const source = await BlogPosts.create({
@@ -17,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     Title: parsedData.Title, 
     Tags: parsedData.Tags, 
     CreatedAt: parsedData.CreatedAt, 
-    Username: parsedData.Username, 
+    Username: decodedData.Name, 
     ShortDesc: parsedData.ShortDesc})
 
   await source.save()

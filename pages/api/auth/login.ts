@@ -25,12 +25,12 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
                 const jwt = sign(claims, process.env.ACCESS_TOKEN_SECRET)
                 res.status(200).json({message: {text: "udało się zalogować", status: 1}, token: jwt})
             } else{
-                res.status(200).json({text: "niepoprawne email bądź hasło", status: 0})
+                res.status(200).json({message: {text: "niepoprawne email bądź hasło", status: 0}})
 
             }
         })
 
     } else{
-        res.status(200).json({text: "niepoprawne hasło bądź email" , status: 0})
+        res.status(200).json({message: {text: "niepoprawne hasło bądź email" , status: 0}})
     }
 }

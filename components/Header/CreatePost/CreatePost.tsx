@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import RespMessage from "./MessageRepsonse/respMessage";
 import dynamic from "next/dynamic";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuillTextEditor: ComponentType<ReactQuill.ReactQuillProps> = dynamic(
+  () => import("react-quill"),
+  { ssr: false }
+);
 import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
@@ -12,6 +16,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [shortOpis, HandleShortOpis] = useState<string>("");
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
+
   interface PostObject {
     Message: string;
     Title: string;
@@ -20,9 +25,11 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     Tags: Array<string>;
     CreatedAt: string;
   }
+
   interface ResposnePostAPost {
     [x: string]: string;
   }
+
   function stripTags(original: string) {
     return original.replace(/(<([^>]+)>)/gi, "");
   }
@@ -35,7 +42,6 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       }, 500);
     }, 1000);
     setResp(data);
-    SetButtonActive(false);
   };
 
   const GenerateDateString: () => string = () => {
@@ -50,10 +56,11 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       (today.getDate() <= 9 ? "0" + Number(today.getDate()) : today.getDate());
     return date;
   };
-  console.log(stripTags(message));
+
   const SendPost: (e: any) => Promise<void> = async (e) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
       const date: string = GenerateDateString();
+
       const PostObjectToSend: PostObject = {
         Message: message,
         Title: title,
@@ -62,15 +69,27 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
         Username: "siemastian",
         CreatedAt: date,
       };
+
       e.preventDefault();
+      SetButtonActive(false);
+
       await fetch("/api/HandlePostSub", {
         method: "POST",
+        headers: {
+          Authorization: localStorage.getItem("profile"),
+        },
         body: JSON.stringify(PostObjectToSend),
       })
         .then((res: Response) => res.json())
         .then((data: ResposnePostAPost) => TemporaryComponent(data));
     }
   };
+
+  useEffect(() => {
+    if (typeof localStorage != undefined) {
+      console.log(localStorage.getItem("profile"));
+    }
+  }, []);
 
   return (
     <>
@@ -113,7 +132,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             placeholder="krótki opis, max 230 znaków"
             maxLength={230}
           />
-          <ReactQuill
+          <ReactQuillTextEditor
             value={message}
             onChange={onHandleMessage}
             theme="snow"
