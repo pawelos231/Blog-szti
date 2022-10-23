@@ -5,9 +5,9 @@ const BlogPosts = require("../../server/models/BlogPosts")
 import {verify} from '../../server/helpers/validateToken'
 
 
+//add error checking
 
-
-export default async function handler(req, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await mongoose.connect(process.env.DATABASE_URL)
   
 

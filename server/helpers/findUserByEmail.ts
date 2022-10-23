@@ -2,9 +2,7 @@ const UserData = require("../models/UserModel")
 
 export const CheckIfEmailExists: (email: string) => Promise<boolean | any> = async (email: string) => {
 
-    const data = await UserData.findOne({Email : email})
-
-    
+    const data: any = await UserData.findOne({Email : email})
     if(data !== null){
         return data
     }
