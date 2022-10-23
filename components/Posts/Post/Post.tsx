@@ -1,6 +1,8 @@
 import React from "react";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Image from "next/image";
+import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
+
 const Post = ({ item }: { item: SinglePostFromDatabase }) => {
   function stripTags(original: string): string {
     return original.replace(/(<([^>]+)>)/gi, "");
@@ -24,6 +26,10 @@ const Post = ({ item }: { item: SinglePostFromDatabase }) => {
         </div>
         <div className="overflow-hidden	rounded-lg bg-red-100 w-[260px]">
           <Image
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              shimmer(100, 60)
+            )}`}
             src={"/dawnofthegreg.jpg"}
             width={150}
             height={150}
