@@ -19,7 +19,7 @@ const AllPosts: ({ posts }) => JSX.Element = ({ posts }) => {
           return (
             <Link href={`postsPage/${item._id}`}>
               <div
-                className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] border-gray-300 relative"
+                className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] border-gray-300 relative hover:bg-gray-100"
                 key={i}
               >
                 <Post item={item} />

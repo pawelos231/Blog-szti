@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter, NextRouter } from "next/router";
 
 const Register = () => {
   const [name, SetName] = useState<string>("");
@@ -8,11 +9,15 @@ const Register = () => {
   const [email, setEmail] = useState<string>("");
   const [temp, setTemp] = useState<boolean>(false);
   const [status, setStatus] = useState<number>(2);
+  const [button, setButton] = useState<boolean>(true);
+  const router: NextRouter = useRouter();
+
   const SendUserDataToVerify = async (e: any) => {
     e.preventDefault();
 
     if (name !== "" && email !== "" && password !== "") {
       setTemp(true);
+      setButton(false);
       await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({ name, email, password }),
@@ -26,6 +31,7 @@ const Register = () => {
           }
           setTimeout(() => {
             setTemp(false);
+            router.push("/");
           }, 1000);
         });
     }
@@ -52,7 +58,7 @@ const Register = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setEmail(e.target.value)
               }
-              type="text"
+              type="email"
               className="bg-red-100 p-2"
               placeholder="email"
             />
@@ -65,18 +71,21 @@ const Register = () => {
               className="bg-red-100 p-2"
               placeholder="hasło"
             />
-
-            <input
-              type="submit"
-              placeholder="wyślij"
-              className="bg-black rounded-sm transition-all duration-75 cursor-pointer text-white p-2 hover:text-white hover:bg-blue-700"
-            />
+            {button ? (
+              <input
+                type="submit"
+                placeholder="wyślij"
+                className="bg-black rounded-sm transition-all duration-75 cursor-pointer text-white p-2 hover:text-white hover:bg-blue-700"
+              />
+            ) : null}
           </form>
-          <p className="mt-6 text-center">
-            <Link href={"/userLogin/login"}>
-              <p>Chcę się zalogować</p>
-            </Link>
-          </p>
+          {button ? (
+            <p className="mt-6 text-center">
+              <Link href={"/userLogin/login"}>
+                <p>Chcę się zalogować</p>
+              </Link>
+            </p>
+          ) : null}
         </div>
       </div>
       <div className="absolute top-0 mt-32 flex w-screen justify-center  ">
