@@ -45,8 +45,8 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   };
 
   const GenerateDateString: () => string = () => {
-    let today: Date = new Date();
-    let date: string =
+    const today: Date = new Date();
+    const date: string =
       today.getFullYear() +
       "-" +
       (today.getMonth() + 1 <= 9

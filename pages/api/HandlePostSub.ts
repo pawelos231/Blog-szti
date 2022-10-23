@@ -21,9 +21,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const source: any = await BlogPosts.create({
     Message: parsedData.Message, 
     Title: parsedData.Title, 
-    Tags: parsedData.Tags, 
+    Tags: parsedData.Tags,
     CreatedAt: parsedData.CreatedAt, 
-    Username: decodedData.Name, 
+    Username: decodedData.Name,
+    UserEmail: decodedData.Email, 
     ShortDesc: parsedData.ShortDesc})
 
   await source.save()

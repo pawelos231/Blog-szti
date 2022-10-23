@@ -5,6 +5,7 @@ export interface SinglePostFromDatabase {
     ShortDesc: string
     Title: string;
     Username: string;
+    Email: string
     __v: number;
     _id: string;
   }

@@ -8,10 +8,11 @@ const BlogSchema = new Schema({
     CreatedAt: String,
     Tags:   [String],
     Username: String,
+    UserEmail: String,
     ShortDesc: String,
     Message: String,
   });
 
 
-  module.exports = mongoose.models.BlogPostsBlogPostsFromUser || mongoose.model('BlogPostsBlogPostsFromUser', BlogSchema);
+  module.exports = mongoose.models.BlogPosts || mongoose.model('BlogPosts', BlogSchema);
 
