@@ -7,7 +7,7 @@ const Post = ({ item }: { item: SinglePostFromDatabase }) => {
   }
 
   return (
-    <div className="flex flex-col w-full cursor-pointer hover:bg-gray-100">
+    <div className="flex flex-col w-full cursor-pointer ">
       <p className="mt-2 mb-6">
         <span>
           <span className="text-gray-500">Stworzone przez: </span>{" "}

@@ -2,7 +2,11 @@ import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
-
+import {
+  LoggingInterface,
+  ReposneInterface,
+} from "../../interfaces/reponseTypeRegister";
+import { useEffect } from "react";
 const Register = () => {
   const [name, SetName] = useState<string>("");
   const [password, SetPassword] = useState<string>("");
@@ -23,19 +27,27 @@ const Register = () => {
         body: JSON.stringify({ name, email, password }),
       })
         .then((res: Response) => res.json())
-        .then((data: any) => {
-          console.log(data);
+        .then((data: LoggingInterface & ReposneInterface) => {
           setStatus(data?.message?.status);
           if (data?.token) {
             localStorage.setItem("profile", data?.token);
           }
           setTimeout(() => {
             setTemp(false);
-            router.push("/");
+            if (data?.message?.status === 1) {
+              router.push("/");
+            } else {
+              setButton(true);
+            }
           }, 1000);
         });
     }
   };
+  useEffect(() => {
+    if (localStorage.getItem("profile")) {
+      router.push("/");
+    }
+  }, []);
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center ">

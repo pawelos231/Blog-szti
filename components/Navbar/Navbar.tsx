@@ -3,25 +3,24 @@ import Link from "next/link";
 import { Menu, Notifications, Person } from "@material-ui/icons";
 import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 
 const Navbar: () => JSX.Element = () => {
   const [profileObj, setProfileObj] = useState<any>({});
   const [clicked, Handle] = useState<boolean>(false);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
-  const Logout = () => {
+  const Logout: () => void = () => {
     localStorage.clear();
     setProfileObj({});
   };
-  console.log(router.pathname);
-  console.log(Object.keys(profileObj).length);
-  console.log(profileObj);
+
   useEffect(() => {
     if (typeof localStorage !== "undefined") {
       setProfileObj(localStorage.getItem("profile") || "{}");
     }
   }, [router.pathname]);
+
   return (
     <>
       <nav className="z-10 fixed bg-white w-full shadow shadow-grey text-black">

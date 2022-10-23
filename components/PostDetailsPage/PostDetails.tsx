@@ -3,9 +3,7 @@ import Image from "next/image";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { useEffect } from "react";
 const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
-  console.log(post);
   useEffect(() => {
-    console.log(post.Message.split(" ").join());
     if (document != undefined) {
       document.querySelector("#inner").innerHTML = post.Message;
     }
