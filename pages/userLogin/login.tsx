@@ -58,7 +58,7 @@ const Login = () => {
               }
               className="bg-red-100 p-2"
               type="text"
-              placeholder="twoja nazwa"
+              placeholder="twój email"
             />
             <input
               required
