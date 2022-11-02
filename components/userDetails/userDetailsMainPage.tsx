@@ -1,23 +1,27 @@
+import { type } from "os";
 import * as React from "react";
 import { useEffect } from "react";
+import useFetch from "../../hooks/useFetchHook";
 const UserDeatilsMainPage = () => {
-  const FetchSpecificUserPosts = async () => {
-    const token: string = localStorage.getItem("profile");
-    await fetch("/api/user/fetchUserSpecificData", {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res: Response) => res.json())
-      .then((data) => console.log(data));
-  };
-  useEffect(() => {
-    FetchSpecificUserPosts();
-  }, []);
+  let token: string = "";
+  if (typeof window != "undefined" || typeof localStorage != "undefined") {
+    token = localStorage.getItem("profile");
+  }
+  const [loading, err, errMessage, data] = useFetch(
+    "/api/user/fetchUserSpecificData",
+    token
+  );
+  console.log(data, loading, err, errMessage);
 
   return (
     <div>
-      <div onClick={() => FetchSpecificUserPosts()}>siema</div>
+      {loading ? (
+        <div>
+          <div>ładuje</div>
+        </div>
+      ) : (
+        <div>załadowano</div>
+      )}
     </div>
   );
 };
