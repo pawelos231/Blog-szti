@@ -15,33 +15,29 @@ import {UserLogin} from '../../../interfaces/UserLoginInterface'
 
 const bcrypt = require('bcrypt');
 
-export default async function Handler(req: NextApiRequest, res: NextApiResponse<LoggingInterface | ReposneInterface>) {
+export default async function Handler(req: NextApiRequest, res: NextApiResponse<LoggingInterface | ReposneInterface | any>) {
     const parseObj: UserLogin = JSON.parse(req.body)
-    if(await CheckIfEmailExists(parseObj.email) !== true){
-
+    if(await CheckIfEmailExists(parseObj.email) != true){
         const UserData: any = await CheckIfEmailExists(parseObj.email)
 
         bcrypt.compare(parseObj.password ,UserData.Password, function(err: any, result: boolean){
             if(err){
                 console.log(err)
-            }
-            
+                res.status(500).json(err)
+            }  
             if(result)
             {
              const claims: Token = {
                     Name: UserData.Name,
                     Email: UserData.Email
                 }
-
                 const jwt = sign(claims, process.env.ACCESS_TOKEN_SECRET)
-
                 res.status(200).json({message: {text: "udało się zalogować", status: 1}, token: jwt})
             } 
             
             else
             {
                 res.status(200).json({message: {text: "niepoprawne email bądź hasło", status: 0}})
-
             }
         })
 
