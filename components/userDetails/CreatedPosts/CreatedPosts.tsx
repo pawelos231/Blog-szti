@@ -1,8 +1,12 @@
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Link from "next/link";
 import Post from "../../Posts/Post/Post";
-let flag: boolean = false;
-const CreatedPosts = ({ createdPosts }) => {
+const flag: boolean = false;
+const CreatedPosts = ({
+  createdPosts,
+}: {
+  createdPosts: SinglePostFromDatabase[];
+}) => {
   return (
     <>
       <section className=" w-screen flex justify-center items-center flex-col">
