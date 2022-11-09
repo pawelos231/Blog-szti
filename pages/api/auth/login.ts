@@ -20,7 +20,10 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
     if(await CheckIfEmailExists(parseObj.email) != true){
         const UserData: any = await CheckIfEmailExists(parseObj.email)
 
-        bcrypt.compare(parseObj.password ,UserData.Password, function(err: any, result: boolean){
+        const PasswordInDatabase: string = UserData.Password
+        const PasswordGivenByUser: string = parseObj.password
+
+        bcrypt.compare(PasswordGivenByUser ,PasswordInDatabase, async function(err: any, result: boolean){
             if(err){
                 console.log(err)
                 res.status(500).json(err)
@@ -31,7 +34,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
                     Name: UserData.Name,
                     Email: UserData.Email
                 }
-                const jwt = sign(claims, process.env.ACCESS_TOKEN_SECRET)
+                const jwt = await sign(claims, process.env.ACCESS_TOKEN_SECRET)
                 res.status(200).json({message: {text: "udało się zalogować", status: 1}, token: jwt})
             } 
             
