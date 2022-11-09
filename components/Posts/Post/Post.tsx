@@ -3,19 +3,28 @@ import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Image from "next/image";
 import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
 
-const Post = ({ item }: { item: SinglePostFromDatabase }) => {
+const Post = ({
+  item,
+  flag,
+}: {
+  item: SinglePostFromDatabase;
+  flag: boolean;
+}) => {
   function stripTags(original: string): string {
     return original.replace(/(<([^>]+)>)/gi, "");
   }
 
   return (
     <div className="flex flex-col w-full cursor-pointer ">
-      <p className="mt-2 mb-6">
-        <span>
-          <span className="text-gray-500">Stworzone przez: </span>{" "}
-          <span className="font-semibold	"> {item.Username}</span>
-        </span>
-      </p>
+      {flag ? (
+        <p className="mt-2 mb-6">
+          <span>
+            <span className="text-gray-500">Stworzone przez: </span>{" "}
+            <span className="font-semibold	"> {item.Username}</span>
+          </span>
+        </p>
+      ) : null}
+
       <div className="flex">
         <h1 className="text-3xl font-semibold w-[70%]">{item.Title}</h1>
         <p className="absolute right-0 top-6">{item.CreatedAt}</p>
@@ -38,7 +47,7 @@ const Post = ({ item }: { item: SinglePostFromDatabase }) => {
           />
         </div>
       </div>
-      <p className="text-gray-500">Czytaj więcej...</p>
+      {flag ? <p className="text-gray-500">Czytaj więcej...</p> : null}
     </div>
   );
 };

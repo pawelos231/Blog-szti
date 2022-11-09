@@ -1,4 +1,14 @@
 import { useState, useEffect } from "react";
+
+//to implement
+/*
+class Fetcher{
+    constructor(){
+
+    }
+}
+*/
+
 const useFetch = (url: string, token: string) : [boolean, boolean, any, any] =>{
 
     const [loading, loadingHandle] = useState<boolean>(true)

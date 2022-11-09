@@ -26,7 +26,7 @@ const AllPosts: ({ posts }) => JSX.Element = ({
                 className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] transition-all duration-100 border-gray-300 relative hover:bg-gray-100"
                 key={i}
               >
-                <Post item={item} />
+                <Post item={item} flag={true} />
               </div>
             </Link>
           );
