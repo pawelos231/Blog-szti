@@ -8,6 +8,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     const decodedData: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)
     console.log(decodedData)
     const data: any = await BlogPosts.find({UserEmail: decodedData.Email})
+    console.log(data)
     res.status(200).json({posts:{data}})
 
 }
