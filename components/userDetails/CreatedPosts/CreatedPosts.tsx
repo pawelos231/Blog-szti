@@ -8,14 +8,17 @@ const CreatedPosts = ({
   createdPosts: SinglePostFromDatabase[];
 }) => {
   return (
-    <>
-      <section className=" w-screen flex justify-center items-center flex-col">
-        <h1 className="mb-16">Stworzone przez ciebie posty:</h1>
+    <div>
+      <h1 className="absolute top-36  w-full left-0 text-center">
+        Stworzone przez ciebie posty:
+      </h1>
+
+      <section className="absolute top-60 left-0 w-screen flex justify-center items-center flex-col ">
         {createdPosts.length !== 0 ? (
-          <div className="flex  w-[70%] justify-center">
+          <div className="flex  w-[50%] justify-center flex-col gap-4 ">
             {createdPosts.map((item: SinglePostFromDatabase, i: number) => {
               return (
-                <Link href={`postsPage/${item._id}`}>
+                <Link href={`../postsPage/${item._id}`}>
                   <div
                     className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] transition-all duration-100 border-gray-300 relative hover:bg-gray-100"
                     key={i}
@@ -30,7 +33,7 @@ const CreatedPosts = ({
           <div>Nic tu nie ma :( </div>
         )}
       </section>
-    </>
+    </div>
   );
 };
 
