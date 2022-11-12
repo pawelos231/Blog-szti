@@ -14,7 +14,7 @@ const UserDeatilsMainPage = () => {
     token
   );
   console.log(data, loading, err, errMessage);
-  const createdPosts: SinglePostFromDatabase[] = data?.posts?.data;
+  const createdPosts: Readonly<SinglePostFromDatabase[]> = data?.posts?.data;
   return (
     <>
       <div>

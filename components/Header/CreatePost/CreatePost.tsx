@@ -2,12 +2,17 @@ import { ComponentType, useEffect, useState } from "react";
 import RespMessage from "./MessageRepsonse/respMessage";
 import dynamic from "next/dynamic";
 
-const ReactQuillTextEditor: ComponentType<ReactQuill.ReactQuillProps> = dynamic(
-  () => import("react-quill"),
-  { ssr: false }
+const ReactQuillTextEditor: ComponentType<any> = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+  },
+  {
+    ssr: false,
+  }
 );
+
 import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
 
 const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
@@ -66,7 +71,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
         Title: title,
         Tags: tags,
         ShortDesc: shortOpis,
-        Username: "siemastian",
+        Username: "",
         CreatedAt: date,
       };
 

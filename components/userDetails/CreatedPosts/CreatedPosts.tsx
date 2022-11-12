@@ -5,7 +5,7 @@ const flag: boolean = false;
 const CreatedPosts = ({
   createdPosts,
 }: {
-  createdPosts: SinglePostFromDatabase[];
+  createdPosts: Readonly<SinglePostFromDatabase[]>;
 }) => {
   return (
     <div>
