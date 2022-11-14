@@ -2,6 +2,7 @@
 //libraries
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {sign} from "jsonwebtoken"
+import mongoose from 'mongoose';
 
 
 //helpers
@@ -16,6 +17,7 @@ import {UserLogin} from '../../../interfaces/UserLoginInterface'
 const bcrypt = require('bcrypt');
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse<LoggingInterface | ReposneInterface | any>) {
+    await mongoose.connect(process.env.DATABASE_URL)
     const parseObj: UserLogin = JSON.parse(req.body)
     if(await CheckIfEmailExists(parseObj.email) != true){
         const UserData: any = await CheckIfEmailExists(parseObj.email)
