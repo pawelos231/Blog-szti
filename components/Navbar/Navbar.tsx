@@ -26,9 +26,7 @@ const Navbar: () => JSX.Element = () => {
       <nav className="z-10 fixed bg-white w-full shadow shadow-grey text-black">
         <ul className="flex gap-12 h-[9vh] mr-4 justify-between items-center">
           <li className="p-5">
-            <a className="text-5xl">
-              <Menu fontSize="inherit" />
-            </a>
+            <a className="text-5xl"></a>
           </li>
           <li className="text-2xl  font-semibold absolute w-full text-center">
             <Link href={"/"}>SZTIBLOG</Link>

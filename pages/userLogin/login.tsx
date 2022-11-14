@@ -7,6 +7,7 @@ import {
 } from "../../interfaces/reponseTypeRegister";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
 
 const Login = () => {
   const [email, SetEmail] = useState<string>("");
@@ -14,12 +15,15 @@ const Login = () => {
   const [button, setButton] = useState<boolean>(true);
   const [temp, setTemp] = useState<boolean>(false);
   const [status, setStatus] = useState<number>(2);
+  const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
   const router: NextRouter = useRouter();
+
 
   const SendLoginRequest = async (e: any) => {
     e.preventDefault();
-    setTemp(true);
+
     setButton(false);
+    setLoadingStatus(true);
     await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -30,6 +34,8 @@ const Login = () => {
         if (data?.token) {
           localStorage.setItem("profile", data?.token);
         }
+        setLoadingStatus(false);
+        setTemp(true);
         setTimeout(() => {
           setTemp(false);
           if (data?.message?.status === 1) {
@@ -38,6 +44,7 @@ const Login = () => {
         }, 1000);
       });
   };
+  console.log(loadingStatus);
   useEffect(() => {
     if (localStorage.getItem("profile")) {
       router.push("/");
@@ -87,6 +94,12 @@ const Login = () => {
         </div>
       </div>
       <div className="absolute top-0 mt-32 flex w-screen justify-center  ">
+        {loadingStatus ? (
+          <div className="absolute top-0 text-black">
+            {" "}
+            <CircularProgress size={80} thickness={2.0} color="inherit" />{" "}
+          </div>
+        ) : null}
         {temp ? (
           status == 0 ? (
             <div className="text-3xl text-red-700 font-thin p-2 rounded-lg ">

@@ -7,6 +7,7 @@ import {
   ReposneInterface,
 } from "../../interfaces/reponseTypeRegister";
 import { useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
 const Register = () => {
   const [name, SetName] = useState<string>("");
   const [password, SetPassword] = useState<string>("");
@@ -14,13 +15,17 @@ const Register = () => {
   const [temp, setTemp] = useState<boolean>(false);
   const [status, setStatus] = useState<number>(2);
   const [button, setButton] = useState<boolean>(true);
+  const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
   const router: NextRouter = useRouter();
+
+  function delay(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
 
   const SendUserDataToVerify = async (e: any) => {
     e.preventDefault();
-
+    setLoadingStatus(true);
     if (name !== "" && email !== "" && password !== "") {
-      setTemp(true);
       setButton(false);
       await fetch("/api/auth/register", {
         method: "POST",
@@ -28,6 +33,8 @@ const Register = () => {
       })
         .then((res: Response) => res.json())
         .then((data: LoggingInterface & ReposneInterface) => {
+          setLoadingStatus(false);
+          setTemp(true);
           setStatus(data?.message?.status);
           if (data?.token) {
             localStorage.setItem("profile", data?.token);
@@ -101,6 +108,9 @@ const Register = () => {
         </div>
       </div>
       <div className="absolute top-0 mt-32 flex w-screen justify-center  ">
+        {loadingStatus ? (
+          <CircularProgress size={80} thickness={2.0} color="inherit" />
+        ) : null}
         {temp ? (
           status == 0 ? (
             <div className="text-3xl text-red-700 font-thin p-2 rounded-lg ">

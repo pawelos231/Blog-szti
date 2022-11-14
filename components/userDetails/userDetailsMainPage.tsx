@@ -3,6 +3,7 @@ import useFetch from "../../hooks/useFetchHook";
 import CreatedPosts from "./CreatedPosts/CreatedPosts";
 import { CircularProgress } from "@material-ui/core";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
+import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 const UserDeatilsMainPage = () => {
   let token: string = "";
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
@@ -17,6 +18,7 @@ const UserDeatilsMainPage = () => {
   const createdPosts: Readonly<SinglePostFromDatabase[]> = data?.posts?.data;
   return (
     <>
+      <NavbarForUserDesktop />
       <div>
         {loading ? (
           <div>
