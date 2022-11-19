@@ -4,8 +4,10 @@ import CreatedPosts from "./CreatedPosts/CreatedPosts";
 import { CircularProgress } from "@material-ui/core";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
+import { NextRouter, useRouter } from "next/router";
 const UserDeatilsMainPage = () => {
   let token: string = "";
+  const router: NextRouter = useRouter();
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
     token = localStorage.getItem("profile");
   }
@@ -16,6 +18,10 @@ const UserDeatilsMainPage = () => {
   );
   console.log(data, loading, err, errMessage);
   const createdPosts: Readonly<SinglePostFromDatabase[]> = data?.posts?.data;
+  if (data?.data) {
+    router.push("/");
+    return <></>;
+  }
   return (
     <>
       <NavbarForUserDesktop />
