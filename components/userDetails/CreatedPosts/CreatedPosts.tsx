@@ -2,11 +2,7 @@ import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Link from "next/link";
 import Post from "../../Posts/Post/Post";
 const flag: boolean = false;
-const CreatedPosts = ({
-  createdPosts,
-}: {
-  createdPosts: Readonly<SinglePostFromDatabase[]>;
-}) => {
+const CreatedPosts = ({ createdPosts }) => {
   return (
     <div>
       <h1 className="absolute top-36  w-full left-0 text-center">

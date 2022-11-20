@@ -17,7 +17,9 @@ const UserDeatilsMainPage = () => {
     token
   );
   console.log(data, loading, err, errMessage);
-  const createdPosts: Readonly<SinglePostFromDatabase[]> = data?.posts?.data;
+  type posts = Readonly<Array<SinglePostFromDatabase>>;
+  const createdPosts: posts = data?.posts?.data;
+  console.log(createdPosts);
   if (data?.data) {
     router.push("/");
     return <></>;

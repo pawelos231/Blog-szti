@@ -9,4 +9,5 @@ export interface SinglePostFromDatabase {
     __v: number;
     _id: string;
   }
+
   //add category, slug, time to read, 

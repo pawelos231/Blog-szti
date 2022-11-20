@@ -13,7 +13,7 @@ const useFetch = (url: string, token: string) : [boolean, boolean, any, any] =>{
 
     const [loading, loadingHandle] = useState<boolean>(true)
     const [data, setDataHandle] = useState<any>({})
-    const [err, setErrHandler] = useState<any>(false)
+    const [err, setErrHandler] = useState<boolean>(false)
     const [errMessage, setErrorMessage] = useState<any>("")
 
     const clearState = () =>{
