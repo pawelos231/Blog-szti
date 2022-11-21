@@ -9,16 +9,16 @@ class Fetcher{
 }
 */
 
-const useFetch = (url: string, token: string) : [boolean, boolean, any, any] =>{
+export function useFetch<T>(url: string, token: string) : [boolean, boolean, any, T]{
 
     const [loading, loadingHandle] = useState<boolean>(true)
-    const [data, setDataHandle] = useState<any>({})
+    const [data, setDataHandle] = useState<T>(null)
     const [err, setErrHandler] = useState<boolean>(false)
     const [errMessage, setErrorMessage] = useState<any>("")
 
-    const clearState = () =>{
+    const clearState: () => void = () => {
         loadingHandle(true)
-        setDataHandle({})
+        setDataHandle(null)
         setErrHandler(false)
     }
 
@@ -33,7 +33,7 @@ const useFetch = (url: string, token: string) : [boolean, boolean, any, any] =>{
             }
             return res.json();
         })
-        .then((data:any) => {
+        .then((data:T) => {
             setDataHandle(data)
             loadingHandle(false)
         })

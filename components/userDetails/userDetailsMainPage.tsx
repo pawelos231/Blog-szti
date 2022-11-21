@@ -5,22 +5,24 @@ import { CircularProgress } from "@material-ui/core";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
+import { NotAuth, FetchUrl } from "./constants";
 const UserDeatilsMainPage = () => {
-  let token: string = "";
   const router: NextRouter = useRouter();
+  let token: string = "";
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
     token = localStorage.getItem("profile");
   }
-
-  const [loading, err, errMessage, data] = useFetch(
-    "/api/user/fetchUserSpecificData",
+  type Posts = Readonly<Array<SinglePostFromDatabase>>;
+  interface Unauth {
+    text: string;
+  }
+  const [loading, err, errMessage, data] = useFetch<Posts & Unauth>(
+    FetchUrl,
     token
   );
-  console.log(data, loading, err, errMessage);
-  type posts = Readonly<Array<SinglePostFromDatabase>>;
-  const createdPosts: posts = data?.posts?.data;
-  console.log(createdPosts);
-  if (data?.data) {
+  const createdPosts: Posts = data;
+  const NotAuthReceiver: string = data?.text;
+  if (NotAuthReceiver == NotAuth) {
     router.push("/");
     return <></>;
   }
