@@ -6,6 +6,8 @@ import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import { NotAuth, FetchUrl } from "./constants";
+import Skeleton from "../../helpers/views/Skeleton";
+
 const UserDeatilsMainPage = () => {
   const router: NextRouter = useRouter();
   let token: string = "";
@@ -29,12 +31,16 @@ const UserDeatilsMainPage = () => {
   return (
     <>
       <NavbarForUserDesktop />
-      <div>
+      <div className="w-full h-screen">
         {loading ? (
-          <div>
-            <div className="text-black">
-              <CircularProgress size={102} thickness={2.0} color="inherit" />
-            </div>
+          <div className="absolute w-full flex items-center flex-col">
+            {[1, 2, 3, 4, 5].map((item) => {
+              return (
+                <>
+                  <Skeleton />
+                </>
+              );
+            })}
           </div>
         ) : (
           <div>

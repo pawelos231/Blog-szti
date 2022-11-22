@@ -8,6 +8,7 @@ class Fetcher{
     }
 }
 */
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export function useFetch<T>(url: string, token: string) : [boolean, boolean, any, T]{
 
@@ -23,6 +24,7 @@ export function useFetch<T>(url: string, token: string) : [boolean, boolean, any
     }
 
     const FetchDataFunction = async () => {
+
        await fetch(url, {
         headers: {
             Authorization: token

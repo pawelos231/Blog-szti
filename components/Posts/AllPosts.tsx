@@ -21,14 +21,12 @@ const AllPosts: ({ posts }) => JSX.Element = ({
       <section className="flex flex-wrap w-[80%] gap-16 justify-center">
         {posts?.map((item: SinglePostFromDatabase, i: number) => {
           return (
-            <Link href={`postsPage/${item._id}`}>
-              <div
-                className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] transition-all duration-100 border-gray-300 relative hover:bg-gray-100"
-                key={i}
-              >
-                <Post item={item} flag={true} />
-              </div>
-            </Link>
+            <div
+              className="basis-[75%] p-4 rounded-sm flex min-h-[55vh]  border-y-[1.5px] relative"
+              key={i}
+            >
+              <Post item={item} flag={true} />
+            </div>
           );
         })}
       </section>

@@ -1,19 +1,18 @@
 
 import { NextResponse, NextRequest } from "next/server";
 //it will later be changed to check protected api routes
-export  async function middleware(req: NextRequest){
+export async function middleware(req: NextRequest): Promise<NextResponse>{
       const Authorization: string = "authorization"
-      const token = req.headers.get(Authorization)
+      const token: string = req.headers.get(Authorization)
       if(token == "null"){
-        const { pathname } = req.nextUrl;
-        console.log(pathname)
         return NextResponse.rewrite(new URL('/api/auth/unauthorized', req.url))
       }
       
 }
 
-
-
-export const config = {
+interface matcherInterface {
+  matcher: string | Array<string>
+}
+export const config: matcherInterface = {
   matcher: ['/api/user/fetchUserSpecificData'],
 }
