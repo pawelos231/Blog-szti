@@ -78,7 +78,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       e.preventDefault();
       SetButtonActive(false);
 
-      await fetch("/api/HandlePostSub", {
+      await fetch("/api/posts/HandlePostSub", {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("profile"),

@@ -1,8 +1,8 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
-const BlogPosts = require("../../server/models/BlogPosts")
-import {verify} from '../../server/helpers/validateToken'
+const BlogPosts = require("../../../server/models/BlogPosts")
+import {verify} from '../../../server/helpers/validateToken'
 
 
 //add error checking
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
 
   const data: any = req.body
-  const token = String(req.headers["authorization"])
+  const token: string = String(req.headers["authorization"])
   let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
   console.log(decodedData)
 

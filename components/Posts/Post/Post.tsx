@@ -16,13 +16,13 @@ const Post = ({
     return original.replace(/(<([^>]+)>)/gi, "");
   }
   const [favorite, setLiked] = useState<boolean>(false);
-  const setLikedPostHandler = () => {
+  const setLikedPostHandler: () => void = () => {
     setLiked(!favorite);
   };
   return (
     <>
       <Link href={`postsPage/${item._id}`}>
-        <div className="flex flex-col cursor-pointer w-full transition-all duration-100 h-[85%] border-gray-300 relative hover:bg-gray-100 ">
+        <div className="flex flex-col cursor-pointer w-[100%] transition-all duration-100 h-[85%] border-gray-300 relative hover:bg-gray-100 ">
           {flag ? (
             <p className="mt-2 mb-6">
               <span>
@@ -54,18 +54,19 @@ const Post = ({
               />
             </div>
           </div>
-          {flag ? <p className="text-gray-500">Czytaj więcej...</p> : null}
         </div>
       </Link>
-      <div
-        className="absolute bottom-4 left-6 text-4xl "
-        onClick={() => setLikedPostHandler()}
-      >
-        {!favorite ? (
-          <ThumbUpAltOutlined fontSize="inherit" />
-        ) : (
-          <ThumbUpAltRounded fontSize="inherit" />
-        )}
+      <div className="absolute bottom-0 w-[97%] h-[10%]  flex justify-between items-end">
+        <div className="text-4xl " onClick={() => setLikedPostHandler()}>
+          {!favorite ? (
+            <ThumbUpAltOutlined fontSize="inherit" />
+          ) : (
+            <ThumbUpAltRounded fontSize="inherit" />
+          )}
+        </div>
+        <div>
+          <p>Komentarze: 5</p>
+        </div>
       </div>
     </>
   );

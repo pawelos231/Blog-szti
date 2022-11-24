@@ -907,7 +907,7 @@
   "resolved" "https://registry.npmjs.org/apollo-server-errors/-/apollo-server-errors-3.3.1.tgz"
   "version" "3.3.1"
 
-"apollo-server-micro@^3.11.1":
+"apollo-server-micro@^3.6.7":
   "integrity" "sha512-4bETccnRotMQIg3ah4/NAWPppB05i5ePrTOuLBGBBQaV8bz1E4Md3snxSB8JkANND7sXmH9OCiKKeLFK8q8JaA=="
   "resolved" "https://registry.npmjs.org/apollo-server-micro/-/apollo-server-micro-3.11.1.tgz"
   "version" "3.11.1"
@@ -1991,7 +1991,7 @@
   dependencies:
     "tslib" "^2.1.0"
 
-"graphql@^0.10.5 || ^0.11.3 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0", "graphql@^0.13.0 || ^14.0.0 || ^15.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "graphql@^14.2.1 || ^15.0.0 || ^16.0.0", "graphql@^15.3.0", "graphql@^15.3.0 || ^16.0.0", "graphql@14.x || 15.x || 16.x":
+"graphql@^0.10.5 || ^0.11.3 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0", "graphql@^0.13.0 || ^14.0.0 || ^15.0.0", "graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0", "graphql@^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "graphql@^14.2.1 || ^15.0.0 || ^16.0.0", "graphql@^15.3.0", "graphql@^15.3.0 || ^16.0.0", "graphql@^15.8.0", "graphql@14.x || 15.x || 16.x":
   "integrity" "sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw=="
   "resolved" "https://registry.npmjs.org/graphql/-/graphql-15.8.0.tgz"
   "version" "15.8.0"
@@ -2586,7 +2586,7 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"micro@^9.3.4", "micro@^9.4.1":
+"micro@^9.3.4":
   "integrity" "sha512-Lpjcbp6Y9GJIfewxDfTmu9eW0rt0MGo+Gs1d3yJLFa7mhErtKkCngGhDbA/O1gqUjEwsHh+jWPg8BJ0Bx4AgFA=="
   "resolved" "https://registry.npmjs.org/micro/-/micro-9.4.1.tgz"
   "version" "9.4.1"

@@ -1,41 +1,62 @@
-import { ApolloServer } from "apollo-server-micro";
-import { NextApiRequest, NextApiResponse } from "next";
-import { buildSchema, Resolver, Query, Arg, ObjectType,Field, ID } from "type-graphql";
 import "reflect-metadata"
+import { ApolloServer } from "apollo-server-micro";
+import { buildSchema, Resolver, Query, Arg, ObjectType,Field, ID } from "type-graphql";
+import { NextApiRequest, NextApiResponse } from "next";
 
 
 @ObjectType()
-export class Dog{
+class Dog{
     @Field(()=> ID)
-    name: string
-}
+    id!: string;
+    sex: number
+};
 
 @Resolver(Dog)
-export class DogResolver{
-    @Query(()=>[Dog])
-    dogs(): Dog[] {
-        return [
-            {name: "Bo"},
-            {name: "Lassies"}
-        ]
+export class DogsResolver{
+    @Query(()=> Dog)
+    dogs(): any {
+        return {id: "dsa", sex:2}
+        
     }
 }
+@Resolver()
+class HelloResolver {
+  @Query(() => String)
+  hello() {
+    return "hello";
+  }
+}
 
-const schema = await buildSchema({
-    resolvers: [DogResolver]
-})
 
-const server = new ApolloServer({
-    schema
-});
+let apolloServerHandler: (req: any, res: any) => Promise<void>;
+
+const getApolloServerHandler = async () => {
+  if (!apolloServerHandler) {
+ 
+    const schema = await buildSchema({
+      resolvers: [HelloResolver],
+    });
+    const server = new ApolloServer({
+        schema,
+        csrfPrevention: true,
+
+    });
+    const createdServer = server.start();
+    await createdServer;
+    apolloServerHandler = server.createHandler({
+      path: '/api/graphql',
+    });
+  }
+  return apolloServerHandler;
+};
+
 export const config = {
     api: {
         bodyParser: false
     }
 }
 
-export const startServer = server.start()
-export default async function Handler(req: NextApiRequest, res: NextApiResponse){
-    await startServer;  
-    await server.createHandler({path: "/api/graphql"})(req, res) 
+export default async function handler(req: NextApiRequest, res: NextApiResponse){
+    const apolloServerHandler = await getApolloServerHandler();  
+    return apolloServerHandler(req, res);
 }
