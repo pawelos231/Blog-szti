@@ -7,6 +7,7 @@ import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import { NotAuth, FetchUrl } from "./constants";
 import Skeleton from "../../helpers/views/Skeleton";
+import { SPECIFIC_USER_POSTS } from "../../server/cache/constants/PostsConstsRedisKeys";
 
 const UserDeatilsMainPage = () => {
   const router: NextRouter = useRouter();
@@ -20,7 +21,7 @@ const UserDeatilsMainPage = () => {
   }
   const [loading, err, errMessage, data] = useFetch<Posts & Unauth>(
     FetchUrl,
-    token
+    token,
   );
   const createdPosts: Posts = data;
   const NotAuthReceiver: string = data?.text;

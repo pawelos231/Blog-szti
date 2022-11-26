@@ -1,0 +1,1 @@
+export const SPECIFIC_USER_POSTS: string = "SpecificUserPosts"

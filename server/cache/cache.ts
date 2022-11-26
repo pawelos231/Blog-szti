@@ -26,4 +26,4 @@ const del = async(key: string): Promise<void> => {
     await redis.del(key)
 }
 
-export default {fetch, get, set, del}
+export  {fetch, get, set, del}

@@ -378,6 +378,13 @@
     "@types/react" "*"
     "hoist-non-react-statics" "^3.3.0"
 
+"@types/ioredis@^5.0.0":
+  "integrity" "sha512-zJbJ3FVE17CNl5KXzdeSPtdltc4tMT3TzC6fxQS0sQngkbFZ6h+0uTafsRqu+eSLIugf6Yb0Ea0SUuRr42Nk9g=="
+  "resolved" "https://registry.npmjs.org/@types/ioredis/-/ioredis-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "ioredis" "*"
+
 "@types/json5@^0.0.29":
   "integrity" "sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ=="
   "resolved" "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
@@ -1782,7 +1789,7 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
-"ioredis@^5.2.4":
+"ioredis@*", "ioredis@^5.2.4":
   "integrity" "sha512-qIpuAEt32lZJQ0XyrloCRdlEdUUNGG9i0UOk6zgzK6igyudNWqEBxfH6OlbnOOoBBvr1WB02mm8fR55CnikRng=="
   "resolved" "https://registry.npmjs.org/ioredis/-/ioredis-5.2.4.tgz"
   "version" "5.2.4"
