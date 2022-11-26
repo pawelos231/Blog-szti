@@ -1,7 +1,7 @@
 import { ComponentType, useEffect, useState } from "react";
 import RespMessage from "./MessageRepsonse/respMessage";
 import dynamic from "next/dynamic";
-
+import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 const ReactQuillTextEditor: ComponentType<any> = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -21,15 +21,6 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [shortOpis, HandleShortOpis] = useState<string>("");
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
-
-  interface PostObject {
-    Message: string;
-    Title: string;
-    Username: string;
-    ShortDesc: string;
-    Tags: Array<string>;
-    CreatedAt: string;
-  }
 
   interface ResposnePostAPost {
     [x: string]: string;
@@ -66,13 +57,19 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
       const date: string = GenerateDateString();
 
-      const PostObjectToSend: PostObject = {
+      const PostObjectToSend: SinglePostFromDatabase = {
         Message: message,
         Title: title,
         Tags: tags,
         ShortDesc: shortOpis,
         Username: "",
         CreatedAt: date,
+        Category: "test",
+        TimeToRead: 5,
+        TotalWords: 150,
+        CommentsCount: 5,
+        Likes: 5,
+        WhoLiked: ["seba", "no było"],
       };
 
       e.preventDefault();

@@ -21,6 +21,7 @@
     "cookies-next": "^2.1.1",
     "framer": "^2.2.0",
     "graphql": "^15.8.0",
+    "ioredis": "^5.2.4",
     "jose": "^4.10.0",
     "jsonwebtoken": "^8.5.1",
     "micro": "^9.3.4",

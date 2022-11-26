@@ -4,10 +4,16 @@ export interface SinglePostFromDatabase {
     Message: string;
     ShortDesc: string
     Title: string;
-    Username: string;
-    Email: string
-    __v: number;
-    _id: string;
+    Username?: string;
+    Email?: string
+    Category: string;
+    CommentsCount: number;
+    TimeToRead: number;
+    TotalWords: number;
+    Likes: number;
+    WhoLiked: Array<string>;
+    __v?: number;
+    _id?: string;
   }
 
-  //add category, slug, time to read, 
+  //add slug 

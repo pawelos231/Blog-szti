@@ -11,6 +11,12 @@ const BlogSchema = new Schema({
     UserEmail: String,
     ShortDesc: String,
     Message: String,
+    Category: String,
+    CommentsCount: Number,
+    TimeToRead: Number,
+    TotalWords: Number,
+    Likes: Number,
+    WhoLiked: [String]
   });
 
 

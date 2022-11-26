@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
 const BlogPosts = require("../../../server/models/BlogPosts")
 import {verify} from '../../../server/helpers/validateToken'
-
+import { SinglePostFromDatabase } from '../../../interfaces/PostsInterface';
 
 //add error checking
 
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
   console.log(decodedData)
 
-  const parsedData: any = JSON.parse(data)
+  const parsedData: SinglePostFromDatabase = JSON.parse(data)
 
   const source: any = await BlogPosts.create({
     Message: parsedData.Message, 
@@ -25,7 +25,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     CreatedAt: parsedData.CreatedAt, 
     Username: decodedData.Name,
     UserEmail: decodedData.Email, 
-    ShortDesc: parsedData.ShortDesc})
+    ShortDesc: parsedData.ShortDesc,
+    Category: parsedData.Category,
+    CommentsCount: parsedData.CommentsCount,
+    TimeToRead: parsedData.TimeToRead,
+    TotalWords: parsedData.TotalWords,
+    Likes: parsedData.Likes,
+    WhoLiked: parsedData.WhoLiked
+  
+  })
 
   await source.save()
   
