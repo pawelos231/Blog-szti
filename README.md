@@ -7,5 +7,4 @@ A tak serio, ten blog będzie miał za zadanie informowanie ciebie o najnowszych
 ## Założenia niefunkcjonalne
 Strona napisana będzie w formie bloga z możliwością logowania się użytkowników, każdy będzie mieć swój własny profil oraz możliwość zobaczenia ile postów i kiedy wrzucił, każdy post będzie dawał możliwość do skomentowania go, odpowiedzi do danego komentarza mogą zostać zaimplementowane ale nie jest to pewne, nie zakładam nadmiern
 
-//impelement redis caching later
 //add better auth proccess
