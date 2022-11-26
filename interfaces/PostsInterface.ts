@@ -16,4 +16,4 @@ export interface SinglePostFromDatabase {
     _id?: string;
   }
 
-  //add slug 
+  //add slug,number of visits 
