@@ -16,7 +16,7 @@ const get = async<T>(key: string): Promise<T> =>{
     return JSON.parse(value)
 }
 
-const set = async<T>(key: string, expires: number, data: T) => {
+const set = async<T>(key: string, expires: number, data: T): Promise<T> => {
     const value:T = data
     await redis.set(key, JSON.stringify(value), "EX", expires)
     return value

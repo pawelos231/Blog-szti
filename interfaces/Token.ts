@@ -1,7 +1,7 @@
 export interface VerifiedToken{
     Name: string
     Email: string
-    exp: number
+    exp?: number
     iat: number
-    nbf: number
+    nbf?: number
 }

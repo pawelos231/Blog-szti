@@ -5,6 +5,7 @@ import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
 import { ThumbUpAltOutlined, ThumbUpAltRounded } from "@material-ui/icons";
 import Link from "next/link";
 import { useState } from "react";
+import { cp } from "fs/promises";
 const Post = ({
   item,
   flag,
@@ -19,6 +20,34 @@ const Post = ({
   const setLikedPostHandler: () => void = () => {
     setLiked(!favorite);
   };
+
+  interface LikedPosts {
+    flag: number;
+    ValueToPass: number;
+    itemId: string;
+    WhoLiked: Array<string>;
+  }
+
+  const LikesPosts = async (flag: number) => {
+    const AfterComputation: number = item.Likes + flag;
+    const CombinedValues: LikedPosts = {
+      ValueToPass: AfterComputation,
+      flag: flag,
+      itemId: item._id,
+      WhoLiked: item.WhoLiked,
+    };
+    const userToken: string = localStorage.getItem("profile");
+    await fetch("/api/posts/HandleLikePost", {
+      method: "POST",
+      headers: {
+        Authorization: userToken,
+      },
+      body: JSON.stringify(CombinedValues),
+    })
+      .then((res: Response) => res.json())
+      .then((data: any) => console.log(data));
+  };
+
   return (
     <>
       <Link href={`postsPage/${item._id}`}>
@@ -59,13 +88,25 @@ const Post = ({
       <div className="absolute bottom-0 w-[97%] h-[10%]  flex justify-between items-end">
         <div className="text-4xl " onClick={() => setLikedPostHandler()}>
           {!favorite ? (
-            <ThumbUpAltOutlined fontSize="inherit" />
+            <div
+              onClick={() => LikesPosts(1)}
+              className="flex items-center gap-4"
+            >
+              <ThumbUpAltOutlined fontSize="inherit" />
+              <p className="text-lg">{item.Likes}</p>
+            </div>
           ) : (
-            <ThumbUpAltRounded fontSize="inherit" />
+            <div
+              onClick={() => LikesPosts(-1)}
+              className="flex items-center gap-4"
+            >
+              <ThumbUpAltRounded fontSize="inherit" />
+              <p className="text-lg">{item.Likes}</p>
+            </div>
           )}
         </div>
         <div>
-          <p>Komentarze: 5</p>
+          <p>Komentarze: {item.CommentsCount}</p>
         </div>
       </div>
     </>
