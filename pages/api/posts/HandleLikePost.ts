@@ -37,10 +37,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     await mongoose.connect(process.env.DATABASE_URL)
     
     const token: string = String(req.headers["authorization"])
-
-    if(token === "null"){
+    if(token == "null"){
         console.log("niezalogowany")
-        res.redirect("/userLogin/register")
+        res.status(401).send({text: "NOT authenticated"}) 
+        return
     }
 
     let decodedData: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)

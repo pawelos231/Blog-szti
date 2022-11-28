@@ -5,7 +5,8 @@ import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
 import { ThumbUpAltOutlined, ThumbUpAltRounded } from "@material-ui/icons";
 import Link from "next/link";
 import { useState } from "react";
-import { cp } from "fs/promises";
+import { useRouter } from "next/router";
+import { NotAuth } from "../../userDetails/constants";
 const Post = ({
   item,
   flag,
@@ -27,8 +28,9 @@ const Post = ({
     itemId: string;
     WhoLiked: Array<string>;
   }
+  const router = useRouter();
 
-  const LikesPosts = async (flag: number) => {
+  const LikesPosts = async (flag: number): Promise<void> => {
     const AfterComputation: number = item.Likes + flag;
     const CombinedValues: LikedPosts = {
       ValueToPass: AfterComputation,
@@ -45,7 +47,12 @@ const Post = ({
       body: JSON.stringify(CombinedValues),
     })
       .then((res: Response) => res.json())
-      .then((data: any) => console.log(data));
+      .then((data: any) => {
+        console.log(data);
+        if (data.text === NotAuth) {
+          router.push("/userLogin/register");
+        }
+      });
   };
 
   return (
