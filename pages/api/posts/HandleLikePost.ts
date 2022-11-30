@@ -17,8 +17,11 @@ interface LikedPosts {
 
 const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
 if(flag === 1){
-    const newArray: string[] = [...whoLiked, name]
-    return newArray
+    if(!whoLiked.find((item: string) => item == name)){
+        const newArray: string[] = [...whoLiked, name]
+        return newArray
+    }
+    return whoLiked
 }
 else if(flag === -1) {
     const newArr: string[] = whoLiked.filter((item: string) => item !== name)

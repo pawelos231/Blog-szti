@@ -7,6 +7,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { NotAuth } from "../../userDetails/constants";
+interface ReponseFromLikeApi {
+  text: string;
+}
 const Post = ({
   item,
   flag,
@@ -17,6 +20,7 @@ const Post = ({
   function stripTags(original: string): string {
     return original.replace(/(<([^>]+)>)/gi, "");
   }
+  const [modal, openModal] = useState<boolean>(false);
   const [favorite, setLiked] = useState<boolean>(false);
   const setLikedPostHandler: () => void = () => {
     setLiked(!favorite);
@@ -31,7 +35,9 @@ const Post = ({
   const router = useRouter();
 
   const LikesPosts = async (flag: number): Promise<void> => {
-    const AfterComputation: number = item.Likes + flag;
+    setLikedPostHandler();
+    const AfterComputation: number = item.WhoLiked.length + flag;
+    console.log(item.WhoLiked.length);
     const CombinedValues: LikedPosts = {
       ValueToPass: AfterComputation,
       flag: flag,
@@ -47,12 +53,16 @@ const Post = ({
       body: JSON.stringify(CombinedValues),
     })
       .then((res: Response) => res.json())
-      .then((data: any) => {
+      .then((data: ReponseFromLikeApi) => {
         console.log(data);
         if (data.text === NotAuth) {
           router.push("/userLogin/register");
         }
       });
+  };
+
+  const openWhoLikedModal = () => {
+    openModal(!modal);
   };
 
   return (
@@ -93,22 +103,30 @@ const Post = ({
         </div>
       </Link>
       <div className="absolute bottom-0 w-[97%] h-[10%]  flex justify-between items-end">
-        <div className="text-4xl " onClick={() => setLikedPostHandler()}>
+        <div className="text-4xl ">
           {!favorite ? (
-            <div
-              onClick={() => LikesPosts(1)}
-              className="flex items-center gap-4"
-            >
-              <ThumbUpAltOutlined fontSize="inherit" />
-              <p className="text-lg">{item.Likes}</p>
+            <div className="flex items-center gap-8">
+              <div onClick={() => LikesPosts(1)}>
+                <ThumbUpAltOutlined fontSize="inherit" />
+              </div>
+              <p
+                className="text-lg  cursor-pointer "
+                onClick={() => openWhoLikedModal()}
+              >
+                {item.WhoLiked.length}
+              </p>
             </div>
           ) : (
-            <div
-              onClick={() => LikesPosts(-1)}
-              className="flex items-center gap-4"
-            >
-              <ThumbUpAltRounded fontSize="inherit" />
-              <p className="text-lg">{item.Likes}</p>
+            <div className="flex items-center gap-8 ">
+              <div onClick={() => LikesPosts(-1)}>
+                <ThumbUpAltRounded fontSize="inherit" />
+              </div>
+              <p
+                className="text-lg cursor-pointer "
+                onClick={() => openWhoLikedModal()}
+              >
+                {item.WhoLiked.length}
+              </p>
             </div>
           )}
         </div>
@@ -116,6 +134,24 @@ const Post = ({
           <p>Komentarze: {item.CommentsCount}</p>
         </div>
       </div>
+      {modal ? (
+        <div className="w-full h-full  bg-gray-100 absolute top-0 left-0 flex justify-center items-center flex-col">
+          <div
+            onClick={() => openWhoLikedModal()}
+            className="absolute top-0 left-0 p-4 text-5xl cursor-pointer"
+          >
+            X
+          </div>
+          <h3 className="mb-10">Polikowali: </h3>
+          <div className="flex flex-col justify-center items-center bg-white text-black w-[35%]  rounded-lg	 h-[50%] overflow-scroll overflow-x-hidden">
+            {item.WhoLiked.map((item: string) => (
+              <>
+                <div>{item}</div>
+              </>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </>
   );
 };
