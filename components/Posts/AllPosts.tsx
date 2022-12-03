@@ -1,8 +1,8 @@
 import * as React from "react";
 import Post from "./Post/Post";
-import Link from "next/link";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { CircularProgress } from "@material-ui/core";
+import { useState } from "react";
 
 const AllPosts: ({ posts }) => JSX.Element = ({
   posts,
@@ -20,14 +20,7 @@ const AllPosts: ({ posts }) => JSX.Element = ({
     <div className="w-full flex justify-center mt-10">
       <section className="flex flex-wrap w-[80%] gap-16 justify-center">
         {posts?.map((item: SinglePostFromDatabase, i: number) => {
-          return (
-            <div
-              className="basis-[75%] p-4 rounded-sm flex min-h-[55vh]  border-y-[1.5px] relative"
-              key={i}
-            >
-              <Post item={item} flag={true} />
-            </div>
-          );
+          return <Post key={i} item={item} flag={true} />;
         })}
       </section>
     </div>
