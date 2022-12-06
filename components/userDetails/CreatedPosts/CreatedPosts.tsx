@@ -13,16 +13,7 @@ const CreatedPosts = ({ createdPosts }) => {
         {createdPosts.length !== 0 ? (
           <div className="flex  w-[50%] justify-center flex-col gap-4 ">
             {createdPosts.map((item: SinglePostFromDatabase, i: number) => {
-              return (
-                <Link href={`../../postsPage/${item._id}`}>
-                  <div
-                    className="basis-[75%] p-4 rounded-sm flex min-h-[35vh]  border-y-[1.5px] transition-all duration-100 border-gray-300 relative hover:bg-gray-100"
-                    key={i}
-                  >
-                    <Post item={item} flag={flag} />
-                  </div>
-                </Link>
-              );
+              return <Post key={i} item={item} flag={flag} />;
             })}
           </div>
         ) : (

@@ -1,5 +1,5 @@
 const Comments = () => {
-  return <div>Siema</div>;
+  return <div></div>;
 };
 
 export default Comments;

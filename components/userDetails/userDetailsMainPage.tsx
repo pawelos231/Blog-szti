@@ -21,7 +21,7 @@ const UserDeatilsMainPage = () => {
   }
   const [loading, err, errMessage, data] = useFetch<Posts & Unauth>(
     FetchUrl,
-    token,
+    token
   );
   const createdPosts: Posts = data;
   const NotAuthReceiver: string = data?.text;
@@ -35,7 +35,7 @@ const UserDeatilsMainPage = () => {
       <div className="w-full h-screen">
         {loading ? (
           <div className="absolute w-full flex items-center flex-col">
-            {[1, 2, 3, 4, 5].map((item) => {
+            {[1, 2, 3, 4, 5].map((item: number) => {
               return (
                 <>
                   <Skeleton />

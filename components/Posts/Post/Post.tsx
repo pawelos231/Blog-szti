@@ -95,7 +95,9 @@ const Post = ({
             : "basis-[75%]  rounded-md flex min-h-[55vh]  border-4 border-amber-300 relative"
         }
       >
-        <Link href={`postsPage/${item._id}`}>
+        <Link
+          href={flag ? `postsPage/${item._id}` : `../postsPage/${item._id}`}
+        >
           <div className="flex flex-col cursor-pointer w-[100%] transition-all duration-100 h-[85%] border-gray-300 relative hover:bg-gray-100  ">
             {flag ? (
               <p className="mt-2 mb-6">

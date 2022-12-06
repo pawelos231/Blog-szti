@@ -15,24 +15,32 @@ interface LikedPosts {
     text: string
   }
 
-const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
-if(flag === 1){
-    if(!whoLiked.find((item: string) => item == name)){
-        const newArray: string[] = [...whoLiked, name]
-        return newArray
+const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => 
+{
+    if(flag === 1){
+        if(!whoLiked.find((item: string) => item == name)){
+            const newArray: string[] = [...whoLiked, name]
+            return newArray
+        }
+        return whoLiked
     }
-    return whoLiked
-}
-else if(flag === -1) {
-    const newArr: string[] = whoLiked.filter((item: string) => item !== name)
-    if(newArr.length === 0){
+
+    else if(flag === -1) {
+        const newArr: string[] = whoLiked.filter((item: string) => item !== name)
+
+        if(newArr.length === 0)
+        {
+            return []
+        }
+        return newArr
+    } 
+
+    else 
+    {
+        console.log("niepoprawne dane")
         return []
     }
-    return newArr
-} else {
-    console.log("niepoprawne dane")
-    return []
-}
+
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>){
     
@@ -59,12 +67,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
     })
 
-    if(dataFromReq.flag === 1){
+    
+    if(dataFromReq.flag === 1)
+    {
         res.status(200).json({text: "pomyślnie dodano like'a"})
     }
-    else if(dataFromReq.flag === -1){
+
+    else if(dataFromReq.flag === -1)
+    {
         res.status(200).json({text: "pomyślnie odlikowano"})
-    }else{
+    }
+    
+    else
+    {
         res.status(200).json({text: "coś się wysypało"})
     }
     

@@ -16,4 +16,18 @@ export interface SinglePostFromDatabase {
     _id?: string;
   }
 
+  export interface CommentsOnPost{
+    _id?: string
+    __v?: string
+    UserId: string
+    PostId: string
+    CreatedAt: string
+    Content: string
+    WhoLiked: Array<string>
+    ParentId: string
+    NestedLevel: number
+    UpdatedAt: string
+    UserName: string
+    childred: CommentsOnPost | null
+  }
   //add slug,number of visits 

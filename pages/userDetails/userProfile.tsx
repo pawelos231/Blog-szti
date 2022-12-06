@@ -1,6 +1,5 @@
 import * as React from "react";
 import UserDeatilsMainPage from "../../components/userDetails/userDetailsMainPage";
-import useFetch from "../../hooks/useFetchHook";
 
 const userProfile = () => {
   return (
