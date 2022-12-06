@@ -49,7 +49,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
                 })
 
                 await data.save()
-                res.status(200).json({message: {text: "udało się zalogować", status: 1 }, token: jwt })
+                res.status(200).json({message: {text: "udało się zalogować", status: 1 }, token: jwt, name:parseObj.name })
                 
             } else{
                 res.status(200).json({message: {text: "uzytkownik o podanym mailu istnieje", status: 0 }})

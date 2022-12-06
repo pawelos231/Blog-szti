@@ -10,4 +10,5 @@ export type LoggingInterface = {
 export type ReposneInterface = {
     message: LoggingInterfaceSchema
     token: string
+    name: string
 }

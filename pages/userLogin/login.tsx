@@ -18,7 +18,6 @@ const Login = () => {
   const [loadingStatus, setLoadingStatus] = useState<boolean>(false);
   const router: NextRouter = useRouter();
 
-
   const SendLoginRequest = async (e: any) => {
     e.preventDefault();
 
@@ -32,7 +31,9 @@ const Login = () => {
       .then((data: LoggingInterface & ReposneInterface) => {
         setStatus(data?.message?.status);
         if (data?.token) {
+          console.log(data?.name);
           localStorage.setItem("profile", data?.token);
+          localStorage.setItem("userName", data?.name);
         }
         setLoadingStatus(false);
         setTemp(true);

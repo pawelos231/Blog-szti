@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Image from "next/image";
 import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
@@ -22,14 +22,25 @@ const Post = ({
   item: SinglePostFromDatabase;
   flag: boolean;
 }) => {
+  const checkIfPostIsAlreadyLiked = () => {
+    const ifLiked: string | undefined = item.WhoLiked.find(
+      (item) => item == localStorage.getItem("userName")
+    );
+    if (ifLiked != undefined) {
+      setLiked(true);
+    }
+  };
+
   function stripTags(original: string): string {
     return original.replace(/(<([^>]+)>)/gi, "");
   }
+
   const [modal, openModal] = useState<boolean>(false);
-  const [curr, setCurr] = useState<boolean>(true);
-  const [favorite, setLiked] = useState<boolean>(false);
+  const [favourite, setFav] = useState<boolean>(true);
+  const [like, setLiked] = useState<boolean>(false);
+
   const setLikedPostHandler: () => void = () => {
-    setLiked(!favorite);
+    setLiked(!like);
   };
 
   interface LikedPosts {
@@ -38,8 +49,8 @@ const Post = ({
     itemId: string;
     WhoLiked: Array<string>;
   }
-  const router = useRouter();
 
+  const router = useRouter();
   const LikesPosts = async (flag: number): Promise<void> => {
     setLikedPostHandler();
     const AfterComputation: number = item.WhoLiked.length + flag;
@@ -71,11 +82,15 @@ const Post = ({
     openModal(!modal);
   };
 
+  useEffect(() => {
+    checkIfPostIsAlreadyLiked();
+  }, []);
+
   return (
     <>
       <div
         className={
-          curr
+          favourite
             ? "basis-[75%]  rounded-sm flex min-h-[55vh]  border-y-[1.5px] relative"
             : "basis-[75%]  rounded-md flex min-h-[55vh]  border-4 border-amber-300 relative"
         }
@@ -117,7 +132,7 @@ const Post = ({
         </Link>
         <div className="absolute bottom-2 left-2 w-[97%] h-[10%]  flex justify-between items-end">
           <div className="text-4xl flex">
-            {!favorite ? (
+            {!like ? (
               <div className="flex items-center gap-4">
                 <div onClick={() => LikesPosts(1)}>
                   <ThumbUpAltOutlined fontSize="inherit" />
@@ -145,10 +160,10 @@ const Post = ({
             <div
               className="text-4xl pl-6"
               onClick={() => {
-                setCurr(!curr);
+                setFav(!favourite);
               }}
             >
-              {curr ? (
+              {favourite ? (
                 <FavoriteBorderOutlined fontSize="inherit" />
               ) : (
                 <Favorite fontSize="inherit" />

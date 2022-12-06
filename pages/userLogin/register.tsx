@@ -38,6 +38,7 @@ const Register = () => {
           setStatus(data?.message?.status);
           if (data?.token) {
             localStorage.setItem("profile", data?.token);
+            localStorage.setItem("userName", data?.name);
           }
           setTimeout(() => {
             setTemp(false);
