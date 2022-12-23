@@ -24,7 +24,7 @@ const Post = ({
 }) => {
   const checkIfPostIsAlreadyLiked = () => {
     const ifLiked: string | undefined = item.WhoLiked.find(
-      (item) => item == localStorage.getItem("userName")
+      (item: string) => item == localStorage.getItem("userName")
     );
     if (ifLiked != undefined) {
       setLiked(true);
