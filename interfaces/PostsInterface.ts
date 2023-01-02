@@ -19,7 +19,7 @@ export interface SinglePostFromDatabase {
   export interface CommentsOnPost{
     _id?: string
     __v?: string
-    UserId: string
+    UserId?: string
     PostId: string
     CreatedAt: string
     Content: string
@@ -28,6 +28,6 @@ export interface SinglePostFromDatabase {
     NestedLevel: number
     UpdatedAt: string
     UserName: string
-    childred: CommentsOnPost | null
+    childred?: CommentsOnPost | null
   }
   //add slug,number of visits 

@@ -33,8 +33,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id: string | Array<string> = params.id;
+
   await mongoose.connect(process.env.DATABASE_URL);
+
   const Inner: any = await BlogPosts.findById(id);
+
   const post: SinglePostFromDatabase = JSON.parse(JSON.stringify(Inner));
 
   return {

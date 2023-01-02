@@ -8,6 +8,7 @@ class Fetcher{
 }
 */
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 export function useFetch<T>(url: string, token: string) : [boolean, boolean, any, T]{
 
     const [loading, loadingHandle] = useState<boolean>(true)
@@ -20,8 +21,6 @@ export function useFetch<T>(url: string, token: string) : [boolean, boolean, any
         setDataHandle(null)
         setErrHandler(false)
     }
-   
-
     const FetchDataFunction = async () => {
         
        await fetch(url, {

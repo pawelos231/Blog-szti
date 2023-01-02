@@ -2,6 +2,7 @@ import * as React from "react";
 import Image from "next/image";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { useEffect } from "react";
+import Comments from "./Comments/Comments";
 import CreateComment from "./Comments/CreateComment";
 const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
   useEffect(() => {
@@ -30,7 +31,8 @@ const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
 
       <div className="w-[60vw]" id="inner"></div>
       <div className="w-[60vw] h-[1px] bg-gray-300 mt-16"></div>
-      <CreateComment />
+      <CreateComment post={post} />
+      <Comments post={post} />
     </div>
   );
 };
