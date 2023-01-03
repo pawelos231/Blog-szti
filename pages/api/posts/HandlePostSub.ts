@@ -14,7 +14,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const data: any = req.body
   const token: string = String(req.headers["authorization"])
   let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
-
+  if(token == "null"){
+    console.log("niezalogowany")
+    res.status(401).send({text: "NOT authenticated"}) 
+    return
+}
   const parsedData: SinglePostFromDatabase = JSON.parse(data)
 
   const source: any = await BlogPosts.create({

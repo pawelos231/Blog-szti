@@ -7,7 +7,7 @@ class Fetcher{
     }
 }
 */
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+//const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export function useFetch<T>(url: string, token: string) : [boolean, boolean, any, T]{
 
