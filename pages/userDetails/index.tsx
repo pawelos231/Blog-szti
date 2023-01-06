@@ -1,12 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "react";
+import { useEffect } from "react";
 import { AnyAction } from "@reduxjs/toolkit";
-import { increment } from "../../redux/slices/PostReducer";
+import { increment } from "../../redux/slices/numberExampleSlice";
+import { getCommentsFetch } from "../../redux/slices/PostsSlices/commentSlice";
 const Index = () => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
-  const state = useSelector((state) => {
-    return state;
+  const state = useSelector((state: any) => {
+    return state.comments;
   });
+  console.log(state);
+  useEffect(() => {
+    dispatch(getCommentsFetch("siema"));
+  }, [dispatch]);
   console.log(state);
   return (
     <div

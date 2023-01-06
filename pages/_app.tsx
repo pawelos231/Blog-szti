@@ -4,8 +4,10 @@ import Layout from "../components/Layout";
 import { store, saga } from "../redux/store/store";
 import { Provider } from "react-redux";
 import watcherNumberSaga from "../redux/sagas/numberSaga/numberSaga";
+import WatcherComments from "../redux/sagas/PostSaga/commentSaga";
 
 saga.run(watcherNumberSaga);
+saga.run(WatcherComments);
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>

@@ -6,6 +6,5 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     await mongoose.connect(process.env.DATABASE_URL)
     const postId: string = JSON.parse(req.body)
     const data = await CommentOnPost.find({PostId: postId})
-    console.log(data)
     res.status(200).json(data)
 }

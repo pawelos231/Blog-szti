@@ -1,5 +1,5 @@
 import {call, put, takeEvery} from 'redux-saga/effects'
-import {incrementByTen} from '../../slices/PostReducer'
+import {incrementByTen} from '../../slices/numberExampleSlice'
 import { ForkEffect } from 'redux-saga/effects'
 const delay = (ms: number) => new Promise(res => setTimeout(res,ms))
 

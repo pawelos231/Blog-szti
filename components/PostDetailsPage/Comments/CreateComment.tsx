@@ -2,28 +2,15 @@ import { json } from "micro";
 import { MutableRefObject, useRef } from "react";
 import { CommentsOnPost } from "../../../interfaces/PostsInterface";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
+import { GenerateDateString } from "../../../helpers/NormalizeDate";
 const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
   const refText: MutableRefObject<any> = useRef(null);
 
   const AddComment = async (event: any): Promise<void> => {
     event.preventDefault();
+
     const textOfComment: string = refText.current.value;
     const token: string = localStorage.getItem("profile");
-
-    const GenerateDateString: () => string = () => {
-      const today: Date = new Date();
-      const date: string =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1 <= 9
-          ? "0" + Number(today.getMonth() + 1)
-          : today.getMonth() + 1) +
-        "-" +
-        (today.getDate() <= 9
-          ? "0" + Number(today.getDate())
-          : today.getDate());
-      return date;
-    };
     const date: string = GenerateDateString();
 
     const CommentObject: CommentsOnPost = {
