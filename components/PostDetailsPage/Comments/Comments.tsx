@@ -43,13 +43,15 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
 
   console.log(state);
   return (
-    <div>
-      <div>
-        {comments.map((item: CommentsOnPost) => {
-          return <SingleComment comment={item} />;
-        })}
+    <section>
+      <div className="flex">
+        <div className="ml-2">
+          {comments.map((item: CommentsOnPost) => {
+            return <SingleComment comment={item} />;
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
