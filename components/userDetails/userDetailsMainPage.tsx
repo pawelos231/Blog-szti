@@ -1,13 +1,11 @@
 import * as React from "react";
 import useFetch from "../../hooks/useFetchHook";
 import CreatedPosts from "./CreatedPosts/CreatedPosts";
-import { CircularProgress } from "@material-ui/core";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import { NotAuth, FetchUrl } from "./constants";
 import Skeleton from "../../helpers/views/Skeleton";
-import { SPECIFIC_USER_POSTS } from "../../server/cache/constants/PostsConstsRedisKeys";
 
 const UserDeatilsMainPage = () => {
   const router: NextRouter = useRouter();

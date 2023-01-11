@@ -7,47 +7,58 @@ import { AnyAction } from "@reduxjs/toolkit";
 import SingleComment from "./SingleComment/SingleComment";
 import { getCommentsFetch } from "../../../redux/slices/PostsSlices/commentSlice";
 const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
-  const [comments, setComments] = useState<any>([]);
-
-  const CommentUrl = "/api/posts/Comments/GetComments";
-
-  const fetchComments = async () => {
-    console.log(post._id);
-    await fetch("/api/posts/Comments/GetComments", {
-      method: "POST",
-      body: JSON.stringify(post._id),
-    })
-      .then((res: Response) => res.json())
-      .then((data: CommentsOnPost[]) => {
-        setComments(data);
-      })
-      .catch((err: any) => console.log(err));
-  };
-
   const dispatch: Dispatch<AnyAction> = useDispatch();
 
-  const state = useSelector((state: any) => {
-    return state.comments;
+  let Comments: CommentsOnPost[] = useSelector((state: any) => {
+    return state.comments.Comments;
   });
 
-  console.log(state);
+  interface TransformedComments extends CommentsOnPost {
+    children: TransformedComments | any;
+  }
+  const normalizeComments = (
+    Comments: CommentsOnPost[],
+    id = ""
+  ): TransformedComments[] => {
+    const newArr = Comments.filter(
+      (item: CommentsOnPost) => item["ParentId"] == id
+    ).map((item: CommentsOnPost) => ({
+      ...item,
+      children: normalizeComments(Comments, item._id),
+    }));
+    return newArr;
+  };
+  const comms = normalizeComments(Comments);
+
+  //todo combine it with redux state managment
+
+  const generateChildren = (itemInit, i = 0) => {
+    const children = itemInit.children;
+    let copy = i + 1;
+    let newArr = children?.map((item) => generateChildren(item, copy));
+
+    return (
+      <>
+        <div style={{ paddingLeft: `${i * 55}px` }}>
+          <SingleComment postId={post._id} comment={itemInit} />
+        </div>
+        {newArr}
+      </>
+    );
+  };
   useEffect(() => {
+    const CommentUrl = "/api/posts/Comments/GetComments";
     dispatch(
       getCommentsFetch({ url: CommentUrl, body: post._id, method: "POST" })
     );
   }, [dispatch]);
 
-  useEffect(() => {
-    fetchComments();
-  }, []);
-
-  console.log(state);
   return (
     <section>
       <div className="flex">
         <div className="ml-2">
-          {comments.map((item: CommentsOnPost) => {
-            return <SingleComment comment={item} />;
+          {comms.map((item: TransformedComments) => {
+            return <>{generateChildren(item)}</>;
           })}
         </div>
       </div>
