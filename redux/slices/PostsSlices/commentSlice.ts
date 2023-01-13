@@ -16,9 +16,16 @@ const commentsSlice = createSlice({
             state.Comments = action.payload
             state.isLoading = false
             return state;
-        }
+        },
+        addComment: (state, action) => {
+            console.log(action.payload)
+            state.isLoading = false
+            state.Comments = [...state.Comments, action.payload.CommentObject
+            ]
+            return state
+        },
     }
 })
 
-export const {getCommentsFetch, getCommentsSuccess} = commentsSlice.actions
+export const {getCommentsFetch, getCommentsSuccess, addComment} = commentsSlice.actions
 export default commentsSlice.reducer

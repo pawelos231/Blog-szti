@@ -28,6 +28,8 @@ function* workerCommentsFetchAll(action: T): Generator<any, void, any>{
     yield put(getCommentsSuccess(formattedComments))
 }
 
+
+
 function* WatcherComments():Generator<ForkEffect<never>, void, unknown>{
     yield takeEvery("Comments/getCommentsFetch", workerCommentsFetchAll)
 }

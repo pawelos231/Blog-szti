@@ -1,12 +1,29 @@
-import { json } from "micro";
-import { MutableRefObject, useRef } from "react";
+import { Dispatch, MutableRefObject, useRef } from "react";
 import { CommentsOnPost } from "../../../interfaces/PostsInterface";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import { GenerateDateString } from "../../../helpers/NormalizeDate";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
+import { addComment } from "../../../redux/slices/PostsSlices/commentSlice";
 const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
+  const dispatch: Dispatch<AnyAction> = useDispatch();
+  const [comunicat, setComunicat] = useState<boolean>(false);
+  const [status, setStatus] = useState<number>(2);
+
   const refText: MutableRefObject<any> = useRef(null);
 
+  const state = useSelector((state: any) => {
+    return state.comments.Comments;
+  });
+  console.log(state);
+
+  //REFACTOR CODE, SO THAT IT MAKES API CALL IN SAGA INSTEAD OF HERE
   const AddComment = async (event: any): Promise<void> => {
+    interface ReponseFromApi {
+      status: number;
+      text: string;
+    }
     event.preventDefault();
 
     const textOfComment: string = refText.current.value;
@@ -17,14 +34,13 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
       PostId: post._id,
       CreatedAt: date,
       Content: textOfComment,
-      WhoLiked: ["nikt", "seba"],
+      WhoLiked: [],
       ParentId: "",
       NestedLevel: 0,
       UpdatedAt: "",
       UserName: "",
       childred: null,
     };
-
     await fetch("/api/posts/Comments/addComment", {
       method: "POST",
       body: JSON.stringify(CommentObject),
@@ -33,27 +49,57 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
       },
     })
       .then((res: Response) => res.json())
-      .then((data) => console.log(data));
+      .then((data: ReponseFromApi) => {
+        setComunicat(true);
+        setStatus(data.status);
+        setTimeout(() => {
+          setComunicat(false);
+        }, 1000);
+      });
+    dispatch(addComment({ CommentObject }));
   };
 
   return (
-    <section className="pt-8">
-      <p className="text-2xl">Komentarze</p>
-      <form
-        onSubmit={(e: any) => AddComment(e)}
-        className="pt-6 flex flex-col w-[50%]"
-      >
-        <textarea
-          className="border-gray-300 rounded-sm border-[1px] p-2 	"
-          placeholder="wpisz komentarz"
-          ref={refText}
-        />
-        <input
-          className="self-start mt-4 p-2 w-48 bg-black text-white transition-all duration-100 cursor-pointer rounded-sm hover:scale-105 hover:bg-gray-400 hover:text-black	"
-          type="submit"
-        />
-      </form>
-    </section>
+    <>
+      {comunicat ? (
+        <>
+          {status === 1 ? (
+            <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
+              <span
+                id="comm"
+                className="bg-green-600 rounded-sm p-2 text-white"
+              >
+                Udało się dodać komentarz
+              </span>
+            </p>
+          ) : (
+            <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
+              <span id="comm" className="bg-red-600 rounded-sm p-2 text-white">
+                Nie udało się dodać komentarz
+              </span>
+            </p>
+          )}
+        </>
+      ) : null}
+
+      <section className="pt-8">
+        <p className="text-2xl">Komentarze</p>
+        <form
+          onSubmit={(e: any) => AddComment(e)}
+          className="pt-6 flex flex-col w-[50%]"
+        >
+          <textarea
+            className="border-gray-300 rounded-sm border-[1px] p-2 	"
+            placeholder="wpisz komentarz"
+            ref={refText}
+          />
+          <input
+            className="self-start mt-4 p-2 w-48 bg-black text-white transition-all duration-100 cursor-pointer rounded-sm hover:scale-105 hover:bg-gray-400 hover:text-black	"
+            type="submit"
+          />
+        </form>
+      </section>
+    </>
   );
 };
 

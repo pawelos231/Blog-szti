@@ -32,5 +32,5 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     await createdComment.save()
-    res.status(200).json({text: "udało się dodać komentarz"})
+    res.status(200).json({status: 1, text: "udało się dodać komentarz"})
 }

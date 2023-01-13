@@ -16,34 +16,21 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   interface TransformedComments extends CommentsOnPost {
     children: TransformedComments | any;
   }
-  const normalizeComments = (
-    Comments: CommentsOnPost[],
-    id = ""
-  ): TransformedComments[] => {
-    const newArr = Comments.filter(
-      (item: CommentsOnPost) => item["ParentId"] == id
-    ).map((item: CommentsOnPost) => ({
-      ...item,
-      children: normalizeComments(Comments, item._id),
-    }));
-    return newArr;
-  };
-  const comms = normalizeComments(Comments);
 
   //todo combine it with redux state managment
-
-  const generateChildren = (itemInit, i = 0) => {
-    const children = itemInit.children;
-    let copy = i + 1;
+  //function to generate comments and their children
+  const generateChildren = (itemInit: TransformedComments, i = 0) => {
+    const children: any[] = itemInit.children;
+    let copy: number = i + 1;
     let newArr = children?.map((item) => generateChildren(item, copy));
 
     return (
-      <>
-        <div style={{ paddingLeft: `${i * 55}px` }}>
-          <SingleComment postId={post._id} comment={itemInit} />
+      <div>
+        <div style={{ paddingLeft: `${i * 40}px` }}>
+          <SingleComment depth={i} postId={post._id} comment={itemInit} />
         </div>
         {newArr}
-      </>
+      </div>
     );
   };
   useEffect(() => {
@@ -57,7 +44,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
     <section>
       <div className="flex">
         <div className="ml-2">
-          {comms.map((item: TransformedComments) => {
+          {Comments.map((item: TransformedComments) => {
             return <>{generateChildren(item)}</>;
           })}
         </div>

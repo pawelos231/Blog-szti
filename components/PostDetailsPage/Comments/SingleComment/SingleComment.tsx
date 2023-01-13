@@ -1,7 +1,7 @@
 import { CommentsOnPost } from "../../../../interfaces/PostsInterface";
 import { GenerateDateString } from "../../../../helpers/NormalizeDate";
 import { useState, useRef, MutableRefObject } from "react";
-const SingleComment = ({ comment, postId }) => {
+const SingleComment = ({ depth, comment, postId }) => {
   const [opened, handleOpen] = useState<boolean>(false);
   const valueOfReply: MutableRefObject<any> = useRef(null);
 
@@ -13,7 +13,7 @@ const SingleComment = ({ comment, postId }) => {
       PostId: postId,
       CreatedAt: date,
       Content: textReply,
-      WhoLiked: ["nikt", "seba"],
+      WhoLiked: [],
       ParentId: comment._id,
       NestedLevel: 0,
       UpdatedAt: "",
