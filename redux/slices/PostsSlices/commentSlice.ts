@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
+
 const commentsSlice = createSlice({
     name: "Comments",
     initialState: {
@@ -18,14 +19,18 @@ const commentsSlice = createSlice({
             return state;
         },
         addComment: (state, action) => {
-            console.log(action.payload)
+            state.isLoading = true
+            return state
+        },
+        addCommentSuccess: (state, action) => {
+            const {payload} = action
             state.isLoading = false
-            state.Comments = [...state.Comments, action.payload.CommentObject
+            state.Comments = [...state.Comments, payload
             ]
             return state
         },
     }
 })
 
-export const {getCommentsFetch, getCommentsSuccess, addComment} = commentsSlice.actions
+export const {getCommentsFetch, getCommentsSuccess, addComment, addCommentSuccess} = commentsSlice.actions
 export default commentsSlice.reducer

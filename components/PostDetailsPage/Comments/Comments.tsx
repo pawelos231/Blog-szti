@@ -20,9 +20,11 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   //todo combine it with redux state managment
   //function to generate comments and their children
   const generateChildren = (itemInit: TransformedComments, i = 0) => {
-    const children: any[] = itemInit.children;
+    const children: TransformedComments[] = itemInit.children;
     let copy: number = i + 1;
-    let newArr = children?.map((item) => generateChildren(item, copy));
+    let newArr: JSX.Element[] = children?.map((item) =>
+      generateChildren(item, copy)
+    );
 
     return (
       <div>

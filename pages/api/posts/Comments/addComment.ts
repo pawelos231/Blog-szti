@@ -19,6 +19,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const Comment: CommentsOnPost = JSON.parse(req.body)
+    const CommentObjectForFront: CommentsOnPost = {...Comment, UserId, UserName}
     const createdComment: any = await CommentOnPost.create({
         UserId: UserId,
         PostId: Comment.PostId,
@@ -32,5 +33,5 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     await createdComment.save()
-    res.status(200).json({status: 1, text: "udało się dodać komentarz"})
+    res.status(200).json({Comment: CommentObjectForFront,  status: 1, text: "udało się dodać komentarz"})
 }

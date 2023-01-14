@@ -20,10 +20,6 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
 
   //REFACTOR CODE, SO THAT IT MAKES API CALL IN SAGA INSTEAD OF HERE
   const AddComment = async (event: any): Promise<void> => {
-    interface ReponseFromApi {
-      status: number;
-      text: string;
-    }
     event.preventDefault();
 
     const textOfComment: string = refText.current.value;
@@ -41,22 +37,20 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
       UserName: "",
       childred: null,
     };
-    await fetch("/api/posts/Comments/addComment", {
-      method: "POST",
-      body: JSON.stringify(CommentObject),
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res: Response) => res.json())
-      .then((data: ReponseFromApi) => {
-        setComunicat(true);
-        setStatus(data.status);
-        setTimeout(() => {
-          setComunicat(false);
-        }, 1000);
+    const url = "/api/posts/Comments/addComment";
+    const awaitForReponse = () => {
+      return new Promise((resolve, rejejct) => {
+        resolve(
+          dispatch(addComment({ CommentObject, token, method: "POST", url }))
+        );
       });
-    dispatch(addComment({ CommentObject }));
+    };
+    await awaitForReponse();
+    setComunicat(true);
+    setStatus(1); //temporary solution
+    setTimeout(() => {
+      setComunicat(false);
+    }, 1000);
   };
 
   return (
