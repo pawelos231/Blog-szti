@@ -4,10 +4,10 @@ import CreatedPosts from "./CreatedPosts/CreatedPosts";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
-import { NotAuth, FetchUrl } from "./constants";
-import Skeleton from "../../helpers/views/Skeleton";
+import { NotAuth } from "./constants";
+import SkletonLoader from "../../helpers/views/SkeletonLoading";
 
-const UserDeatilsMainPage = () => {
+const PostsUserFilter = ({ UrlToFetch }: { UrlToFetch: string }) => {
   const router: NextRouter = useRouter();
   let token: string = "";
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
@@ -17,35 +17,31 @@ const UserDeatilsMainPage = () => {
   interface Unauth {
     text: string;
   }
-  const [loading, err, errMessage, data] = useFetch<Posts & Unauth>(
-    FetchUrl,
+  const [loading, err, errMessage, FilteredPosts] = useFetch<Posts & Unauth>(
+    UrlToFetch,
     token
   );
-  const createdPosts: Posts = data;
-  const NotAuthReceiver: string = data?.text;
+  const createdPosts: Posts = FilteredPosts;
+  const NotAuthReceiver: string = FilteredPosts?.text;
   if (NotAuthReceiver == NotAuth) {
     router.push("/");
     return <></>;
   }
+
   return (
     <>
       <NavbarForUserDesktop />
       <div className="w-full h-screen">
         {loading ? (
-          <div className="absolute w-full flex items-center flex-col">
-            {[1, 2, 3, 4, 5].map((item: number) => {
-              return (
-                <>
-                  <Skeleton />
-                </>
-              );
-            })}
-          </div>
+          <SkletonLoader />
         ) : (
           <div>
             {!err ? (
               <div>
-                <CreatedPosts createdPosts={createdPosts} />
+                <CreatedPosts
+                  createdPosts={createdPosts}
+                  text="Stworzone przez ciebie posty !"
+                />
               </div>
             ) : (
               <div>{errMessage}</div>
@@ -57,4 +53,4 @@ const UserDeatilsMainPage = () => {
   );
 };
 
-export default UserDeatilsMainPage;
+export default PostsUserFilter;

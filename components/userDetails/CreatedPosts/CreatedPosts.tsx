@@ -2,12 +2,10 @@ import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Link from "next/link";
 import Post from "../../Posts/Post/Post";
 const flag: boolean = false;
-const CreatedPosts = ({ createdPosts }) => {
+const CreatedPosts = ({ createdPosts, text }) => {
   return (
     <div>
-      <h1 className="absolute top-36  w-full left-0 text-center">
-        Stworzone przez ciebie posty:
-      </h1>
+      <h1 className="absolute top-36  w-full left-0 text-center">{text}</h1>
 
       <section className="absolute top-60 left-0 w-screen flex justify-center items-center flex-col ">
         {createdPosts.length !== 0 ? (

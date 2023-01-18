@@ -27,16 +27,10 @@ const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] 
 
     else if(flag === -1) {
         const newArr: string[] = whoLiked.filter((item: string) => item !== name)
-
-        if(newArr.length === 0)
-        {
-            return []
-        }
+        if(newArr.length === 0)  return []
         return newArr
     } 
-
-    else 
-    {
+    else {
         console.log("niepoprawne dane")
         return []
     }
@@ -67,19 +61,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
     })
 
-    
-    if(dataFromReq.flag === 1)
-    {
+    if(dataFromReq.flag === 1){
         res.status(200).json({text: "pomyślnie dodano like'a"})
     }
 
-    else if(dataFromReq.flag === -1)
-    {
+    else if(dataFromReq.flag === -1){
         res.status(200).json({text: "pomyślnie odlikowano"})
     }
     
-    else
-    {
+    else{
         res.status(200).json({text: "coś się wysypało"})
     }
     

@@ -10,7 +10,6 @@ import { SinglePostFromDatabase } from '../../../interfaces/PostsInterface'
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
     const existing: Array<SinglePostFromDatabase> = await get<Array<SinglePostFromDatabase>>(SPECIFIC_USER_POSTS)
     if(existing !== null){
-        console.log(existing)
         res.status(200).json(existing)
         return
     }
