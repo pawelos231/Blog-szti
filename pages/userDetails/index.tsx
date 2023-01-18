@@ -1,5 +1,8 @@
 import NavbarForUserDesktop from "../../components/userDetails/NavbarForUser/NavbarForUserDesktop";
+import { useTheme } from "next-themes";
 const Index = () => {
+  const { theme, setTheme } = useTheme();
+  console.log(theme);
   return (
     <>
       <NavbarForUserDesktop />

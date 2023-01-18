@@ -4,12 +4,12 @@ import { Menu, Notifications, Person } from "@material-ui/icons";
 import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
+import SwitchDarkMode from "../switchers/switchMode";
 
 const Navbar: () => JSX.Element = () => {
   const [profileObj, setProfileObj] = useState<any>({});
   const [clicked, Handle] = useState<boolean>(false);
   const router: NextRouter = useRouter();
-
   const Logout: () => void = () => {
     localStorage.clear();
     setProfileObj({});
@@ -49,6 +49,7 @@ const Navbar: () => JSX.Element = () => {
                   Napisz Post
                 </div>
               ) : null}
+              <SwitchDarkMode />
               {router.pathname == "/userLogin/register" ||
               router.pathname == "/userLogin/login" ? null : Object.keys(
                   profileObj

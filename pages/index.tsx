@@ -4,6 +4,7 @@ import { GetStaticProps } from "next";
 import mongoose from "mongoose";
 const BlogPosts = require("../server/models/BlogPosts");
 import { SinglePostFromDatabase } from "../interfaces/PostsInterface";
+import SwitchDarkMode from "../components/switchers/switchMode";
 
 export default function Home({
   posts,
@@ -12,6 +13,7 @@ export default function Home({
 }) {
   return (
     <div className="flex justify-center w-full flex-col">
+     
       <Header />
       <AllPosts posts={posts} />
     </div>

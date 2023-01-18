@@ -1,0 +1,32 @@
+.switch{
+    width: 4vw;
+    height: 4vh;
+    background-color: black;
+    display: flex;
+    justify-content: flex-start;
+    border-radius: 60px;
+    padding: 4.5px;
+    cursor: pointer;
+    transition: .2s linear;
+    position: absolute;
+    top: 11.5vh;
+    right: 1.5vw;
+    top: 100px;
+    right: 10px;
+    z-index: 11 !important;
+    position: fixed;
+}
+
+.switch[data-isOn="dark"]{
+    justify-content: flex-end;
+    background-color: white;
+}
+.handle{
+    width: 3vh;
+    height: 3vh;
+    background-color: white;
+    border-radius: 50%;
+}
+.handle[data-isOn="dark"]{
+    background-color: black
+}
