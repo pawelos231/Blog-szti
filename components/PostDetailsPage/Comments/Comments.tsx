@@ -27,12 +27,12 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
     );
 
     return (
-      <div>
-        <div style={{ paddingLeft: `${i * 40}px` }}>
+      <>
+        <div style={{ paddingLeft: `${i * 45}px` }}>
           <SingleComment depth={i} postId={post._id} comment={itemInit} />
         </div>
         {newArr}
-      </div>
+      </>
     );
   };
   useEffect(() => {
@@ -45,7 +45,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   return (
     <section>
       <div className="flex">
-        <div className="ml-2">
+        <div className="ml-2 w-full">
           {Comments.map((item: TransformedComments) => {
             return <>{generateChildren(item)}</>;
           })}
