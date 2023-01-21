@@ -5,7 +5,7 @@
 
 @layer base{
     body {
-        @apply dark:bg-black dark:text-white bg-white
+        @apply dark:bg-[#0F0E0E] dark:text-white bg-white
     }
 }
 

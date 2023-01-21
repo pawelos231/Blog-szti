@@ -5,7 +5,10 @@ import { FetchUrlGetCreated } from "../../constants/UrlsUserFilters";
 const userProfile = () => {
   return (
     <div className="flex w-screen h-screen justify-center items-center">
-      <PostsUserFilter UrlToFetch={FetchUrlGetCreated} />
+      <PostsUserFilter
+        UrlToFetch={FetchUrlGetCreated}
+        text="stworzone przez ciebie posty"
+      />
     </div>
   );
 };

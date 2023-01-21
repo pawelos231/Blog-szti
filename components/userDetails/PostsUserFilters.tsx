@@ -7,7 +7,13 @@ import { NextRouter, useRouter } from "next/router";
 import { NotAuth } from "./constants";
 import SkletonLoader from "../../helpers/views/SkeletonLoading";
 
-const PostsUserFilter = ({ UrlToFetch }: { UrlToFetch: string }) => {
+const PostsUserFilter = ({
+  UrlToFetch,
+  text,
+}: {
+  UrlToFetch: string;
+  text: string;
+}) => {
   const router: NextRouter = useRouter();
   let token: string = "";
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
@@ -38,10 +44,7 @@ const PostsUserFilter = ({ UrlToFetch }: { UrlToFetch: string }) => {
           <div>
             {!err ? (
               <div>
-                <CreatedPosts
-                  createdPosts={createdPosts}
-                  text="Stworzone przez ciebie posty !"
-                />
+                <CreatedPosts createdPosts={createdPosts} text={text} />
               </div>
             ) : (
               <div>{errMessage}</div>

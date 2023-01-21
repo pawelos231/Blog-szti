@@ -7,6 +7,8 @@ import { useRouter, NextRouter } from "next/router";
 import SwitchDarkMode from "../switchers/switchMode";
 
 const Navbar: () => JSX.Element = () => {
+  const ROUTE_TO_REGISTER = "/userLogin/register";
+  const ROUTE_TO_LOGIN = "/userLogin/login";
   const [profileObj, setProfileObj] = useState<any>({});
   const [clicked, Handle] = useState<boolean>(false);
   const router: NextRouter = useRouter();
@@ -23,7 +25,7 @@ const Navbar: () => JSX.Element = () => {
 
   return (
     <>
-      <nav className="z-10 fixed bg-white w-full shadow shadow-grey text-black">
+      <nav className="z-10 fixed bg-white w-full shadow shadow-grey text-black dark:bg-[#191919] dark:text-white">
         <ul className="flex gap-12 h-[9vh] mr-4 justify-between items-center">
           <li className="p-5">
             <a className="text-5xl"></a>
@@ -33,35 +35,34 @@ const Navbar: () => JSX.Element = () => {
           </li>
           <li>
             <div className="flex gap-14 items-center">
-              <div className="text-4xl">
-                <Notifications fontSize="inherit" />
+              <div className="text-4xl text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
+                <Notifications color="inherit" fontSize="inherit" />
               </div>
-              <div className="text-4xl z-10">
+              <div className="text-4xl z-10 text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
                 <Link href={"/userDetails/userProfile"}>
-                  <Person fontSize="inherit" />
+                  <Person fontSize="inherit" color="inherit" />
                 </Link>
               </div>
               {Object.keys(profileObj).length > 2 ? (
                 <div
-                  className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
+                  className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105"
                   onClick={() => Handle(!clicked)}
                 >
                   Napisz Post
                 </div>
               ) : null}
               <SwitchDarkMode />
-              {router.pathname == "/userLogin/register" ||
-              router.pathname == "/userLogin/login" ? null : Object.keys(
-                  profileObj
-                ).length <= 2 ? (
-                <div className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white">
+              {router.pathname == ROUTE_TO_REGISTER ||
+              router.pathname == ROUTE_TO_LOGIN ? null : Object.keys(profileObj)
+                  .length <= 2 ? (
+                <div className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105">
                   <Link href={"/userLogin/register"}>
                     <a>Zaloguj się</a>
                   </Link>
                 </div>
               ) : (
                 <div
-                  className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white"
+                  className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105"
                   onClick={() => Logout()}
                 >
                   Wyloguj się
