@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { Menu, Notifications, Person } from "@material-ui/icons";
+import { Notifications, Person } from "@material-ui/icons";
 import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
@@ -35,10 +35,10 @@ const Navbar: () => JSX.Element = () => {
           </li>
           <li>
             <div className="flex gap-14 items-center">
-              <div className="text-4xl text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
+              <div className="text-4xl dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
                 <Notifications color="inherit" fontSize="inherit" />
               </div>
-              <div className="text-4xl z-10 text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
+              <div className="text-4xl z-10 dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
                 <Link href={"/userDetails/userProfile"}>
                   <Person fontSize="inherit" color="inherit" />
                 </Link>
