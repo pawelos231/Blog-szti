@@ -4,12 +4,12 @@ export interface UserRegister {
     password: string
 }
 
-export interface UserLogin{
+export interface UserLogin {
     email: string
     password: string
 }
 
-export interface Token{
+export interface Token {
     Name: string
     Email: string
 }

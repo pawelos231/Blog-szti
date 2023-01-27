@@ -9,7 +9,7 @@ class Fetcher{
 */
 //const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export function useFetch<T>(url: string, token: string) : [boolean, boolean, any, T]{
+export function useFetch<T>(url: string, token: string): [boolean, boolean, any, T] {
 
     const [loading, loadingHandle] = useState<boolean>(true)
     const [data, setDataHandle] = useState<T>(null)
@@ -21,33 +21,33 @@ export function useFetch<T>(url: string, token: string) : [boolean, boolean, any
         setDataHandle(null)
         setErrHandler(false)
     }
-    const FetchDataFunction = async () => {
-        
-       await fetch(url, {
-        headers: {
-            Authorization: token
-        }
-       }).then((res : Response)=> {
-            if(!res.ok){
+    const FetchDataFunction = async (): Promise<void> => {
+
+        await fetch(url, {
+            headers: {
+                Authorization: token
+            }
+        }).then((res: Response) => {
+            if (!res.ok) {
                 setErrHandler(true)
             }
             return res.json();
         })
-        .then((data:T) => {
-            setDataHandle(data)
-            loadingHandle(false)
-        })
-        .catch((err: any) => {
-            setErrorMessage(err)
-            setErrHandler(true)
-        })
+            .then((data: T) => {
+                setDataHandle(data)
+                loadingHandle(false)
+            })
+            .catch((err: any) => {
+                setErrorMessage(err)
+                setErrHandler(true)
+            })
     }
-   
+
 
     useEffect(() => {
         FetchDataFunction()
-		clearState()
-	}, [url]);
+        clearState()
+    }, [url]);
 
     return [loading, err, errMessage, data];
 }

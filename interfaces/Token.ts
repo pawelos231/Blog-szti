@@ -1,4 +1,4 @@
-export interface VerifiedToken{
+export interface VerifiedToken {
     Name: string
     Email: string
     exp?: number

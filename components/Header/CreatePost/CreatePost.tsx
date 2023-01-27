@@ -95,7 +95,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
 
   return (
     <>
-      <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white">
+      <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
         <div
           className="absolute left-2 top-2 text-6xl cursor-pointer	"
           onClick={() => Handle(false)}
@@ -112,7 +112,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTitle(e.target.value)
             }
-            className="p-3 rounded-sm text-black border-[1px] border-gray-300"
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300 dark:text-white"
             type="text"
             placeholder="tytuł, max 80 znaków"
           />
@@ -121,7 +121,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               onHandleTags(e.target.value.split("#"))
             }
-            className="p-3 rounded-sm text-black border-[1px] border-gray-300"
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300 dark:text-white"
             type="text"
             placeholder="tagi: #siema #gówno"
           />
@@ -130,7 +130,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               HandleShortOpis(e.target.value)
             }
-            className="p-3 rounded-sm text-black border-[1px] border-gray-300 h-[15%]"
+            className="p-3 rounded-sm text-black border-[1px] border-gray-300 h-[15%] dark:text-white"
             placeholder="krótki opis, max 230 znaków"
             maxLength={230}
           />
@@ -138,7 +138,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             value={message}
             onChange={onHandleMessage}
             theme="snow"
-            className="text-black h-[25%]"
+            className="text-black h-[25%] dark:text-white"
           />
           {buttonActive ? (
             <div className="flex justify-center mt-12">

@@ -1,4 +1,4 @@
-export type LoggingInterfaceSchema =  {
+export type LoggingInterfaceSchema = {
     text: string,
     status: number
 }
