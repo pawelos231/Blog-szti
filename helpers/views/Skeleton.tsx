@@ -1,9 +1,8 @@
 import styles from "./style.module.css";
 import { useTheme } from "next-themes";
 const Skeleton = () => {
-  const {theme, setTheme} = useTheme()
   return (
-    <div className=" top-36 w-[70%] left-36  relative  flex justify-center">
+    <div className="top-36 w-[70%] left-36  relative  flex justify-center">
       <div className={`${styles.grid} flex justify-center`}></div>
 
       <div className={`${styles.card} w-[70%] relative`}>

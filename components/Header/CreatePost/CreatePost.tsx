@@ -97,7 +97,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     <>
       <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
         <div
-          className="absolute left-2 top-2 text-6xl cursor-pointer	"
+          className="absolute left-2 top-2 text-6xl cursor-pointer	dark:text-white"
           onClick={() => Handle(false)}
         >
           X
