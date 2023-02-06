@@ -1,1 +1,1 @@
-export const  NotAuth: string = "NOT authenticated"
+export const NotAuth = "NOT authenticated"

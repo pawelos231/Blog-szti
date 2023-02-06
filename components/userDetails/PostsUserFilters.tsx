@@ -6,6 +6,7 @@ import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import { NotAuth } from "./constants";
 import SkletonLoader from "../../helpers/views/SkeletonLoading";
+import {loaderFor} from './helpers'
 
 const PostsUserFilter = ({
   UrlToFetch,
@@ -16,19 +17,24 @@ const PostsUserFilter = ({
 }) => {
   const router: NextRouter = useRouter();
   let token: string = "";
+
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
     token = localStorage.getItem("profile");
   }
   type Posts = Readonly<Array<SinglePostFromDatabase>>;
+
   interface Unauth {
     text: string;
   }
+
   const [loading, err, errMessage, FilteredPosts] = useFetch<Posts & Unauth>(
     UrlToFetch,
     token
   );
+
   const createdPosts: Posts = FilteredPosts;
   const NotAuthReceiver: string = FilteredPosts?.text;
+
   if (NotAuthReceiver == NotAuth) {
     router.push("/");
     return <></>;
@@ -39,7 +45,7 @@ const PostsUserFilter = ({
       <NavbarForUserDesktop />
       <div className="w-full h-screen">
         {loading ? (
-          <SkletonLoader />
+          <SkletonLoader LoaderFor={loaderFor.post} />
         ) : (
           <div>
             {!err ? (

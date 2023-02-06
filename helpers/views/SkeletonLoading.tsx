@@ -1,15 +1,25 @@
+import { loaderFor } from "../../components/userDetails/helpers";
 import Skeleton from "./Skeleton";
-const SkletonLoader = (): JSX.Element => {
+const SkletonLoader = ({ LoaderFor }): JSX.Element => {
+  console.log(LoaderFor);
   return (
-    <div className="absolute w-full flex items-center flex-col ">
-      {[1, 2, 3, 4, 5].map((item: number) => {
-        return (
-          <>
-            <Skeleton />
-          </>
-        );
-      })}
-    </div>
+    <>
+      {LoaderFor == loaderFor.post ? (
+        <>
+          <div className="absolute w-full flex flex-col items-center">
+            {[1, 2, 3, 4, 5].map((item: number) => (
+              <Skeleton LoaderFor={LoaderFor} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="absolute w-full  flex flex-col items-start">
+          {[1, 2, 3, 4, 5].map((item: number) => (
+            <Skeleton LoaderFor={LoaderFor} />
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
