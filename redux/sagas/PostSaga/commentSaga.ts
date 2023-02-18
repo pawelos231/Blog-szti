@@ -29,7 +29,10 @@ function* workerCommentsFetchAll(action: T): Generator<any, void, any> {
 }
 
 function* workerAddComment(action: any): Generator<any, void, any> {
-    const { payload: { CommentObject, token, url, method } } = action
+    const { payload: { CommentObject, token, url, method } }:
+        {
+            payload: { CommentObject: CommentsOnPost, token: string, url: string, method: string }
+        } = action
     //yield delay(3000) //FOR TESTINH
     const resultOfAddComment: Response = yield call(() => {
         return (fetch(url, {

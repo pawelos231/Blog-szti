@@ -12,8 +12,8 @@ const normalizeComments = (
   id = ""
 ): TransformedComments[] => {
   const newArr = Comments.filter(
-    (item: CommentsOnPost) => item["ParentId"] == id
-  ).map((item: CommentsOnPost) => ({
+    (item) => item["ParentId"] == id
+  ).map((item) => ({
     ...item,
     children: normalizeComments(Comments, item._id),
   }));
@@ -25,8 +25,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
   await mongoose.connect(process.env.DATABASE_URL)
   const postId: string = JSON.parse(req.body)
   const data = await CommentOnPost.find({ PostId: postId })
-  const temporaryComments = JSON.parse(JSON.stringify(data))
-  const comms = normalizeComments(temporaryComments)
+  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(data)))
 
   res.status(200).json(comms)
 }

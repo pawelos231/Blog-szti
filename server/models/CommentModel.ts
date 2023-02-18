@@ -1,10 +1,17 @@
 import mongoose from "mongoose";
-const {Schema} = mongoose
+const { Schema } = mongoose
 mongoose.Promise = global.Promise
 const CommentSchema = new Schema({
-    UserId: String,
-    PostId: String,
-    CreatedAt: String,
+    UserId: {
+        type: String,
+    },
+    PostId: {
+        type: String,
+    },
+    CreatedAt: {
+        type: String,
+        default: () => Date.now()
+    },
     Content: String,
     WhoLiked: [String],
     ParentId: String,

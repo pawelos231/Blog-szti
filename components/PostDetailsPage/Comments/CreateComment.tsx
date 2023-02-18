@@ -3,23 +3,18 @@ import { CommentsOnPost } from "../../../interfaces/PostsInterface";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import { GenerateDateString } from "../../../helpers/NormalizeDate";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { AddCommentEndpoint } from "../../../constants/apisEndpoints";
 import { AnyAction } from "redux";
 import { addComment } from "../../../redux/slices/PostsSlices/commentSlice";
 const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const [comunicat, setComunicat] = useState<boolean>(false);
-  const [status, setStatus] = useState<number>(2);
+  const [status, setStatus] = useState<number | null>(0);
 
   const refText: MutableRefObject<any> = useRef(null);
 
-  const state = useSelector((state: any) => {
-    return state.comments.Comments;
-  });
-  console.log(state);
-
-  //REFACTOR CODE, SO THAT IT MAKES API CALL IN SAGA INSTEAD OF HERE
-  const AddComment = async (event: any): Promise<void> => {
+  const AddCommentFunc = async (event: any): Promise<void> => {
     event.preventDefault();
 
     const textOfComment: string = refText.current.value;
@@ -37,11 +32,17 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
       UserName: "",
       childred: null,
     };
-    const url = "/api/posts/Comments/addComment";
     const awaitForReponse = () => {
-      return new Promise((resolve, rejejct) => {
+      return new Promise((resolve, reject) => {
         resolve(
-          dispatch(addComment({ CommentObject, token, method: "POST", url }))
+          dispatch(
+            addComment({
+              CommentObject,
+              token,
+              method: "POST",
+              url: AddCommentEndpoint,
+            })
+          )
         );
       });
     };
@@ -79,7 +80,7 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
       <section className="pt-8">
         <p className="text-2xl">Komentarze</p>
         <form
-          onSubmit={(e: any) => AddComment(e)}
+          onSubmit={(e: any) => AddCommentFunc(e)}
           className="pt-6 flex flex-col w-[50%]"
         >
           <textarea

@@ -1,9 +1,19 @@
+import { useState, useRef, MutableRefObject } from "react";
 import { CommentsOnPost } from "../../../../interfaces/PostsInterface";
 import { GenerateDateString } from "../../../../helpers/NormalizeDate";
-import { useState, useRef, MutableRefObject } from "react";
-const SingleComment = ({ depth, comment, postId }) => {
+import { AddCommentEndpoint } from "../../../../constants/apisEndpoints";
+const SingleComment = ({
+  parentShowCommentsFlag = false,
+  depth,
+  comment,
+  openedCommentsView = null,
+  handleopenedCommentsView = null,
+  visibility = true,
+  postId,
+}) => {
   const [opened, handleOpen] = useState<boolean>(false);
   const valueOfReply: MutableRefObject<any> = useRef(null);
+  console.log(depth);
 
   const ReplyToComment = async (): Promise<void> => {
     const date: string = GenerateDateString();
@@ -44,7 +54,9 @@ const SingleComment = ({ depth, comment, postId }) => {
               />
             </div>
             <p className="text-md pb-2 font-semibold">{comment.UserName}</p>
-            <p className="text-sm text-gray-500 pb-2">{comment.CreatedAt}</p>
+            <p className="text-sm text-gray-500 pb-2">
+              {comment.CreatedAt.toString().split("T")[0]}
+            </p>
           </div>
           <div className="mt-4">{comment.Content}</div>
         </div>
@@ -55,6 +67,15 @@ const SingleComment = ({ depth, comment, postId }) => {
       >
         Odpowiedz
       </button>
+      {parentShowCommentsFlag ? (
+        <button
+          onClick={() => handleopenedCommentsView(!openedCommentsView)}
+          className=" font-semibold mt-2 mb-4 p-2  w-[30%] rounded-sm"
+        >
+          {openedCommentsView ? <>Pokaz Odpowiedzi</> : <>Ukryj Odpowiedzi</>}
+        </button>
+      ) : null}
+
       {opened ? (
         <div className="ml-10 flex-col w-[40%] ">
           <textarea
