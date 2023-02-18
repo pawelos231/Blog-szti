@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return
     }
 
-    let decodedData: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
 
     const NewArrComp: string[] = checkIfToAdd(dataFromReq.flag, decodedData.Name, dataFromReq.WhoLiked)
 

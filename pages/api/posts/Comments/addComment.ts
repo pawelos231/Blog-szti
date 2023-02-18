@@ -10,7 +10,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     await mongoose.connect(process.env.DATABASE_URL)
 
     const token: string = String(req.headers["authorization"])
-    const { Email, Name }: JWTPayload = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const { Email, Name }: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
     if (token == "null") {
         console.log("niezalogowany")
         res.status(401).send({ text: "NOT authenticated" })
