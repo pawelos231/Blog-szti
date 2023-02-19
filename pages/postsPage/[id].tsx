@@ -3,8 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
 import PostDetails from "@components/PostDetailsPage/PostDetails";
 import mongoose from "mongoose";
-import { getPostById } from "@server/db/posts";
-const BlogPosts = require("../../server/models/BlogPosts");
+import { getPostById, getAllPosts } from "@server/db/posts";
 
 const PostSite = ({
   formattedPost,
@@ -22,8 +21,8 @@ export default PostSite;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   await mongoose.connect(process.env.DATABASE_URL);
-  const data = await BlogPosts.find({});
-  const paths: any = data.map((item: SinglePostFromDatabase) => {
+  const { posts, error }: any = await getAllPosts();
+  const paths: any = posts.map((item: SinglePostFromDatabase) => {
     return {
       params: { id: String(item._id) },
     };
@@ -38,11 +37,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id: string | Array<string> = params.id;
 
-  await mongoose.connect(process.env.DATABASE_URL);
-  const Inner: any = await BlogPosts.findById(id);
+  const { post, error }: any = await getPostById(String(id));
 
   const formattedPost: SinglePostFromDatabase = JSON.parse(
-    JSON.stringify(Inner)
+    JSON.stringify(post)
   );
 
   return {

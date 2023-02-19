@@ -1,24 +1,44 @@
-import { MongoClient } from 'mongodb'
 import mongoose from 'mongoose'
-const URI: string = process.env.DATABASE_URL
-const options = {}
 
-if (!URI) throw new Error("add DATABASE_URL to .env file")
 
-let client: MongoClient = new MongoClient(URI, options)
-let clientPromise: any
 
-if(process.env.NODE_ENV !== "production") {
-    if(!global._mongoClientPromise){
-        global._mongoClientPromise = client.connect()
-    }
-    clientPromise = global._mongoClientPromise
-} else {
-    await mongoose.connect(URI)
-    clientPromise = client.connect()
+const MONGODB_URI = process.env.DATABASE_URL
+
+if (!MONGODB_URI) {
+  throw new Error(
+    'Please define the MONGODB_URI environment variable inside .env'
+  )
 }
 
+let cached: any = global.mongoose
 
-export default clientPromise
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
+
+async function dbConnect (): Promise<any> {
+  if (cached.conn) {
+    return cached.conn
+  }
+
+  if (!cached.promise) {
+    const OPTIONS = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      bufferCommands: false,
+      bufferMaxEntries: 0,
+      useFindAndModify: true,
+      useCreateIndex: true
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI, OPTIONS).then((mongoose) => {
+      return mongoose
+    })
+  }
+  cached.conn = await cached.promise
+  return cached.conn
+}
+
+export default dbConnect
     
     
