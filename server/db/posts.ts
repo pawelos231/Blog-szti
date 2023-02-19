@@ -1,5 +1,5 @@
-import { RepeatRounded } from "@material-ui/icons";
 import clientPromise from "./mongo";
+
 const BlogPosts = require("@server/models/BlogPosts")
 let client;
 let db
@@ -15,7 +15,6 @@ interface Response {
 
 const init = async (): Promise<void> => {
     if(db) {
-        console.log("init")
         return
     }
     try{
@@ -61,6 +60,7 @@ export const getLikedUserPosts = async(Name: string) => {
         if(!db) await init()
         
         const result: any = await BlogPosts.find({ WhoLiked: Name })
+        console.log(result)
         return {likedUserPosts: result}  
       } catch(error){
           return {error: 'Failed to fetch posts'}

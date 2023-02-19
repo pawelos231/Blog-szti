@@ -26,6 +26,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
   if(error) throw new Error(error)
   console.log(comments) 
   const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(comments)))
+  console.log(comms, "chuj")
 
   res.status(200).json(comms)
 }
