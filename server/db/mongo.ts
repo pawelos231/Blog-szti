@@ -5,16 +5,21 @@ const options = {}
 
 if (!URI) throw new Error("add DATABASE_URL to .env file")
 
+let client: MongoClient = new MongoClient(URI, options)
 let clientPromise: any
 
 if(process.env.NODE_ENV !== "production") {
     if(!global._mongoClientPromise){
-        global._mongoClientPromise = mongoose.connect(URI)
+        global._mongoClientPromise = client.connect()
     }
     clientPromise = global._mongoClientPromise
 } else {
-    clientPromise = mongoose.connect(URI)
+    clientPromise = client.connect()
+    mongoose.connect(URI)
 }
+clientPromise = global._mongoClientPromise
+
+
 export default clientPromise
     
     
