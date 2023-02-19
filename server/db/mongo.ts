@@ -8,11 +8,10 @@ if (!MONGODB_URI) {
   )
 }
 
-async function dbConnect (): Promise<any> {
+async function dbConnect (){
  
     if(mongoose.connections[0].readyState) {
-        console.log("connected already")
-        return 
+        return mongoose.connections[0]
     } else {
          return mongoose.connect(MONGODB_URI, ()=> {
              console.log("your db is connected now")
