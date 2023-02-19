@@ -20,9 +20,9 @@ const init = async (): Promise<void> => {
 export const GetAllComments = async (postId: string) => {
     try{
       if(!db) await init()
-      console.log("chuj")
+      console.log("chuj w db folderze")
       const result: any = await CommentOnPost.find({ PostId: postId })
-      console.log(result)
+      console.log(result, "nic nie dostałem ale czemu")
       return {comments: result}  
     } catch(error){
         return {error: 'Failed to fetch posts'}
