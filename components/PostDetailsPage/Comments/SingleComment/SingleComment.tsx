@@ -72,7 +72,7 @@ const SingleComment = ({
           onClick={() => handleopenedCommentsView(!openedCommentsView)}
           className=" font-semibold mt-2 mb-4 p-2  w-[30%] rounded-sm"
         >
-          {openedCommentsView ? <>Pokaz Odpowiedzi</> : <>Ukryj Odpowiedzi</>}
+          {!openedCommentsView ? <>Pokaz Odpowiedzi</> : <>Ukryj Odpowiedzi</>}
         </button>
       ) : null}
 

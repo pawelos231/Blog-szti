@@ -1,15 +1,19 @@
 import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
-import PostDetails from "../../components/PostDetailsPage/PostDetails";
+import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import PostDetails from "@components/PostDetailsPage/PostDetails";
 import mongoose from "mongoose";
-
+import { getPostById } from "@server/db/posts";
 const BlogPosts = require("../../server/models/BlogPosts");
 
-const PostSite = ({ post }: { post: SinglePostFromDatabase }) => {
+const PostSite = ({
+  formattedPost,
+}: {
+  formattedPost: SinglePostFromDatabase;
+}) => {
   return (
     <div className="w-screen flex justify-center h-screen">
-      <PostDetails post={post} />
+      <PostDetails post={formattedPost} />
     </div>
   );
 };
@@ -32,17 +36,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id: string | Array<string> = params.id;
+  const id: string | string[] = params.id;
+  const { post, error } = await getPostById(id as string);
 
-  await mongoose.connect(process.env.DATABASE_URL);
-
-  const Inner: any = await BlogPosts.findById(id);
-
-  const post: SinglePostFromDatabase = JSON.parse(JSON.stringify(Inner));
+  const parsed = JSON.parse(JSON.stringify(post));
+  const formattedPost: SinglePostFromDatabase = parsed;
 
   return {
     props: {
-      post,
+      formattedPost,
     },
     revalidate: 10,
   };

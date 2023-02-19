@@ -33,11 +33,10 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   ): JSX.Element => {
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
-    let newArr: JSX.Element[] = children?.map((item) => {
+    let newArr: JSX.Element[] = children?.map((item, index: number) => {
       if (openedCommentsView) return generateChildren(item, nestedLevel, false);
       else return generateChildren(item, nestedLevel, true);
     });
-
     if (children && index === 0 && children.length === 0) {
       return (
         <SingleComment depth={index} postId={post._id} comment={itemInit} />
@@ -57,7 +56,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
             />
           ) : (
             <>
-              {visibility ? (
+              {!visibility ? (
                 <SingleComment
                   depth={index}
                   postId={post._id}

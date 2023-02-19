@@ -3,7 +3,15 @@
     "baseUrl": ".",
         "paths": {
             "@server/*": ["server/*"],
-            "@interfaces/*":["interfaces/*"]
+            "@interfaces/*":["interfaces/*"],
+            "@redux/*": ["redux/*"],
+            "@public/*": ["public/*"],
+            "@pages/*": ["pages/*"],
+            "@hooks/*": ["hooks/*"],
+            "@helpers/*": ["helpers/*"],
+            "@constants/*": ["constants/*"],
+            "@config/*": ["config/*"],
+            "@components/*":["components/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

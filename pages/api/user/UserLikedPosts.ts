@@ -1,16 +1,12 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import mongoose from "mongoose";
-import { VerifiedToken } from '../../../interfaces/Token'
-import { verify } from '../../../server/helpers/validateToken'
-const BlogPosts = require("../../../server/models/BlogPosts")
+import { VerifiedToken } from '@interfaces/Token'
+import { verify } from '@server/helpers/validateToken'
+import { getLikedUserPosts } from "@server/db/posts";
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
-    await mongoose.connect(process.env.DATABASE_URL)
     const token: string = String(req.headers["authorization"])
-    console.log(token)
-    const decodedData: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const {Name}: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)
 
-    const posts: any = await BlogPosts.find({ WhoLiked: String(decodedData.Name) })
-    console.log(posts)
+    const {likedUserPosts, error}: any = await getLikedUserPosts(String(Name))
 
-    res.status(200).json(posts)
+    res.status(200).json(likedUserPosts)
 }

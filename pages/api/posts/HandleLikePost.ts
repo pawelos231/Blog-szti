@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { verify } from '../../../server/helpers/validateToken'
-import mongoose from "mongoose";
-import { VerifiedToken } from "../../../interfaces/Token"
-const BlogPosts = require("../../../server/models/BlogPosts")
+import { verify } from '@server/helpers/validateToken'
+import { likePost } from "@server/db/posts";
 
 interface LikedPosts {
     flag: number;
@@ -18,8 +16,7 @@ type ResponseData = {
 const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
     if (flag === 1) {
         if (!whoLiked.find((item: string) => item == name)) {
-            const newArray: string[] = [...whoLiked, name]
-            return newArray
+            return [...whoLiked, name]
         }
         return whoLiked
     }
@@ -37,8 +34,7 @@ const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] 
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
 
-    const dataFromReq: LikedPosts = JSON.parse(req.body)
-    await mongoose.connect(process.env.DATABASE_URL)
+    const {flag, WhoLiked, itemId, ValueToPass}: LikedPosts = JSON.parse(req.body)
 
     const token: string = String(req.headers["authorization"])
     if (token == "null") {
@@ -47,29 +43,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return
     }
 
-    let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const {Name}: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
 
-    const NewArrComp: string[] = checkIfToAdd(dataFromReq.flag, decodedData.Name, dataFromReq.WhoLiked)
+    const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
 
-    await BlogPosts.updateOne({
-        _id: dataFromReq.itemId
-    }, {
-        $set: {
-            Likes: dataFromReq.ValueToPass,
-            WhoLiked: NewArrComp
-        }
-    })
+    const {response, error} = await likePost(newLikedArr, ValueToPass, itemId)
 
-    if (dataFromReq.flag === 1) {
+    if (flag === 1) {
         res.status(200).json({ text: "pomyślnie dodano like'a" })
     }
 
-    else if (dataFromReq.flag === -1) {
+    else if (flag === -1) {
         res.status(200).json({ text: "pomyślnie odlikowano" })
     }
 
     else {
-        res.status(200).json({ text: "coś się wysypało" })
+        res.status(200).json({ text: error})
     }
 
 }
