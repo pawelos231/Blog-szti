@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { CommentsOnPost } from "../../../../interfaces/PostsInterface";
-import mongoose from "mongoose";
-const CommentOnPost = require("../../../../server/models/CommentModel")
+import { CommentsOnPost } from "@interfaces/PostsInterface";
+import {GetAllComments} from "@server/db/comments"
 
 interface TransformedComments extends CommentsOnPost {
   children: TransformedComments | any;
@@ -22,10 +21,9 @@ const normalizeComments = (
 
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
-  await mongoose.connect(process.env.DATABASE_URL)
   const postId: string = JSON.parse(req.body)
-  const data = await CommentOnPost.find({ PostId: postId })
-  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(data)))
+  const {comments, error} = await  GetAllComments(postId)
+  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(comments)))
 
   res.status(200).json(comms)
 }

@@ -9,7 +9,7 @@ const CommentSchema = new Schema({
         type: String,
     },
     CreatedAt: {
-        type: String,
+        type: Date,
         default: () => Date.now()
     },
     Content: String,

@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+        "paths": {
+            "@server/*": ["server/*"],
+            "@interfaces/*":["interfaces/*"]
+    },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2018",

@@ -2,7 +2,7 @@ import { useEffect, Dispatch, useState } from "react";
 import {
   SinglePostFromDatabase,
   CommentsOnPost,
-} from "../../../interfaces/PostsInterface";
+} from "@interfaces/PostsInterface";
 import SkletonLoader from "../../../helpers/views/SkeletonLoading";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "@reduxjs/toolkit";
@@ -10,7 +10,6 @@ import SingleComment from "./SingleComment/SingleComment";
 import { getCommentsFetch } from "../../../redux/slices/PostsSlices/commentSlice";
 import { FetchComments } from "../../../constants/apisEndpoints";
 import { loaderFor } from "../../userDetails/helpers";
-import { visit } from "graphql/language";
 const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   const [openedCommentsView, handleopenedCommentsView] =
     useState<boolean>(false);
@@ -30,7 +29,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   const generateChildren = (
     itemInit: TransformedComments,
     index: number = 0,
-    visibility: boolean = false
+    visibility: boolean = openedCommentsView
   ): JSX.Element => {
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
@@ -39,18 +38,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
       else return generateChildren(item, nestedLevel, true);
     });
 
-    if (children && index == 0 && children.length !== 0) {
-      <SingleComment
-        parentShowCommentsFlag={true}
-        handleopenedCommentsView={handleopenedCommentsView}
-        openedCommentsView={openedCommentsView}
-        depth={index}
-        postId={post._id}
-        comment={itemInit}
-      />;
-    } else if (visibility && index != 0) {
-      <SingleComment depth={index} postId={post._id} comment={itemInit} />;
-    } else if (children && index === 0 && children.length === 0) {
+    if (children && index === 0 && children.length === 0) {
       return (
         <SingleComment depth={index} postId={post._id} comment={itemInit} />
       );
@@ -69,7 +57,7 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
             />
           ) : (
             <>
-              {visibility && index != 0 ? (
+              {visibility ? (
                 <SingleComment
                   depth={index}
                   postId={post._id}

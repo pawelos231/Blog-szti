@@ -6,6 +6,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     await mongoose.connect(process.env.DATABASE_URL)
 
     const data: any = await BlogPosts.find({})
-
+    console.log(process.env.DATABASE_URL)
     res.status(200).json(data)
 }

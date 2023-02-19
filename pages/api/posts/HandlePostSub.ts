@@ -11,32 +11,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await mongoose.connect(process.env.DATABASE_URL)
 
 
-  const data: any = req.body
   const token: string = String(req.headers["authorization"])
-  let decodedData: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+  const {Name, Email}: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+  
   if (token == "null") {
     console.log("niezalogowany")
     res.status(401).send({ text: "NOT authenticated" })
     return
   }
-  const parsedData: SinglePostFromDatabase = JSON.parse(data)
+  const parsedData: SinglePostFromDatabase = {...JSON.parse(req.body), Username: Name, UserEmail: Email }
 
-  const source: any = await BlogPosts.create({
-    Message: parsedData.Message,
-    Title: parsedData.Title,
-    Tags: parsedData.Tags,
-    CreatedAt: parsedData.CreatedAt,
-    Username: decodedData.Name,
-    UserEmail: decodedData.Email,
-    ShortDesc: parsedData.ShortDesc,
-    Category: parsedData.Category,
-    CommentsCount: parsedData.CommentsCount,
-    TimeToRead: parsedData.TimeToRead,
-    TotalWords: parsedData.TotalWords,
-    Likes: parsedData.Likes,
-    WhoLiked: parsedData.WhoLiked
-
-  })
+  const source: any = await BlogPosts.create(parsedData)
 
   await source.save()
 

@@ -6,7 +6,7 @@ const SingleComment = ({
   parentShowCommentsFlag = false,
   depth,
   comment,
-  openedCommentsView = null,
+  openedCommentsView = false,
   handleopenedCommentsView = null,
   visibility = true,
   postId,

@@ -110,7 +110,9 @@ const Post = ({
 
             <div className="flex">
               <h1 className="text-3xl font-semibold w-[70%]">{item.Title}</h1>
-              <p className="absolute right-0 top-0">{item.CreatedAt}</p>
+              <p className="absolute right-0 top-0">
+                {item.CreatedAt.toString().split("T")[0]}
+              </p>
             </div>
             <div className="flex w-[100%] justify-between ">
               <div className="mt-4 text-gray-600 w-[70%]">
