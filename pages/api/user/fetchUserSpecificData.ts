@@ -13,8 +13,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
         return
     }
 
-
-
     const token: string = String(req.headers["authorization"])
 
     const {Email}: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)

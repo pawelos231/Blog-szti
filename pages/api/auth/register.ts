@@ -3,16 +3,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 //models and hashing
 import mongoose from 'mongoose';
 const bcrypt: any = require('bcrypt');
-const UserData: any = require("../../../server/models/UserModel")
+const UserData: any = require("@server/models/UserModel")
 
 //interfaces
-import { UserRegister } from '../../../interfaces/UserLoginInterface'
-import { Token } from '../../../interfaces/UserLoginInterface';
-import { LoggingInterface, ReposneInterface } from '../../../interfaces/reponseTypeRegister'
+import { UserRegister } from '@interfaces/UserLoginInterface'
+import { Token } from '@interfaces/UserLoginInterface';
+import { LoggingInterface, ReposneInterface } from '@interfaces/reponseTypeRegister'
 
 //Helpers
-import { CheckIfEmailExists } from '../../../server/helpers/findUserByEmail'
-import { sign } from '../../../server/helpers/validateToken'
+import { CheckIfEmailExists } from '@server/helpers/findUserByEmail'
+import { sign } from '@server/helpers/validateToken'
 
 
 
