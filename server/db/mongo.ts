@@ -15,9 +15,6 @@ if(process.env.NODE_ENV !== "production") {
 } else {
     clientPromise = client.connect()
 }
-clientPromise = global._mongoClientPromise
-
-
 export default clientPromise
     
     
