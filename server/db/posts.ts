@@ -1,5 +1,4 @@
 import clientPromise from "./mongo";
-import mongoose from "mongoose";
 const BlogPosts = require("@server/models/BlogPosts")
 let client;
 let db

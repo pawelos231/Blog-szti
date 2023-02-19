@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb'
+import mongoose from 'mongoose'
 const URI: string = process.env.DATABASE_URL
 const options = {}
 
@@ -13,9 +14,9 @@ if(process.env.NODE_ENV !== "production") {
     }
     clientPromise = global._mongoClientPromise
 } else {
+    await mongoose.connect(URI)
     clientPromise = client.connect()
 }
-clientPromise = global._mongoClientPromise
 
 
 export default clientPromise
