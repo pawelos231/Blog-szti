@@ -7,11 +7,17 @@ if (!MONGODB_URI) {
     'Please define the MONGODB_URI environment variable inside .env'
   )
 }
-
-async function dbConnect (){ 
-    return mongoose.connect(MONGODB_URI, ()=> {
-             console.log("your db is connected now")
-    }) 
+const connection: any = {}
+async function dbConnect() {
+    /* check if we have connection to our databse*/
+    if (connection.isConnected) {
+      return
+    }
+  
+    /* connecting to our database */
+    const db = await mongoose.connect(MONGODB_URI)
+  
+    connection.isConnected = db.connections[0].readyState
   }
 
 export default dbConnect
