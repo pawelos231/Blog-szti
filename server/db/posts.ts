@@ -1,5 +1,6 @@
 import clientPromise from "./mongo";
 const BlogPosts = require("@server/models/BlogPosts")
+const CommentOnPost = require("@server/models/CommentModel")
 
 interface Response {
     posts?: any;
@@ -72,5 +73,16 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
         return {response: result}  
       } catch(error){
           return {error: 'Failed to add like'}
+    } 
+}
+
+
+export const GetAllComments = async (postId: string) => {
+    try{
+      await clientPromise()
+      const result: any = await CommentOnPost.find({ PostId: postId })
+      return {comments: result}  
+    } catch(error){
+        return {error: 'Failed to fetch Comments'}
     } 
 }

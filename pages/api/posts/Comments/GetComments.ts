@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { CommentsOnPost } from "@interfaces/PostsInterface";
-import {GetAllComments} from "@server/db/comments"
+import {GetAllComments} from "@server/db/posts"
 
 interface TransformedComments extends CommentsOnPost {
   children: TransformedComments | any;
