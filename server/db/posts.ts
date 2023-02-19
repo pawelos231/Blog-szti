@@ -18,7 +18,6 @@ const init = async (): Promise<void> => {
         return
     }
     try{
-        await mongoose.connect(process.env.DATABASE_URL)
         client = await clientPromise
         db = await client.db()
     } catch(error: any){
