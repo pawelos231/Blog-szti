@@ -33,7 +33,7 @@ const Loader = ({ loadingStatus }: { loadingStatus: boolean }): JSX.Element => {
   return (
     <>
       {loadingStatus ? (
-        <div className="absolute top-0 text-black">
+        <div>
           {" "}
           <CircularProgress size={80} thickness={2.0} color="inherit" />{" "}
         </div>
@@ -151,7 +151,7 @@ const LoginUserView = ({ view }): JSX.Element => {
   };
 
   const LoginHanlder = async ({ email, password }: Register) => {
-    setVisibleButton(false);
+    setVisibleButton(true);
     setLoadingStatus(true);
     await fetch(LOGIN_URL, {
       method: POST,
