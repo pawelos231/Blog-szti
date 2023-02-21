@@ -1,0 +1,35 @@
+.field{
+    background-color: #111;
+    color: white;
+    border-radius: 2px;
+    border: 1px solid white;
+    width: 60%;
+    padding: 4px;
+    margin: 0;
+}
+.field::placeholder{
+    color: #bbb;
+}
+.buttonSend{
+    background-color: #222;
+    padding: 5px 50px 5px 50px;
+    border-radius: 2px;
+    transition: .1s;
+    cursor: pointer;
+    border: 1px solid white;
+}
+.buttonSend:hover{
+    transform: scale(1.05);
+}
+.buttonSend:disabled{
+    background-color: gray;
+    opacity: 0.445;
+}
+.container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

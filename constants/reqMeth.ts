@@ -1,5 +1,5 @@
-export const DELETE: string = "DELETE";
-export const GET : string = "GET";
-export const PUT : string  = "PUT";
-export const PATCH :string  = "PATCH";
-export const POST :string  = "POST";
+export const DELETE = "DELETE";
+export const GET  = "GET";
+export const PUT   = "PUT";
+export const PATCH  = "PATCH";
+export const POST   = "POST";

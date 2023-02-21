@@ -6,12 +6,11 @@ import mongoose from 'mongoose';
 
 
 //helpers
-import { CheckIfEmailExists } from '../../../server/helpers/findUserByEmail'
+import { CheckIfEmailExists } from '@server/helpers/findUserByEmail'
 
 //interfaces
-import { LoggingInterface, ReposneInterface } from '../../../interfaces/reponseTypeRegister'
-import { Token, ReceivedLoginData } from '../../../interfaces/UserLoginInterface'
-import { UserLogin } from '../../../interfaces/UserLoginInterface'
+import { LoggingInterface, ReposneInterface } from '@interfaces/reponseTypeRegister'
+import { Token, ReceivedLoginData,UserLogin } from '@interfaces/UserLoginInterface'
 
 
 const bcrypt = require('bcrypt');
@@ -19,12 +18,12 @@ const bcrypt = require('bcrypt');
 export default async function Handler(req: NextApiRequest, res: NextApiResponse<LoggingInterface | ReposneInterface | any>) {
 
     await mongoose.connect(process.env.DATABASE_URL)
-    const parseObj: UserLogin = JSON.parse(req.body)
-    if (await CheckIfEmailExists(parseObj.email) != true) {
-        const UserData: ReceivedLoginData = await CheckIfEmailExists(parseObj.email)
+    const {email, password}: UserLogin = JSON.parse(req.body)
+    if (await CheckIfEmailExists(email) != true) {
+        const UserData: ReceivedLoginData = await CheckIfEmailExists(email)
 
         const PasswordInDatabase: string = UserData.Password
-        const PasswordGivenByUser: string = parseObj.password
+        const PasswordGivenByUser: string = password
 
         bcrypt.compare(PasswordGivenByUser, PasswordInDatabase, async function (err: any, result: boolean) {
 
@@ -51,6 +50,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
         })
     }
     else {
-        res.status(200).json({ message: { text: "niepoprawne hasło bądź email", status: 0 } })
+        res.status(200).json({ message: { text: "nie ma uzytkownika o podanym mailu", status: 0 } })
     }
 }

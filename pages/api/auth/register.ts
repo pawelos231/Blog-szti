@@ -20,21 +20,21 @@ import { sign } from '@server/helpers/validateToken'
 export default async function Handler(req: NextApiRequest, res: NextApiResponse<ReposneInterface | LoggingInterface>) {
 
     await mongoose.connect(process.env.DATABASE_URL)
-    const parseObj: UserRegister = JSON.parse(req.body)
+    const {email, password, name}: UserRegister = JSON.parse(req.body)
     const saltRounds: number = 10;
     bcrypt.genSalt(saltRounds, async function (err: any, salt: any) {
         if (err) {
             console.log(err)
         }
-        bcrypt.hash(parseObj.password, salt, async function (err: any, hash: string) {
+        bcrypt.hash(password, salt, async function (err: any, hash: string) {
             if (err) {
                 console.log(err)
             }
-            if (await CheckIfEmailExists(parseObj.email)) {
+            if (await CheckIfEmailExists(email) === true) {
 
                 const claims: Token = {
-                    Name: parseObj.name,
-                    Email: parseObj.email
+                    Name: name,
+                    Email: email
                 }
 
                 const jwt: string = await sign(
@@ -43,13 +43,13 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
                 )
 
                 const data: any = await UserData.create({
-                    Name: parseObj.name,
-                    Email: parseObj.email,
+                    Name: name,
+                    Email: email,
                     Password: hash
                 })
 
                 await data.save()
-                res.status(200).json({ message: { text: "udało się zalogować", status: 1 }, token: jwt, name: parseObj.name })
+                res.status(200).json({ message: { text: "udało się zalogować", status: 1 }, token: jwt, name: name })
 
             } else {
                 res.status(200).json({ message: { text: "uzytkownik o podanym mailu istnieje", status: 0 } })
