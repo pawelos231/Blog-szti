@@ -19,7 +19,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     const {specificPosts, error} = await getPostsByUser(String(Email))
     if(error) throw new Error(error)
 
-    set<SinglePostFromDatabase[]>(SPECIFIC_USER_POSTS, 3600, specificPosts)
+    set<SinglePostFromDatabase[]>(SPECIFIC_USER_POSTS, 60, specificPosts)
 
     res.status(200).json(specificPosts)
 }

@@ -97,16 +97,25 @@ const LoginUserView = ({ view }): JSX.Element => {
           .max(60, "maksymalnie 60 znaków")
           .required("required")
           .matches(EMAIL_VALIDATOR, "invalid email"),
-        password: Yup.string()
-          .min(10, "hasło musi mieć minimalnie 10 znaków")
-          .max(32, "hasło moze mieć maksymalnie 32 znaki")
-          .required("required")
-          .matches(
-            PASSWORD_VALIDATIOR,
-            "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-          ),
+        password: Yup.string().when("password", () => {
+          if (AuthView.Login == view) {
+            return Yup.string().required("required");
+          } else if (AuthView.Register == view) {
+            return Yup.string()
+              .min(10, "hasło musi mieć minimalnie 10 znaków")
+              .max(32, "hasło moze mieć maksymalnie 32 znaki")
+              .required("required")
+              .matches(
+                PASSWORD_VALIDATIOR,
+                "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+              );
+          }
+        }),
       },
-      [["name", "name"]]
+      [
+        ["name", "name"],
+        ["password", "password"],
+      ]
     );
 
   const RegisterHandler = async ({
