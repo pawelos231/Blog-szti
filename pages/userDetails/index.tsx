@@ -84,7 +84,10 @@ const Index = (): JSX.Element => {
           />
         </div>
         <div className="p-2 w-[20%] m-2 text-center rounded-sm hover:scale-105 cursor-pointer transition-all">
-          <label className="cursor-pointer " htmlFor={"ProfilePicUpload"}>
+          <label
+            className="cursor-pointer text-green-500 "
+            htmlFor={"ProfilePicUpload"}
+          >
             Zmień profilowe!
           </label>
           <input
