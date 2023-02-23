@@ -19,6 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(401).send({ text: "NOT authenticated" })
     return
   }
+  
   const parsedData: SinglePostFromDatabase = {...JSON.parse(req.body), Username: Name, UserEmail: Email }
 
   const source: any = await BlogPosts.create(parsedData)

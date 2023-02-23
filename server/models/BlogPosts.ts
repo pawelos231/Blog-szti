@@ -14,6 +14,7 @@ const BlogSchema = new Schema({
   },
   CreatedAt: {
     type: Date,
+    immutable: true,
     default: () => Date.now()
   },
   Tags: [String],

@@ -17,7 +17,17 @@ const UserSchema = new Schema({
     validator: (Email: string) => Email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     message: (props: any) => `Email ${props.value} jest niepoprawny`
 
+  },
+  ProfileImage: {
+    type: String,
+    default: () => "",
+  },
+  ProfileDescription: {
+    type: String,
+    default: () => "",
+    validator: (description: string) => description.length < 400,
+    message: (props: any) => `opis: ${props.value} musi mieć mniej niz 400 znaków`
   }
 })
 
-module.exports = mongoose.models.UserDataSchema || mongoose.model('UserDataSchema', UserSchema);
+module.exports = mongoose.models.UserData || mongoose.model('UserData', UserSchema);

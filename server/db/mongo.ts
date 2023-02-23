@@ -8,13 +8,11 @@ if (!MONGODB_URI) {
   )
 }
 async function dbConnect(): Promise<void> {
-    /* check if we have connection to our databse*/
     if (mongoose.connections[0].readyState) {
       console.log("juz jestem połączony")
       return
     }
   
-    /* connecting to our database */
      await mongoose.connect(MONGODB_URI)
 
   }

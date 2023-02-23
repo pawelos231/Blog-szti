@@ -1,5 +1,5 @@
 const LikedComments = () => {
-  return <div>LikedComments</div>;
+  return <section>LikedComments</section>;
 };
 
 export default LikedComments;

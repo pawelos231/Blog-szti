@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-//to implement
-/*
-class Fetcher{
-    constructor(){
 
-    }
-}
-*/
 //const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export function useFetch<T>(url: string, token: string): [boolean, boolean, any, T] {

@@ -1,5 +1,5 @@
 const CreatedComments = () => {
-  return <div>Comments</div>;
+  return <section>Comments</section>;
 };
 
 export default CreatedComments;

@@ -22,7 +22,8 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
         UserId: Email as string,
         UserName: Name as string
     }
-    if (CommentObjectForFront.UserId === "" || CommentObjectForFront.UserName === "") {
+    const {UserId, UserName} = CommentObjectForFront
+    if (UserId === "" || UserName === "") {
         res.send("nie mozesz przesyłać wartości będąc nie zalogowanym")
     }
     const createdComment: any = await CommentOnPost.create(CommentObjectForFront)
