@@ -1,5 +1,5 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import {setProfileDescritpion, getProfileDescription} from '@server/db/user'
+import {setProfileDescritpion, getUserDataByEmail} from '@server/db/user'
 import { verify } from "@server/helpers/validateToken";
 import {GET, POST} from '@constants/reqMeth'
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,18 +10,17 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     console.log(METHOD)
     switch(METHOD) {
         case GET:
-            const {ProfileDescription, errorGet} = await getProfileDescription(Email)
+            const {ProfileDescription, errorGet} = await getUserDataByEmail(Email)
             res.status(200).json(ProfileDescription)
             break;
 
         case POST:
-            console.log("TU NIC NIE POWINNO WYPISAĆ")
             const description: string = req.body
             const {message, errorPost} = await setProfileDescritpion(Email, description)
             if(message) res.status(200).json(description) 
             break;
 
         default:
-            res.status(200).json({ message: 'Welcome to API Routes!'}) 
+            res.status(200).json({ message: 'nie znaleziono metody'}) 
     }
 }

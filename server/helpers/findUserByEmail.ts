@@ -1,10 +1,10 @@
-const UserData = require("../models/UserModel")
+import {getUserDataByEmail} from '../db/user'
 
-export const CheckIfEmailExists: (email: string) => Promise<boolean | any> = async (email: string) => {
+export const CheckIfEmailExists = async (email: string): Promise<boolean | any> => {
 
-    const data: any = await UserData.findOne({Email : email})
-    if(data != null){
-        return data
+    const {ProfileDescription, errorGet}: any = await getUserDataByEmail(email)
+    if(ProfileDescription != null){
+        return ProfileDescription
     }
     return true
     

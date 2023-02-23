@@ -4,12 +4,15 @@ mongoose.Promise = global.Promise
 const CommentSchema = new Schema({
     UserId: {
         type: String,
+        required: true
     },
     PostId: {
         type: String,
+        required: true
     },
     CreatedAt: {
         type: Date,
+        immutable: true,
         default: () => Date.now()
     },
     Content: String,

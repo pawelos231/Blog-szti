@@ -1,5 +1,3 @@
-import NavbarForUserDesktop from "@components/userDetails/NavbarForUser/NavbarForUserDesktop";
-import { useTheme } from "next-themes";
 import {
   ChangeEvent,
   useState,
@@ -7,12 +5,13 @@ import {
   MutableRefObject,
   useEffect,
 } from "react";
+import Image from "next/image";
+import NavbarForUserDesktop from "@components/userDetails/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST, GET } from "@constants/reqMeth";
-import Image from "next/image";
+import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 const Index = (): JSX.Element => {
   const DESC_REF: MutableRefObject<any> = useRef(null);
-  const { theme, setTheme } = useTheme();
   const [viewModal, setViewModal] = useState<boolean>(true);
   const [token, setToken] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -68,6 +67,10 @@ const Index = (): JSX.Element => {
         <div className="absolute top-0 w-full">
           <Image
             src={"/static.jpg"}
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              shimmer(100, 60)
+            )}`}
             width={1000}
             layout="responsive"
             objectFit={"cover"}

@@ -24,6 +24,7 @@ const UserSchema = new Schema({
   },
   ProfileDescription: {
     type: String,
+    maxLength: 1000,
     default: () => "",
     validator: (description: string) => description.length < 400,
     message: (props: any) => `opis: ${props.value} musi mieć mniej niz 400 znaków`

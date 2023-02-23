@@ -16,7 +16,7 @@ export const setProfileDescritpion = async (Email: string, description: string) 
           return {errorPost: 'Failed to fetch posts'}
       } 
 }
-export const getProfileDescription = async (Email: string) => {
+export const getUserDataByEmail = async (Email: string) => {
     try{
         await clientPromise()
         const result = await UserData.find({Email: Email})
@@ -25,3 +25,4 @@ export const getProfileDescription = async (Email: string) => {
           return {errorGet: 'Failed to fetch posts'}
       } 
 }
+

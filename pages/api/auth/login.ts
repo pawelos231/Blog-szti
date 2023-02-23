@@ -37,9 +37,6 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
                     Name: UserData.Name,
                     Email: UserData.Email
                 }
-
-                console.log(UserData.Name)
-
                 const jwt = await sign(claims, process.env.ACCESS_TOKEN_SECRET)
 
                 res.status(200).json({ message: { text: "udało się zalogować", status: 1 }, token: jwt, name: UserData.Name })

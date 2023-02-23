@@ -1,7 +1,6 @@
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
-import { Token } from '../../interfaces/UserLoginInterface';
+import { Token } from '@interfaces/UserLoginInterface';
 
-//sign functions using jose beacuse default jsonwebToken does not work on the edge enviroment
 
 export async function sign(payload: Token, secret: string): Promise<string> {
     const iat: number = Math.floor(Date.now() / 1000);
