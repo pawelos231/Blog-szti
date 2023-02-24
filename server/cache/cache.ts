@@ -25,5 +25,8 @@ const setToCache = async<T>(key: string, expires: number, data: T): Promise<T> =
 const deleteFromCache = async(key: string): Promise<void> => {
     await redis.del(key)
 }
+const deleAllRedisValues = async(): Promise<void> => {
+    await redis.flushall()
+}
 
 export  {fetch, getFromCache, setToCache, deleteFromCache}
