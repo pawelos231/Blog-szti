@@ -1,14 +1,14 @@
 import {redis} from "./redis"
 
 const fetch = async<T>(key: string, expires: number, data:T) =>{
-    const existing: T = await get<T>(key)
+    const existing: T = await getFromCache<T>(key)
     if(existing !== null){
         return existing
     }
-    return set(key, expires, data)
+    return setToCache(key, expires, data)
 }
 
-const get = async<T>(key: string): Promise<T> =>{
+const getFromCache = async<T>(key: string): Promise<T> =>{
     const value: string = await redis.get(key)
     if(value == null){
         return null
@@ -16,14 +16,14 @@ const get = async<T>(key: string): Promise<T> =>{
     return JSON.parse(value)
 }
 
-const set = async<T>(key: string, expires: number, data: T): Promise<T> => {
+const setToCache = async<T>(key: string, expires: number, data: T): Promise<T> => {
     const value:T = data
     await redis.set(key, JSON.stringify(value), "EX", expires)
     return value
 }
 
-const del = async(key: string): Promise<void> => {
+const deleteFromCache = async(key: string): Promise<void> => {
     await redis.del(key)
 }
 
-export  {fetch, get, set, del}
+export  {fetch, getFromCache, setToCache, deleteFromCache}

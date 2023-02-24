@@ -1,7 +1,7 @@
 import clientPromise from "./mongo";
 const BlogPosts = require("@server/models/BlogPosts")
 const CommentOnPost = require("@server/models/CommentModel")
-
+require("../cache/index")
 interface Response {
     posts?: any;
     post?: any
@@ -29,7 +29,7 @@ export const getPostsByUser = async(Email: string) => {
     try{
         await clientPromise()
         
-        const result: any = await BlogPosts.find({ UserEmail: Email })
+        const result: any = await BlogPosts.find({ UserEmail: Email }).cache()
         return {specificPosts: result}  
       } catch(error){
           return {error: 'Failed to fetch posts'}
@@ -40,7 +40,7 @@ export const getLikedUserPosts = async(Name: string) => {
     try{
         await clientPromise()
         
-        const result: any = await BlogPosts.find({ WhoLiked: Name })
+        const result: any = await BlogPosts.find({ WhoLiked: Name }).cache()
         return {likedUserPosts: result}  
       } catch(error){
           return {error: 'Failed to fetch posts'}
@@ -80,7 +80,7 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
 export const GetAllComments = async (postId: string) => {
     try{
       await clientPromise()
-      const result: any = await CommentOnPost.find({ PostId: postId })
+      const result: any = await CommentOnPost.find({ PostId: postId }).cache()
       return {comments: result}  
     } catch(error){
         return {error: 'Failed to fetch Comments'}
