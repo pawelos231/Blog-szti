@@ -12,7 +12,6 @@ interface Response {
 }
 
 
-
 export const getAllPosts = async (): Promise<Response> => {
     try{
       
