@@ -39,10 +39,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id: string | Array<string> = params.id;
 
   await mongoose.connect(process.env.DATABASE_URL);
-  const { post, error } = await getPostById(String(id));
+  const { result, error } = await getPostById(String(id));
+
+  if (error) {
+    console.log(error);
+  }
 
   const formattedPost: SinglePostFromDatabase = JSON.parse(
-    JSON.stringify(post)
+    JSON.stringify(result)
   );
 
   return {

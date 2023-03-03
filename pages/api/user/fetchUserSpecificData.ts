@@ -12,8 +12,10 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     const token: string = String(req.headers["authorization"])
 
     const {Email}: VerifiedToken = await verify(token, process.env.ACCESS_TOKEN_SECRET)
-    const {specificPosts, error} = await getPostsByUser(String(Email))
-    if(error) throw new Error(error)
+    const {result, error} = await getPostsByUser(String(Email))
+    if(error) {
+        console.log(error)
+    }
 
-    res.status(200).json(specificPosts)
+    res.status(200).json(result)
 }

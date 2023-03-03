@@ -19,9 +19,12 @@ export default function Home({
 }
 export const getStaticProps: GetStaticProps = async () => {
   await mongoose.connect(process.env.DATABASE_URL);
-  const { posts, error }: any = await getAllPosts();
+  const { result, error }: any = await getAllPosts();
+  if (error) {
+    console.log(error);
+  }
   const postsFinal: Array<SinglePostFromDatabase> = JSON.parse(
-    JSON.stringify(posts)
+    JSON.stringify(result)
   );
 
   return {

@@ -21,13 +21,18 @@ const normalizeComments = (
 
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
+  
   const postId: string = JSON.parse(req.body)
-  const {comments, error} = await GetAllComments(String(postId))
-  if(error) throw new Error(error)
-  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(comments)))
+
+  const {result, error} = await GetAllComments(String(postId))
+ 
+
+  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(result)))
+
   if(comms){
     res.status(200).json(comms)
-  } else {
+  } 
+  else {
     res.status(200).json(error)
   }
   

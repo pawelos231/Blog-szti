@@ -15,17 +15,25 @@ type ResponseData = {
 
 const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
     if (flag === 1) {
-        if (!whoLiked.find((item: string) => item == name)) {
+
+        if (!whoLiked.find((item: string) => item === name)) {
             return [...whoLiked, name]
         }
+
         return whoLiked
     }
 
     else if (flag === -1) {
+
         const newArr: string[] = whoLiked.filter((item: string) => item !== name)
-        if (newArr.length === 0) return []
+
+        if (newArr.length === 0) {
+            return []
+        }
+
         return newArr
     }
+
     else {
         console.log("niepoprawne dane")
         return []
@@ -47,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
 
-    const {response, error} = await likePost(newLikedArr, ValueToPass, itemId)
+    const {result, error} = await likePost(newLikedArr, ValueToPass, itemId)
 
     if (flag === 1) {
         res.status(200).json({ text: "pomyślnie dodano like'a" })

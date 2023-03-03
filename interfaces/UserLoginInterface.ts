@@ -1,13 +1,9 @@
-export interface UserRegister {
+export type Register = {
     name: string,
     email: string,
     password: string
 }
-
-export interface UserLogin {
-    email: string
-    password: string
-}
+export type Login = Omit<Register, "name">
 
 export interface Token {
     Name: string

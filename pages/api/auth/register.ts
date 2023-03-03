@@ -6,7 +6,7 @@ const bcrypt: any = require('bcrypt');
 const UserData: any = require("@server/models/UserModel")
 
 //interfaces
-import { UserRegister } from '@interfaces/UserLoginInterface'
+import { Register } from '@interfaces/UserLoginInterface'
 import { Token } from '@interfaces/UserLoginInterface';
 import { LoggingInterface, ReposneInterface } from '@interfaces/reponseTypeRegister'
 
@@ -20,7 +20,7 @@ import { sign } from '@server/helpers/validateToken'
 export default async function Handler(req: NextApiRequest, res: NextApiResponse<ReposneInterface | LoggingInterface>) {
 
     await mongoose.connect(process.env.DATABASE_URL)
-    const {email, password, name}: UserRegister = JSON.parse(req.body)
+    const {email, password, name}: Register = JSON.parse(req.body)
     const saltRounds: number = 10;
     bcrypt.genSalt(saltRounds, async function (err: any, salt: any) {
         if (err) {

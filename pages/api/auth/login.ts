@@ -10,7 +10,7 @@ import { CheckIfEmailExists } from '@server/helpers/findUserByEmail'
 
 //interfaces
 import { LoggingInterface, ReposneInterface } from '@interfaces/reponseTypeRegister'
-import { Token, ReceivedLoginData,UserLogin } from '@interfaces/UserLoginInterface'
+import { Token, ReceivedLoginData,Login } from '@interfaces/UserLoginInterface'
 
 
 const bcrypt = require('bcrypt');
@@ -18,7 +18,7 @@ const bcrypt = require('bcrypt');
 export default async function Handler(req: NextApiRequest, res: NextApiResponse<LoggingInterface | ReposneInterface | any>) {
 
     await mongoose.connect(process.env.DATABASE_URL)
-    const {email, password}: UserLogin = JSON.parse(req.body)
+    const {email, password}: Login = JSON.parse(req.body)
     if (await CheckIfEmailExists(email) != true) {
         const UserData: ReceivedLoginData = await CheckIfEmailExists(email)
 

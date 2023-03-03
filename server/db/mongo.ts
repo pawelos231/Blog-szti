@@ -1,12 +1,14 @@
 import mongoose from 'mongoose'
 
 const MONGODB_URI = process.env.DATABASE_URL
+const ENV_VAR_NOT_FOUND = 'Please define the MONGODB_URI environment variable inside .env'
 
 if (!MONGODB_URI) {
   throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env'
-  )
+    ENV_VAR_NOT_FOUND
+)
 }
+
 async function dbConnect(): Promise<void> {
     if (mongoose.connections[0].readyState) {
       console.log("juz jestem połączony")
