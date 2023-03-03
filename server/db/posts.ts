@@ -45,7 +45,7 @@ export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts> => 
     try{
         await clientPromise()
         
-        const result: any = await BlogPosts.find({ WhoLiked: Name }).cache()
+        const result: Posts = await BlogPosts.find({ WhoLiked: Name }).cache()
         return {result}  
       } catch(error){
           return {error: 'Failed to fetch posts liked', result: undefined}
