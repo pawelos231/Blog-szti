@@ -14,7 +14,7 @@ import { EMAIL_VALIDATOR, PASSWORD_VALIDATIOR } from "@constants/validators";
 import styles from "./styles.module.css";
 
 interface Register {
-  name?: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -150,7 +150,7 @@ const LoginUserView = ({ view }): JSX.Element => {
       });
   };
 
-  const LoginHanlder = async ({ email, password }: Register) => {
+  const LoginHanlder = async ({ email, password }: Omit<Register, "name">) => {
     setVisibleButton(true);
     setLoadingStatus(true);
     await fetch(LOGIN_URL, {
