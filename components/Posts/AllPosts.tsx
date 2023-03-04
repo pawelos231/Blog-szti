@@ -2,13 +2,9 @@ import * as React from "react";
 import Post from "./Post/Post";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import { CircularProgress } from "@material-ui/core";
-import { useState } from "react";
 
-const AllPosts: ({ posts }) => JSX.Element = ({
-  posts,
-}: {
-  posts: SinglePostFromDatabase[];
-}) => {
+type Posts = SinglePostFromDatabase[];
+const AllPosts = ({ posts }: { posts: Posts }): JSX.Element => {
   if (posts?.length == 0) {
     return (
       <div className="flex justify-center mt-12 text-black">

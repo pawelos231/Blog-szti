@@ -10,6 +10,7 @@ import SingleComment from "./SingleComment/SingleComment";
 import { getCommentsFetch } from "../../../redux/slices/PostsSlices/commentSlice";
 import { FetchComments } from "../../../constants/apisEndpoints";
 import { loaderFor } from "../../userDetails/helpers";
+
 const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   const [openedCommentsView, handleopenedCommentsView] =
     useState<boolean>(false);

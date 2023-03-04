@@ -1,12 +1,12 @@
 import { Dispatch, MutableRefObject, useRef } from "react";
-import { CommentsOnPost } from "../../../interfaces/PostsInterface";
-import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
-import { GenerateDateString } from "../../../helpers/NormalizeDate";
+import { CommentsOnPost } from "@interfaces/PostsInterface";
+import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { GenerateDateString } from "@helpers/NormalizeDate";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AddCommentEndpoint } from "../../../constants/apisEndpoints";
+import { AddCommentEndpoint } from "@constants/apisEndpoints";
 import { AnyAction } from "redux";
-import { addComment } from "../../../redux/slices/PostsSlices/commentSlice";
+import { addComment } from "@redux/slices/PostsSlices/commentSlice";
 const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const [comunicat, setComunicat] = useState<boolean>(false);

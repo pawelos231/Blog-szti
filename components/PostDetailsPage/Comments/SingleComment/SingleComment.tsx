@@ -13,7 +13,6 @@ const SingleComment = ({
 }) => {
   const [opened, handleOpen] = useState<boolean>(false);
   const valueOfReply: MutableRefObject<any> = useRef(null);
-  console.log(depth);
 
   const ReplyToComment = async (): Promise<void> => {
     const date: string = GenerateDateString();

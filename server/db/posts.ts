@@ -1,6 +1,5 @@
 import clientPromise from "./mongo";
 import { CommentsOnPost, SinglePostFromDatabase } from "@interfaces/PostsInterface";
-import {deleteAllRedisValues} from '@server/cache/cache'
 const BlogPosts = require("@server/models/BlogPosts")
 const CommentOnPost = require("@server/models/CommentModel")
 require("../cache/index")

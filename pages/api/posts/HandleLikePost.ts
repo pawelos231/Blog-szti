@@ -11,6 +11,7 @@ interface LikedPosts {
 
 type ResponseData = {
     text: string
+    Name: string
 }
 
 const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
@@ -40,11 +41,12 @@ const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] 
     }
 
 }
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Partial<ResponseData>>) {
 
     const {flag, WhoLiked, itemId, ValueToPass}: LikedPosts = JSON.parse(req.body)
 
     const token: string = String(req.headers["authorization"])
+
     if (token == "null") {
         console.log("niezalogowany")
         res.status(401).send({ text: "NOT authenticated" })
@@ -52,17 +54,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const {Name}: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
-
     const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
-
     const {result, error} = await likePost(newLikedArr, ValueToPass, itemId)
 
     if (flag === 1) {
-        res.status(200).json({ text: "pomyślnie dodano like'a" })
+        res.status(200).json({ text: "pomyślnie dodano like'a", Name })
     }
 
     else if (flag === -1) {
-        res.status(200).json({ text: "pomyślnie odlikowano" })
+        res.status(200).json({ text: "pomyślnie odlikowano", Name })
     }
 
     else {

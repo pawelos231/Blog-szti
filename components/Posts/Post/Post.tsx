@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import Image from "next/image";
 import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
@@ -12,16 +12,26 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { NotAuth } from "../../userDetails/constants";
+import { NextRouter } from "next/router";
+
 interface ReponseFromLikeApi {
   text: string;
+  Name?: string;
 }
-const Post = ({
-  item,
-  flag,
-}: {
+
+interface LikedPosts {
+  flag: number;
+  ValueToPass: number;
+  itemId: string;
+  WhoLiked: Array<string>;
+}
+
+interface Props {
   item: SinglePostFromDatabase;
   flag: boolean;
-}) => {
+}
+
+const Post = ({ item, flag }: Props) => {
   const checkIfPostIsAlreadyLiked = () => {
     const ifLiked: string | undefined = item.WhoLiked.find(
       (item: string) => item == localStorage.getItem("userName")
@@ -38,30 +48,23 @@ const Post = ({
   const [modal, openModal] = useState<boolean>(false);
   const [favourite, setFav] = useState<boolean>(true);
   const [like, setLiked] = useState<boolean>(false);
+  const [likedArray, dispatchLikedArray] = useState<string[]>(item.WhoLiked);
 
-  const setLikedPostHandler: () => void = () => {
-    setLiked(!like);
-  };
+  const router: NextRouter = useRouter();
 
-  interface LikedPosts {
-    flag: number;
-    ValueToPass: number;
-    itemId: string;
-    WhoLiked: Array<string>;
-  }
-
-  const router = useRouter();
   const LikesPosts = async (flag: number): Promise<void> => {
-    setLikedPostHandler();
-    const AfterComputation: number = item.WhoLiked.length + flag;
-    console.log(item.WhoLiked.length);
+    setLiked(!like);
+    const AfterComputation: number = likedArray.length + flag;
+
     const CombinedValues: LikedPosts = {
       ValueToPass: AfterComputation,
       flag: flag,
       itemId: item._id,
       WhoLiked: item.WhoLiked,
     };
+
     const userToken: string = localStorage.getItem("profile");
+
     await fetch("/api/posts/HandleLikePost", {
       method: "POST",
       headers: {
@@ -70,10 +73,19 @@ const Post = ({
       body: JSON.stringify(CombinedValues),
     })
       .then((res: Response) => res.json())
-      .then((data: ReponseFromLikeApi) => {
-        console.log(data);
-        if (data.text === NotAuth) {
+      .then(({ text, Name }: ReponseFromLikeApi) => {
+        if (text === NotAuth) {
           router.push("/userLogin/register");
+        }
+        if (flag == 1) {
+          dispatchLikedArray((prev: string[]) => [...prev, Name]);
+        } else if (flag == -1) {
+          dispatchLikedArray((prev: string[]) => {
+            const index: number = prev.findIndex((item) => item == Name);
+            index > -1 ? prev.splice(index, 1) : null;
+
+            return [...prev];
+          });
         }
       });
   };
@@ -145,7 +157,7 @@ const Post = ({
                   className="text-lg  cursor-pointer "
                   onClick={() => openWhoLikedModal()}
                 >
-                  {item.WhoLiked.length}
+                  {likedArray.length}
                 </p>
               </div>
             ) : (
@@ -157,7 +169,7 @@ const Post = ({
                   className="text-lg cursor-pointer "
                   onClick={() => openWhoLikedModal()}
                 >
-                  {item.WhoLiked.length}
+                  {likedArray.length}
                 </p>
               </div>
             )}
@@ -188,7 +200,7 @@ const Post = ({
             </div>
             <h3 className="mb-10">Polikowali: </h3>
             <div className="flex flex-col justify-center items-center bg-white text-black w-[35%]  rounded-lg	 h-[50%] overflow-scroll overflow-x-hidden">
-              {item.WhoLiked.map((item: string) => (
+              {likedArray.map((item: string) => (
                 <>
                   <div>{item}</div>
                 </>
