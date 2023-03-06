@@ -39,9 +39,11 @@ const Navbar: () => JSX.Element = () => {
                 <Notifications color="inherit" fontSize="inherit" />
               </div>
               <div className="text-4xl z-10 dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
-                <Link href={"/userDetails/userProfile"}>
-                  <Person fontSize="inherit" color="inherit" />
-                </Link>
+                {Object.keys(profileObj).length > 2 ? (
+                  <Link href={"/userDetails/userProfile"}>
+                    <Person fontSize="inherit" color="inherit" />
+                  </Link>
+                ) : null}
               </div>
               {Object.keys(profileObj).length > 2 ? (
                 <div

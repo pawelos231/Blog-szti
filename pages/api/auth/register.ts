@@ -30,7 +30,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
             if (err) {
                 console.log(err)
             }
-            if (await CheckIfEmailExists(email) === true) {
+            if (await CheckIfEmailExists(email) === false) {
 
                 const claims: Token = {
                     Name: name,

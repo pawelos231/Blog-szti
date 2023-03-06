@@ -144,7 +144,7 @@ const LoginUserView = ({ view }): JSX.Element => {
           if (data?.message?.status === 1) {
             router.push("/");
           } else {
-            setVisibleButton(true);
+            setVisibleButton(false);
           }
         }, 500);
       });
@@ -171,6 +171,8 @@ const LoginUserView = ({ view }): JSX.Element => {
           setCompleted(false);
           if (data?.message?.status === 1) {
             router.push("/");
+          } else {
+            setVisibleButton(false);
           }
         }, 500);
       });

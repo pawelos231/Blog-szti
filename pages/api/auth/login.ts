@@ -19,17 +19,19 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
 
     await mongoose.connect(process.env.DATABASE_URL)
     const {email, password}: Login = JSON.parse(req.body)
-    if (await CheckIfEmailExists(email) != true) {
+    if (await CheckIfEmailExists(email) !== false) {
         const UserData: ReceivedLoginData = await CheckIfEmailExists(email)
 
-        const PasswordInDatabase: string = UserData.Password
+        const PasswordInDatabase: string = UserData[0].Password
         const PasswordGivenByUser: string = password
+        console.log(PasswordInDatabase, PasswordGivenByUser)
 
         bcrypt.compare(PasswordGivenByUser, PasswordInDatabase, async function (err: any, result: boolean) {
-
+       
             if (err) {
                 console.log(err)
-                res.status(500).json(err)
+                res.status(500).json("coś poszło nie tak przy logowaniu")
+                return
             }
 
             if (result) {

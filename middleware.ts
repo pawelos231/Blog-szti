@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { FETCH_USER_LIKED_POSTS, FETCH_USER_CREATED_POSTS, ADD_COMMENT_URL, DELETE_COMMENT, LIKE_COMMENT, DESCRIPTION_URL } from "@constants/apisEndpoints";
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
   if (req.nextUrl.pathname.startsWith("/api/user")) {
@@ -11,5 +12,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ['/api/user/fetchUserSpecificData', '/api/user/UserLikedPosts'],
+  matcher: [FETCH_USER_LIKED_POSTS, FETCH_USER_CREATED_POSTS, ADD_COMMENT_URL, DELETE_COMMENT, LIKE_COMMENT, DESCRIPTION_URL],
 }

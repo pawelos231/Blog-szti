@@ -9,13 +9,18 @@ import Image from "next/image";
 import NavbarForUserDesktop from "@components/userDetails/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST, GET } from "@constants/reqMeth";
+import { NotAuth } from "@components/userDetails/constants";
+import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
+import { CheckIfLoggedIn } from "@server/helpers/checkIfLoggedIn";
 const Index = (): JSX.Element => {
   const DESC_REF: MutableRefObject<any> = useRef(null);
   const [viewModal, setViewModal] = useState<boolean>(true);
   const [token, setToken] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [file, setFile] = useState<File>();
+  const router: NextRouter = useRouter();
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -23,7 +28,7 @@ const Index = (): JSX.Element => {
   };
 
   const fetchDescription = async (): Promise<void> => {
-    if (token.length == 0) return;
+    if (token && token.length == 0) return;
     await fetch(DESCRIPTION_URL, {
       method: GET,
       headers: {
@@ -31,9 +36,10 @@ const Index = (): JSX.Element => {
       },
     })
       .then((res: Response) => res.json())
-      .then((data) =>
-        setDescription(data[0].ProfileDescription.replaceAll(`"`, ""))
-      );
+      .then((data) => {
+        CheckIfLoggedIn(data.text, router);
+        setDescription(data[0].ProfileDescription.replaceAll(`"`, ""));
+      });
   };
 
   const sendDescription = async (): Promise<void> => {
@@ -46,7 +52,8 @@ const Index = (): JSX.Element => {
       },
     })
       .then((res: Response) => res.json())
-      .then((descriptionRes: any) => {
+      .then(async (descriptionRes: any) => {
+        CheckIfLoggedIn(descriptionRes.text, router);
         setDescription(descriptionRes);
         setViewModal(true);
       });

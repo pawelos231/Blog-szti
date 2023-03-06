@@ -23,7 +23,7 @@ export const getUserDataByEmail = async (Email: string) => {
         const result = await UserData.find({Email: Email})
         return {ProfileDescription: result}  
       } catch(error){
-          return {errorGet: 'Failed to fetch posts'}
+          return {errorGet: 'nothing here'}
       } 
 }
 
