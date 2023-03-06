@@ -20,7 +20,7 @@ export const getAllPosts = async (): ResponseWrapper<Posts> => {
       
       await clientPromise()
       
-      const result: Posts = await BlogPosts.find({}).cache()
+      const result: Posts = await BlogPosts.find({})
       return {result}  
     } catch(error){
         return {error: 'Failed to fetch posts', result: undefined}

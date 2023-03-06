@@ -78,7 +78,8 @@ const Post = ({ item, flag }: Props) => {
           router.push("/userLogin/register");
         }
         if (flag == 1) {
-          dispatchLikedArray((prev: string[]) => [...prev, Name]);
+          dispatchLikedArray([...likedArray, Name]);
+          console.log(likedArray);
         } else if (flag == -1) {
           dispatchLikedArray((prev: string[]) => {
             const index: number = prev.findIndex((item) => item == Name);
