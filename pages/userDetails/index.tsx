@@ -9,16 +9,24 @@ import Image from "next/image";
 import NavbarForUserDesktop from "@components/userDetails/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST, GET } from "@constants/reqMeth";
-import { NotAuth } from "@components/userDetails/constants";
 import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CheckIfLoggedIn } from "@server/helpers/checkIfLoggedIn";
+import useFetch from "@hooks/useFetchHook";
+import { ReceivedLoginData } from "@interfaces/UserLoginInterface";
+import { Unathorized } from "@interfaces/reponseTypeRegister";
+import { CircularProgress } from "@material-ui/core";
+
+type ResponseFromApi = ReceivedLoginData & Unathorized;
+
 const Index = (): JSX.Element => {
   const DESC_REF: MutableRefObject<any> = useRef(null);
   const [viewModal, setViewModal] = useState<boolean>(true);
   const [token, setToken] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [file, setFile] = useState<File>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const router: NextRouter = useRouter();
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +37,7 @@ const Index = (): JSX.Element => {
 
   const fetchDescription = async (): Promise<void> => {
     if (token && token.length == 0) return;
+    setLoading(true);
     await fetch(DESCRIPTION_URL, {
       method: GET,
       headers: {
@@ -38,8 +47,13 @@ const Index = (): JSX.Element => {
       .then((res: Response) => res.json())
       .then((data) => {
         CheckIfLoggedIn(data.text, router);
-        setDescription(data[0].ProfileDescription.replaceAll(`"`, ""));
+        setDescription(data.ProfileDescription.replaceAll(`"`, ""));
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(true);
       });
+    setLoading(false);
   };
 
   const sendDescription = async (): Promise<void> => {
@@ -66,7 +80,7 @@ const Index = (): JSX.Element => {
   useEffect(() => {
     fetchDescription();
   }, [token]);
-
+  console.log(loading);
   return (
     <>
       <NavbarForUserDesktop />
@@ -109,42 +123,52 @@ const Index = (): JSX.Element => {
             accept=".jpg, .jpeg, .png"
           />
         </div>
-        {viewModal ? (
-          <div className="w-[40%] h-[30%]">
-            {description.length === 0 ? (
-              <div className=" text-center m-2 h-[90%] border-2 border-white rounded-sm flex justify-center items-center">
-                <p className="text-xl text-white">napisz tu coś...</p>
+        {!loading ? (
+          <>
+            {" "}
+            {viewModal ? (
+              <div className="w-[40%] h-[30%]">
+                {description.length === 0 ? (
+                  <div className=" text-center m-2 h-[90%] border-2 border-white rounded-sm flex justify-center items-center">
+                    <p className="text-xl text-white">napisz tu coś...</p>
+                  </div>
+                ) : (
+                  <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
+                    {description}
+                  </div>
+                )}
+                <div
+                  className="p-2 w-full text-end cursor-pointer transition hover:scale-105"
+                  onClick={() => setViewModal(!viewModal)}
+                >
+                  Dodaj opis
+                </div>
               </div>
             ) : (
-              <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
-                {description}
-              </div>
+              <>
+                <textarea
+                  ref={DESC_REF}
+                  className="w-[30%] h-[30%] p-2"
+                ></textarea>
+                <div className="flex">
+                  <button
+                    onClick={() => setViewModal(true)}
+                    className="p-2 text-end hover:text-red-500"
+                  >
+                    Anuluj
+                  </button>
+                  <button
+                    onClick={() => sendDescription()}
+                    className="p-2 text-end hover:text-green-500"
+                  >
+                    Dodaj!
+                  </button>
+                </div>
+              </>
             )}
-            <div
-              className="p-2 w-full text-end cursor-pointer transition hover:scale-105"
-              onClick={() => setViewModal(!viewModal)}
-            >
-              Dodaj opis
-            </div>
-          </div>
-        ) : (
-          <>
-            <textarea ref={DESC_REF} className="w-[30%] h-[30%] p-2"></textarea>
-            <div className="flex">
-              <button
-                onClick={() => setViewModal(true)}
-                className="p-2 text-end hover:text-red-500"
-              >
-                Anuluj
-              </button>
-              <button
-                onClick={() => sendDescription()}
-                className="p-2 text-end hover:text-green-500"
-              >
-                Dodaj!
-              </button>
-            </div>
           </>
+        ) : (
+          <CircularProgress />
         )}
       </div>
     </>

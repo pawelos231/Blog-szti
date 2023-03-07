@@ -1,5 +1,6 @@
 import clientPromise from "./mongo";
 import { CommentsOnPost, SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { ResponseWrapper } from "./interfaces/ResponseInterface";
 const BlogPosts = require("@server/models/BlogPosts")
 const CommentOnPost = require("@server/models/CommentModel")
 require("../cache/index")
@@ -8,12 +9,7 @@ type Posts = Array<SinglePostFromDatabase>
 type Post = SinglePostFromDatabase
 type Comments = Array<CommentsOnPost>
 
-interface GenericResponse<T> {
-    result: T
-    error? : string
-}
 
-type ResponseWrapper<T> = Promise<GenericResponse<T>> 
 
 export const getAllPosts = async (): ResponseWrapper<Posts> => {
     try{
@@ -31,7 +27,7 @@ export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
-        const result: any = await BlogPosts.find({ UserEmail: Email }).cache()
+        const result: Posts = await BlogPosts.find({ UserEmail: Email }).cache()
         return {result}  
       } catch(error){
           return {error: 'Failed to fetch posts by user', result: undefined}
@@ -70,7 +66,7 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
     try{
         await clientPromise()
         
-        const result: any = await BlogPosts.updateOne({
+        await BlogPosts.updateOne({
             _id: itemId
         }, {
             $set: {
@@ -78,7 +74,7 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
                 WhoLiked: arrOfLikes
             }
         })
-        return {result}  
+        return {result: "successufully liked post"}  
       } catch(error){
           return {error: 'Failed to add like', result: undefined}
     } 

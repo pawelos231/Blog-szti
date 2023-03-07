@@ -21,6 +21,7 @@ const PostsUserFilter = ({
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
     token = localStorage.getItem("profile");
   }
+  
   type Posts = Readonly<Array<SinglePostFromDatabase>>;
 
   interface Unauth {

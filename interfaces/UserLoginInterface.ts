@@ -12,8 +12,10 @@ export interface Token {
 
 export interface ReceivedLoginData {
     _id: any
+    __v: string
     Name: string
     Password: string
+    ProfileImage: string
+    ProfileDescription: string
     Email: string
-    __v: string
 }

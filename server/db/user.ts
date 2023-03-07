@@ -1,7 +1,11 @@
 import clientPromise from "./mongo";
 const UserData: any = require("@server/models/UserModel")
+import { ResponseWrapper } from "./interfaces/ResponseInterface";
+import { ReceivedLoginData } from "@interfaces/UserLoginInterface";
 
-export const setProfileDescritpion = async (Email: string, description: string) => {
+type UserData = Array<ReceivedLoginData>
+
+export const setProfileDescritpion = async (Email: string, description: string): ResponseWrapper<string> => {
     try{
         await clientPromise()
         await UserData.updateOne({
@@ -11,19 +15,19 @@ export const setProfileDescritpion = async (Email: string, description: string) 
                 ProfileDescription: description
             }
         })
-        return {message: "udało się zaktualizować informacje profilu"}  
+        return {result: "udało się zaktualizować informacje profilu"}  
       } catch(error){
-          return {errorPost: 'Failed to fetch posts'}
+          return {error: 'Failed to fetch posts', result: undefined}
       } 
 }
 
-export const getUserDataByEmail = async (Email: string) => {
+export const getUserDataByEmail = async (Email: string): ResponseWrapper<ReceivedLoginData> => {
     try{
         await clientPromise()
-        const result = await UserData.find({Email: Email})
-        return {ProfileDescription: result}  
+        const result: UserData = await UserData.find({Email: Email})
+        return {result: result[0]}  
       } catch(error){
-          return {errorGet: 'nothing here'}
+          return {error: 'nothing here', result: undefined}
       } 
 }
 

@@ -12,3 +12,6 @@ export type ReposneInterface = {
     token: string
     name: string
 }
+export interface Unathorized {
+    text: string;
+  }
