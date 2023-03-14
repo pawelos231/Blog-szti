@@ -5,13 +5,17 @@ import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
 import SwitchDarkMode from "../switchers/switchMode";
+import { Button } from "helper_components/Button";
 
 const Navbar: () => JSX.Element = () => {
   const ROUTE_TO_REGISTER = "/userLogin/register";
   const ROUTE_TO_LOGIN = "/userLogin/login";
-  const [profileObj, setProfileObj] = useState<any>({});
-  const [clicked, Handle] = useState<boolean>(false);
+
+  const [profileObj, setProfileObj] = useState<Object | string>({});
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [clicked, HandleModal] = useState<boolean>(false);
   const router: NextRouter = useRouter();
+
   const Logout: () => void = () => {
     localStorage.clear();
     setProfileObj({});
@@ -36,7 +40,9 @@ const Navbar: () => JSX.Element = () => {
           <li>
             <div className="flex gap-14 items-center">
               <div className="text-4xl dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
-                <Notifications color="inherit" fontSize="inherit" />
+                {Object.keys(profileObj).length > 2 ? (
+                  <Notifications color="inherit" fontSize="inherit" />
+                ) : null}
               </div>
               <div className="text-4xl z-10 dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
                 {Object.keys(profileObj).length > 2 ? (
@@ -46,29 +52,15 @@ const Navbar: () => JSX.Element = () => {
                 ) : null}
               </div>
               {Object.keys(profileObj).length > 2 ? (
-                <div
-                  className=" bg-white pl-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105"
-                  onClick={() => Handle(!clicked)}
-                >
-                  Napisz Post
-                </div>
+                <Button onClick={() => HandleModal(true)}>Napisz post</Button>
               ) : null}
               <SwitchDarkMode />
               {router.pathname == ROUTE_TO_REGISTER ||
               router.pathname == ROUTE_TO_LOGIN ? null : Object.keys(profileObj)
                   .length <= 2 ? (
-                <div className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105">
-                  <Link href={"/userLogin/register"}>
-                    <a>Zaloguj się</a>
-                  </Link>
-                </div>
+                <Button href={ROUTE_TO_REGISTER}> Zaloguj się</Button>
               ) : (
-                <div
-                  className=" bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105"
-                  onClick={() => Logout()}
-                >
-                  Wyloguj się
-                </div>
+                <Button onClick={() => Logout()}>Wyloguj się</Button>
               )}
             </div>
           </li>
@@ -76,7 +68,7 @@ const Navbar: () => JSX.Element = () => {
       </nav>
       {clicked ? (
         <div className="fixed w-screen h-screen backdrop-blur-xl flex justify-center flex-col items-center z-20 bg-black/30 ">
-          <CreatePost Handle={Handle} />
+          <CreatePost Handle={HandleModal} />
         </div>
       ) : null}
     </>

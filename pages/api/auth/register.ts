@@ -22,6 +22,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
     await mongoose.connect(process.env.DATABASE_URL)
     const {email, password, name}: Register = JSON.parse(req.body)
     const saltRounds: number = 10;
+    console.log(email)
     bcrypt.genSalt(saltRounds, async function (err: any, salt: any) {
         if (err) {
             console.log(err)
