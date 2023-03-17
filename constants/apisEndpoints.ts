@@ -8,4 +8,4 @@ export const FETCH_USER_LIKED_POSTS =  '/api/user/UserLikedPosts'
 export const ADD_COMMENT_URL = '/api/posts/Comments/addComment'
 export const DELETE_COMMENT = '/api/posts/Comments/DeleteComment'
 export const LIKE_COMMENT = '/api/posts/Comments/LikeComment'
-
+export const ADD_POST = "/api/posts/HandlePostSub"

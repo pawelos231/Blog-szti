@@ -11,7 +11,8 @@
             "@helpers/*": ["helpers/*"],
             "@constants/*": ["constants/*"],
             "@config/*": ["config/*"],
-            "@components/*":["components/*"]
+            "@components/*":["components/*"],
+            "@UI/*":["UI/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

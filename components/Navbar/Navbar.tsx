@@ -5,7 +5,7 @@ import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
 import SwitchDarkMode from "../switchers/switchMode";
-import { Button } from "helper_components/Button";
+import { Button } from "UI/Button";
 
 const Navbar: () => JSX.Element = () => {
   const ROUTE_TO_REGISTER = "/userLogin/register";

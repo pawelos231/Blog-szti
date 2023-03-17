@@ -2,17 +2,10 @@ import { ComponentType, useEffect, useState } from "react";
 import RespMessage from "./MessageRepsonse/respMessage";
 import dynamic from "next/dynamic";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
-const ReactQuillTextEditor: ComponentType<any> = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill");
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
-  },
-  {
-    ssr: false,
-  }
-);
-
-import "react-quill/dist/quill.snow.css";
+import { ADD_POST } from "@constants/apisEndpoints";
+import { GenerateDateString } from "@helpers/NormalizeDate";
+import { stripTags } from "@helpers/stripTags";
+import TextEditor from "@UI/TextEditor";
 
 const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
   const [message, onHandleMessage] = useState<string>("");
@@ -26,10 +19,6 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     [x: string]: string;
   }
 
-  function stripTags(original: string) {
-    return original.replace(/(<([^>]+)>)/gi, "");
-  }
-
   const TemporaryComponent: (data: ResposnePostAPost) => void = (data) => {
     setTimeout(() => {
       setResp({});
@@ -39,43 +28,32 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     }, 1000);
     setResp(data);
   };
-
-  const GenerateDateString: () => string = () => {
-    const today: Date = new Date();
-    const date: string =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1 <= 9
-        ? "0" + Number(today.getMonth() + 1)
-        : today.getMonth() + 1) +
-      "-" +
-      (today.getDate() <= 9 ? "0" + Number(today.getDate()) : today.getDate());
-    return date;
+  const CountWords = () => {
+    return stripTags(message).split(" ").length;
   };
 
   const SendPost: (e: any) => Promise<void> = async (e) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
       const date: string = GenerateDateString();
 
-      const PostObjectToSend: SinglePostFromDatabase = {
+      const PostObjectToSend: Omit<SinglePostFromDatabase, "Username"> = {
         Message: message,
         Title: title,
         Tags: tags,
         ShortDesc: shortOpis,
-        Username: "",
         CreatedAt: date,
         Category: "test",
         TimeToRead: 5,
-        TotalWords: 150,
+        TotalWords: CountWords(),
         CommentsCount: 5,
         Likes: 5,
-        WhoLiked: ["seba", "no było"],
+        WhoLiked: [],
       };
 
       e.preventDefault();
       SetButtonActive(false);
 
-      await fetch("/api/posts/HandlePostSub", {
+      await fetch(ADD_POST, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("profile"),
@@ -92,7 +70,7 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
       console.log(localStorage.getItem("profile"));
     }
   }, []);
-
+  //convert it later to use formik
   return (
     <>
       <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
@@ -134,18 +112,14 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
             placeholder="krótki opis, max 230 znaków"
             maxLength={230}
           />
-          <ReactQuillTextEditor
-            value={message}
-            onChange={onHandleMessage}
-            theme="snow"
-            className="text-black h-[25%] dark:text-white"
-          />
+          <TextEditor handleMessage={onHandleMessage} />
+
           {buttonActive ? (
             <div className="flex justify-center mt-12">
               <input
                 id="submitButton"
                 type="submit"
-                className="bg-white transition-all duration-100 text-black cursor-pointer w-[40%] p-2 hover:bg-black hover:text-white rounded border-[1px] border-gray-300"
+                className="bg-white transition-all duration-100 text-black cursor-pointer w-[40%] p-2 mt-5 hover:bg-black hover:text-white rounded border-[1px] border-gray-300"
               />
             </div>
           ) : null}

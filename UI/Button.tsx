@@ -1,4 +1,9 @@
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import {
+  ButtonHTMLAttributes,
+  forwardRef,
+  ForwardRefExoticComponent,
+  RefAttributes,
+} from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import Link from "next/link";
 import { cn } from "./util";
@@ -7,7 +12,7 @@ const buttonVariants = cva("", {
   variants: {
     variant: {
       default:
-        " bg-white pl-7 -ml-7 pr-7 p-2 transition-all duration-150  rounded-xl border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105",
+        " bg-white transition-all duration-150  rounded-md border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105",
       outline: "",
     },
     size: {
@@ -26,8 +31,11 @@ interface ButtonInterface
     VariantProps<typeof buttonVariants> {
   href?: string;
 }
+type ButtonType = ForwardRefExoticComponent<
+  ButtonInterface & RefAttributes<HTMLButtonElement>
+>;
 
-const Button = forwardRef<HTMLButtonElement, ButtonInterface>(
+const Button: ButtonType = forwardRef<HTMLButtonElement, ButtonInterface>(
   ({ className, size, variant, children, href, ...props }) => {
     if (href) {
       return (
