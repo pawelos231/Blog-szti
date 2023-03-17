@@ -79,7 +79,6 @@ const Post = ({ item, flag }: Props) => {
         }
         if (flag == 1) {
           dispatchLikedArray([...likedArray, Name]);
-          console.log(likedArray);
         } else if (flag == -1) {
           dispatchLikedArray((prev: string[]) => {
             const index: number = prev.findIndex((item) => item == Name);
@@ -201,9 +200,9 @@ const Post = ({ item, flag }: Props) => {
             </div>
             <h3 className="mb-10">Polikowali: </h3>
             <div className="flex flex-col justify-center items-center bg-white text-black w-[35%]  rounded-lg	 h-[50%] overflow-scroll overflow-x-hidden">
-              {likedArray.map((item: string) => (
+              {likedArray.map((userWhoLiked: string) => (
                 <>
-                  <div>{item}</div>
+                  <div>{userWhoLiked}</div>
                 </>
               ))}
             </div>

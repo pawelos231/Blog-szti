@@ -7,7 +7,7 @@ import { GenerateDateString } from "@helpers/NormalizeDate";
 import { stripTags } from "@helpers/stripTags";
 import TextEditor from "@UI/TextEditor";
 
-const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
+const CreatePost = ({ Handle }): JSX.Element => {
   const [message, onHandleMessage] = useState<string>("");
   const [title, onHandleTitle] = useState<string>("");
   const [tags, onHandleTags] = useState<Array<string>>([]);
@@ -28,20 +28,19 @@ const CreatePost: ({ Handle }) => JSX.Element = ({ Handle }) => {
     }, 1000);
     setResp(data);
   };
-  const CountWords = () => {
+
+  const CountWords = (): number => {
     return stripTags(message).split(" ").length;
   };
 
   const SendPost: (e: any) => Promise<void> = async (e) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
-      const date: string = GenerateDateString();
-
       const PostObjectToSend: Omit<SinglePostFromDatabase, "Username"> = {
         Message: message,
         Title: title,
         Tags: tags,
         ShortDesc: shortOpis,
-        CreatedAt: date,
+        CreatedAt: GenerateDateString(),
         Category: "test",
         TimeToRead: 5,
         TotalWords: CountWords(),
