@@ -1,8 +1,8 @@
-import { NotAuth } from "@components/userDetails/constants";
+import { NOTAUTH } from "@constants/auth";
 import { NextRouter } from "next/router";
 export const CheckIfLoggedIn = (text: string ,router: NextRouter) => {
  
-    if (text && text === NotAuth) {
+    if (text && text === NOTAUTH) {
         router.push("/userLogin/register");
         return
     }
