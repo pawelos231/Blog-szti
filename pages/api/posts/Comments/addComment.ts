@@ -13,7 +13,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
 
     const token: string = String(req.headers["authorization"])
 
-    const { Email, Name }: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const { Email, Name } = await verify(token, process.env.ACCESS_TOKEN_SECRET)
     
     if (token == "null") {
         console.log("niezalogowany")

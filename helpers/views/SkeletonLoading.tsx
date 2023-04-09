@@ -1,4 +1,4 @@
-import { loaderFor } from "../../components/userDetails/helpers";
+import { loaderFor } from "components/userDetails/helpers";
 import Skeleton from "./Skeleton";
 const SkletonLoader = ({ LoaderFor }): JSX.Element => {
   return (

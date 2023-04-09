@@ -4,24 +4,23 @@ import CreatedPosts from "./CreatedPosts/CreatedPosts";
 import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
-import { NotAuth } from "./constants";
-import SkletonLoader from "../../helpers/views/SkeletonLoading";
-import {loaderFor} from './helpers'
+import { NOTAUTH } from "@constants/auth";
+import SkletonLoader from "@helpers/views/SkeletonLoading";
+import { loaderFor } from "./helpers";
 
-const PostsUserFilter = ({
-  UrlToFetch,
-  text,
-}: {
+type Props = {
   UrlToFetch: string;
   text: string;
-}) => {
+};
+
+const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
   const router: NextRouter = useRouter();
   let token: string = "";
 
   if (typeof window != "undefined" || typeof localStorage != "undefined") {
     token = localStorage.getItem("profile");
   }
-  
+
   type Posts = Readonly<Array<SinglePostFromDatabase>>;
 
   interface Unauth {
@@ -36,7 +35,7 @@ const PostsUserFilter = ({
   const createdPosts: Posts = FilteredPosts;
   const NotAuthReceiver: string = FilteredPosts?.text;
 
-  if (NotAuthReceiver == NotAuth) {
+  if (NotAuthReceiver == NOTAUTH) {
     router.push("/");
     return <></>;
   }

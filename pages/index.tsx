@@ -4,12 +4,11 @@ import { GetStaticProps } from "next";
 import mongoose from "mongoose";
 import { SinglePostFromDatabase } from "../interfaces/PostsInterface";
 import { getAllPosts } from "@server/db/posts";
+import { WrapperForQuery } from "@server/db/DatabaseFunctionsWrapper";
 
-export default function Home({
-  postsFinal,
-}: {
-  postsFinal: Array<SinglePostFromDatabase>;
-}) {
+type Posts = Array<SinglePostFromDatabase>;
+
+export default function Home({ postsFinal }: { postsFinal: Posts }) {
   return (
     <div className="flex justify-center w-full flex-col">
       <Header />
@@ -18,14 +17,9 @@ export default function Home({
   );
 }
 export const getStaticProps: GetStaticProps = async () => {
-  await mongoose.connect(process.env.DATABASE_URL);
-  const { result, error }: any = await getAllPosts();
-  if (error) {
-    console.log(error);
-  }
-  const postsFinal: Array<SinglePostFromDatabase> = JSON.parse(
-    JSON.stringify(result)
-  );
+  const result = await WrapperForQuery<typeof getAllPosts, Posts>(getAllPosts);
+
+  const postsFinal: Posts = JSON.parse(JSON.stringify(result));
 
   return {
     props: {

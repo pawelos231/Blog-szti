@@ -82,12 +82,14 @@ const LoginUserView = ({ view }): JSX.Element => {
     Yup.object().shape(
       {
         name: Yup.string().when("name", () => {
+
           if (view === AuthView.Register) {
             return Yup.string()
               .min(1, "imie moze mieć mininmalnie 10 znaków")
               .max(60, "imie moze mieć maksymalnie 60 znaków")
               .required("required");
-          } else if (view === AuthView.Login) {
+          } 
+          else if (view === AuthView.Login) {
             return Yup.mixed().notRequired();
           }
         }),
@@ -100,7 +102,8 @@ const LoginUserView = ({ view }): JSX.Element => {
         password: Yup.string().when("password", () => {
           if (AuthView.Login == view) {
             return Yup.string().required("required");
-          } else if (AuthView.Register == view) {
+          } 
+          else if (AuthView.Register == view) {
             return Yup.string()
               .min(10, "hasło musi mieć minimalnie 10 znaków")
               .max(32, "hasło moze mieć maksymalnie 32 znaki")
@@ -133,14 +136,18 @@ const LoginUserView = ({ view }): JSX.Element => {
       .then((data: LoggingInterface & ReposneInterface) => {
         setLoadingStatus(false);
         setCompleted(true);
+
         setMessageFromResponse(data?.message?.text);
         setMessageStatus(data?.message?.status);
+
         if (data?.token) {
           localStorage.setItem("profile", data?.token);
           localStorage.setItem("userName", data?.name);
         }
+
         setTimeout(() => {
           setCompleted(false);
+
           if (data?.message?.status === 1) {
             router.push("/");
           } else {
@@ -153,6 +160,7 @@ const LoginUserView = ({ view }): JSX.Element => {
   const LoginHanlder = async ({ email, password }: Omit<Register, "name">) => {
     setVisibleButton(true);
     setLoadingStatus(true);
+
     await fetch(LOGIN_URL, {
       method: POST,
       body: JSON.stringify({ email, password }),
@@ -161,14 +169,18 @@ const LoginUserView = ({ view }): JSX.Element => {
       .then((data: LoggingInterface & ReposneInterface) => {
         setMessageStatus(data?.message?.status);
         setMessageFromResponse(data?.message?.text);
+
         if (data?.token) {
           localStorage.setItem("profile", data?.token);
           localStorage.setItem("userName", data?.name);
         }
+
         setLoadingStatus(false);
         setCompleted(true);
+
         setTimeout(() => {
           setCompleted(false);
+
           if (data?.message?.status === 1) {
             router.push("/");
           } else {

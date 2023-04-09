@@ -4,7 +4,7 @@ import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AddCommentEndpoint } from "@constants/apisEndpoints";
+import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
 import { AnyAction } from "redux";
 import { addComment } from "@redux/slices/PostsSlices/commentSlice";
 const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
@@ -40,7 +40,7 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
               CommentObject,
               token,
               method: "POST",
-              url: AddCommentEndpoint,
+              url: ADD_COMMENT_URL,
             })
           )
         );

@@ -1,5 +1,5 @@
 import { ComponentType, useEffect, useState } from "react";
-import RespMessage from "./MessageRepsonse/respMessage";
+import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
 import dynamic from "next/dynamic";
 import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
 import { ADD_POST } from "@constants/apisEndpoints";
@@ -73,12 +73,6 @@ const CreatePost = ({ Handle }): JSX.Element => {
   return (
     <>
       <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
-        <div
-          className="absolute left-2 top-2 text-6xl cursor-pointer	dark:text-white"
-          onClick={() => Handle(false)}
-        >
-          X
-        </div>
         <form
           onSubmit={(e: React.SyntheticEvent) => SendPost(e)}
           className="flex justify-center flex-col w-[80%] gap-2 text-white"
@@ -125,7 +119,7 @@ const CreatePost = ({ Handle }): JSX.Element => {
         </form>
       </div>
       {Object.keys(resp).length != 0 ? (
-        <RespMessage message={resp.message} />
+        <MessageOnTopOfScreen message={resp.message} />
       ) : null}
     </>
   );

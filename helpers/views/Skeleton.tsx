@@ -1,6 +1,6 @@
 import styles from "./style.module.css";
 import { useTheme } from "next-themes";
-import { loaderFor } from "../../components/userDetails/helpers";
+import { loaderFor } from "@components/userDetails/helpers";
 const Skeleton = ({ LoaderFor }): JSX.Element => {
   const { theme, setTheme } = useTheme();
   return (

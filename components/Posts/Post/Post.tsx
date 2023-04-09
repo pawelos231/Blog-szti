@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer } from "react";
-import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
+import React, { useEffect } from "react";
+import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
 import Image from "next/image";
 import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
 import {
@@ -11,8 +11,11 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { NotAuth } from "../../userDetails/constants";
+import { NOTAUTH } from "@constants/auth";
 import { NextRouter } from "next/router";
+import { POST } from "@constants/reqMeth";
+import { stripTags } from "@helpers/stripTags";
+import { LIKE_POST_URL } from "@constants/apisEndpoints";
 
 interface ReponseFromLikeApi {
   text: string;
@@ -36,14 +39,10 @@ const Post = ({ item, flag }: Props) => {
     const ifLiked: string | undefined = item.WhoLiked.find(
       (item: string) => item == localStorage.getItem("userName")
     );
-    if (ifLiked != undefined) {
+    if (ifLiked) {
       setLiked(true);
     }
   };
-
-  function stripTags(original: string): string {
-    return original.replace(/(<([^>]+)>)/gi, "");
-  }
 
   const [modal, openModal] = useState<boolean>(false);
   const [favourite, setFav] = useState<boolean>(true);
@@ -65,8 +64,8 @@ const Post = ({ item, flag }: Props) => {
 
     const userToken: string = localStorage.getItem("profile");
 
-    await fetch("/api/posts/HandleLikePost", {
-      method: "POST",
+    await fetch(LIKE_POST_URL, {
+      method: POST,
       headers: {
         Authorization: userToken,
       },
@@ -74,18 +73,22 @@ const Post = ({ item, flag }: Props) => {
     })
       .then((res: Response) => res.json())
       .then(({ text, Name }: ReponseFromLikeApi) => {
-        if (text === NotAuth) {
+        if (text === NOTAUTH) {
           router.push("/userLogin/register");
         }
         if (flag == 1) {
           dispatchLikedArray([...likedArray, Name]);
         } else if (flag == -1) {
           dispatchLikedArray((prev: string[]) => {
-            const index: number = prev.findIndex((item) => item == Name);
+            const index: number = prev.findIndex(
+              (item: string) => item == Name
+            );
             index > -1 ? prev.splice(index, 1) : null;
 
             return [...prev];
           });
+        } else {
+          console.log("bad flag");
         }
       });
   };

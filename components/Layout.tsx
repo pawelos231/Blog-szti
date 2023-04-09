@@ -38,7 +38,7 @@ const Layout = ({ children }: { children: any }) => {
         ></meta>
         <meta
           name="keywords"
-          content="Custom, design, customowe kurtki, customowe buty, customowe bluzki, malowane, ręcznie, style"
+          content="szkola, zycie w szkole, szti, ZSTI, technikum, liceum, matura"
         />
         <meta
           name="description"
@@ -57,8 +57,8 @@ const Layout = ({ children }: { children: any }) => {
         <meta property="og:site_name" content="BB customs" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@LinekPawe" />
-        <meta name="twitter:title" content="BB Customs Eccomerce Shop" />
+        <meta name="twitter:site" content="@LinekPawel" />
+        <meta name="twitter:title" content="Blog szti" />
         <meta
           name="twitter:description"
           content="Strona poświęcona aktualnym wydarzeniom w szti"

@@ -16,9 +16,11 @@ const SingleComment = ({
   const valueOfReply: MutableRefObject<any> = useRef(null);
 
   const ReplyToComment = async (): Promise<void> => {
+    
     const date: string = GenerateDateString();
     const token: string = localStorage.getItem("profile");
     const textReply: string = valueOfReply.current.value;
+
     const CommentObject: CommentsOnPost = {
       PostId: postId,
       CreatedAt: date,
