@@ -1,7 +1,8 @@
 import { useState, useRef, MutableRefObject } from "react";
-import { CommentsOnPost } from "../../../../interfaces/PostsInterface";
-import { GenerateDateString } from "../../../../helpers/NormalizeDate";
-import { AddCommentEndpoint } from "../../../../constants/apisEndpoints";
+import { CommentsOnPost } from "@interfaces/PostsInterface";
+import { GenerateDateString } from "@helpers/NormalizeDate";
+import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
+import { POST } from "@constants/reqMeth";
 const SingleComment = ({
   parentShowCommentsFlag = false,
   depth,
@@ -29,8 +30,8 @@ const SingleComment = ({
       UserName: "",
       childred: null,
     };
-    await fetch("/api/posts/Comments/addComment", {
-      method: "POST",
+    await fetch(ADD_COMMENT_URL, {
+      method: POST,
       body: JSON.stringify(CommentObject),
       headers: {
         Authorization: token,

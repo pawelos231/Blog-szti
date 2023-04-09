@@ -1,7 +1,6 @@
 import { loaderFor } from "../../components/userDetails/helpers";
 import Skeleton from "./Skeleton";
 const SkletonLoader = ({ LoaderFor }): JSX.Element => {
-  console.log(LoaderFor);
   return (
     <>
       {LoaderFor == loaderFor.post ? (

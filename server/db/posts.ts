@@ -35,7 +35,7 @@ export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
 
 }
 
-export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts> => {
+export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts | undefined> => {
 
     try{
         await clientPromise()
