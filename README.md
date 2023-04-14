@@ -1,3 +1,9 @@
 # Blog about szti
 
-//add better auth proccess
+<p align='center'>
+<br>
+<i><b>[🚧 Work in progress! 🚧]</b></i>
+</p>
+
+
+
