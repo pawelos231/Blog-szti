@@ -1,10 +1,7 @@
-import { call, ForkEffect, put, takeEvery } from "redux-saga/effects"
+import { call, ForkEffect, put, takeEvery, fork, takeLatest } from "redux-saga/effects"
 import { getCommentsSuccess, addCommentSuccess } from '../../slices/PostsSlices/commentSlice'
-import { CommentsOnPost } from '../../../interfaces/PostsInterface'
-/*
-Using a redux-saga selector will give you access to the state object (where redux is storing the application state). From the state object you can get the value you need. Example - const userId = yield select(state => state.userData.id)
+import { CommentsOnPost } from '@interfaces/PostsInterface'
 
-*/
 
 const delay = (ms: number) => new Promise((res, rej) => setTimeout(res, ms))
 
@@ -13,9 +10,19 @@ interface Data {
     method: string,
     body: string
 }
+
 type T = {
     payload: Data,
     type: string
+}
+
+type AddComment = {
+    payload: { 
+        CommentObject: CommentsOnPost, 
+        token: string, 
+        url: string, 
+        method: string 
+    }
 }
 
 function* workerCommentsFetchAll(action: T): Generator<any, void, any> {
@@ -29,10 +36,7 @@ function* workerCommentsFetchAll(action: T): Generator<any, void, any> {
 }
 
 function* workerAddComment(action: any): Generator<any, void, any> {
-    const { payload: { CommentObject, token, url, method } }:
-        {
-            payload: { CommentObject: CommentsOnPost, token: string, url: string, method: string }
-        } = action
+    const { payload: { CommentObject, token, url, method } }: AddComment = action
     //yield delay(3000) //FOR TESTINH
     const resultOfAddComment: Response = yield call(() => {
         return (fetch(url, {
@@ -50,8 +54,17 @@ function* workerAddComment(action: any): Generator<any, void, any> {
 
 
 
-function* WatcherComments(): Generator<ForkEffect<never>, void, unknown> {
-    yield takeEvery("Comments/addComment", workerAddComment)
+function* WatcherAddComment(): Generator<ForkEffect<never>, void, unknown> {
+    yield takeLatest("Comments/addComment", workerAddComment)
+}
+
+function* WatcherCommentsFetchAll(): Generator<ForkEffect<never>, void, unknown> {
     yield takeEvery("Comments/getCommentsFetch", workerCommentsFetchAll)
 }
+
+function* WatcherComments(): Generator<ForkEffect, void, void> {
+    yield fork(WatcherAddComment)
+    yield fork(WatcherCommentsFetchAll)
+}
+
 export default WatcherComments

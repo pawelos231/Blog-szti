@@ -1,7 +1,6 @@
 import Header from "@components/Header/header";
 import AllPosts from "@components/Posts/AllPosts";
 import { GetStaticProps } from "next";
-import mongoose from "mongoose";
 import { SinglePostFromDatabase } from "../interfaces/PostsInterface";
 import { getAllPosts } from "@server/db/posts";
 import { WrapperForQuery } from "@server/db/DatabaseFunctionsWrapper";

@@ -8,6 +8,7 @@ import WatcherComments from "@redux/sagas/PostSaga/commentSaga";
 import { ThemeProvider } from "next-themes";
 
 saga.run(WatcherComments);
+
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     console.log("wywołanie");
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
     init();
   }, []);
+
   return (
     <Provider store={store}>
       <ThemeProvider attribute="class">
