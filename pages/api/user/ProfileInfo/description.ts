@@ -18,7 +18,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
                     console.log(error)
                     return
                 }
-                res.redirect(307, "/CreatedComments")
+                res.status(200).json(result)
                 break;
             }
     
