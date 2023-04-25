@@ -1,5 +1,5 @@
 import { useState, useRef, MutableRefObject } from "react";
-import { CommentsOnPost } from "@interfaces/PostsInterface";
+import { IPostComment } from "@interfaces/PostsInterface";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
 import { POST } from "@constants/reqMeth";
@@ -16,12 +16,11 @@ const SingleComment = ({
   const valueOfReply: MutableRefObject<any> = useRef(null);
 
   const ReplyToComment = async (): Promise<void> => {
-    
     const date: string = GenerateDateString();
     const token: string = localStorage.getItem("profile");
     const textReply: string = valueOfReply.current.value;
 
-    const CommentObject: CommentsOnPost = {
+    const CommentObject: IPostComment = {
       PostId: postId,
       CreatedAt: date,
       Content: textReply,

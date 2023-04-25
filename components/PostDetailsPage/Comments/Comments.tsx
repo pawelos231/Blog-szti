@@ -1,8 +1,5 @@
 import { useEffect, Dispatch, useState } from "react";
-import {
-  SinglePostFromDatabase,
-  CommentsOnPost,
-} from "@interfaces/PostsInterface";
+import { IPost, IPostComment } from "@interfaces/PostsInterface";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "@reduxjs/toolkit";
@@ -11,7 +8,7 @@ import { getCommentsFetch } from "@redux/slices/PostsSlices/commentSlice";
 import { FetchComments } from "@constants/apisEndpoints";
 import { loaderFor } from "../../userDetails/helpers";
 
-const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
+const Comments = ({ post }: { post: IPost }) => {
   const [openedCommentsView, handleopenedCommentsView] =
     useState<boolean>(false);
 
@@ -21,9 +18,9 @@ const Comments = ({ post }: { post: SinglePostFromDatabase }) => {
   });
 
   const isLoading: boolean = CommentsState.isLoading;
-  const Comments: CommentsOnPost[] = CommentsState.Comments;
+  const Comments: IPostComment[] = CommentsState.Comments;
 
-  interface TransformedComments extends CommentsOnPost {
+  interface TransformedComments extends IPostComment {
     children: TransformedComments | any;
   }
 

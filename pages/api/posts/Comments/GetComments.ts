@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { CommentsOnPost } from "@interfaces/PostsInterface";
+import { IPostComment } from "@interfaces/PostsInterface";
 import {GetAllComments} from "@server/db/posts"
 
-interface TransformedComments extends CommentsOnPost {
+interface TransformedComments extends IPostComment {
   children: TransformedComments | any;
 }
 
 const normalizeComments = (
-  Comments: CommentsOnPost[],
+  Comments: IPostComment[],
   id = ""
 ): TransformedComments[] => {
   const newArr = Comments.filter(

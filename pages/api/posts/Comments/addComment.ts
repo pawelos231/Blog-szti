@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { CommentsOnPost } from "../../../../interfaces/PostsInterface";
+import { IPostComment } from "@interfaces/PostsInterface";
 import mongoose from 'mongoose'
-import { verify } from '../../../../server/helpers/validateToken'
+import { verify } from '@server/helpers/validateToken'
 import { JWTPayload } from "jose";
 import { deleteAllRedisValues } from "@server/cache/cache";
-const CommentOnPost = require("../../../../server/models/CommentModel")
+const CommentOnPost = require("@server/models/CommentModel")
 
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
@@ -21,7 +21,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
         return
     }
 
-    const CommentObjectForFront: CommentsOnPost = {
+    const CommentObjectForFront: IPostComment = {
         ...JSON.parse(req.body),
         UserId: Email as string,
         UserName: Name as string

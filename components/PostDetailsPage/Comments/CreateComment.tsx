@@ -1,13 +1,13 @@
 import { Dispatch, MutableRefObject, useRef } from "react";
-import { CommentsOnPost } from "@interfaces/PostsInterface";
-import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { IPostComment } from "@interfaces/PostsInterface";
+import { IPost } from "@interfaces/PostsInterface";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
 import { AnyAction } from "redux";
 import { addComment } from "@redux/slices/PostsSlices/commentSlice";
-const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
+const CreateComment = ({ post }: { post: IPost }) => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const [comunicat, setComunicat] = useState<boolean>(false);
   const [status, setStatus] = useState<number | null>(0);
@@ -21,7 +21,7 @@ const CreateComment = ({ post }: { post: SinglePostFromDatabase }) => {
     const token: string = localStorage.getItem("profile");
     const date: string = GenerateDateString();
 
-    const CommentObject: CommentsOnPost = {
+    const CommentObject: IPostComment = {
       PostId: post._id,
       CreatedAt: date,
       Content: textOfComment,

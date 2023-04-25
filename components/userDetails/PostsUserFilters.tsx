@@ -1,7 +1,7 @@
 import * as React from "react";
 import useFetch from "../../hooks/useFetchHook";
 import CreatedPosts from "./CreatedPosts/CreatedPosts";
-import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
+import { IPost } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import { NOTAUTH } from "@constants/auth";
@@ -21,18 +21,16 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
     token = localStorage.getItem("profile");
   }
 
-  type Posts = Readonly<Array<SinglePostFromDatabase>>;
-
   interface Unauth {
     text: string;
   }
 
-  const [loading, err, errMessage, FilteredPosts] = useFetch<Posts & Unauth>(
+  const [loading, err, errMessage, FilteredPosts] = useFetch<IPost[] & Unauth>(
     UrlToFetch,
     token
   );
 
-  const createdPosts: Posts = FilteredPosts;
+  const createdPosts: IPost[] = FilteredPosts;
   const NotAuthReceiver: string = FilteredPosts?.text;
 
   if (NotAuthReceiver == NOTAUTH) {

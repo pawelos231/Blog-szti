@@ -6,7 +6,10 @@ const commentsSlice = createSlice({
     name: "Comments",
     initialState: {
         isLoading: false,
-        Comments: []
+        failure: false,
+        ErrorMessage: null,
+        Comments: [],
+       
     },
     reducers: {
         getCommentsFetch : (state, action) =>{
@@ -17,6 +20,10 @@ const commentsSlice = createSlice({
             state.Comments = action.payload
             state.isLoading = false
             return state;
+        },
+        addCommentFailure(state, action){
+            state.failure = true
+            state.ErrorMessage = action.payload
         },
         addComment: (state, action) => {
             state.isLoading = true
@@ -29,8 +36,9 @@ const commentsSlice = createSlice({
             ]
             return state
         },
+        
     }
 })
 
-export const {getCommentsFetch, getCommentsSuccess, addComment, addCommentSuccess} = commentsSlice.actions
+export const {getCommentsFetch, getCommentsSuccess, addComment, addCommentSuccess, addCommentFailure} = commentsSlice.actions
 export default commentsSlice.reducer

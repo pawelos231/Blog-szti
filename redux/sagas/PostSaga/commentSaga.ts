@@ -1,6 +1,6 @@
-import { call, ForkEffect, put, takeEvery, fork, takeLatest } from "redux-saga/effects"
-import { getCommentsSuccess, addCommentSuccess } from '../../slices/PostsSlices/commentSlice'
-import { CommentsOnPost } from '@interfaces/PostsInterface'
+import { call, ForkEffect, put, takeEvery, spawn, takeLatest } from "redux-saga/effects"
+import { getCommentsSuccess, addCommentSuccess,addCommentFailure } from '../../slices/PostsSlices/commentSlice'
+import { IPostComment } from '@interfaces/PostsInterface'
 
 
 const delay = (ms: number) => new Promise((res, rej) => setTimeout(res, ms))
@@ -18,37 +18,53 @@ type T = {
 
 type AddComment = {
     payload: { 
-        CommentObject: CommentsOnPost, 
+        CommentObject: IPostComment, 
         token: string, 
         url: string, 
         method: string 
     }
 }
+interface FetchCommentsResponse {
+    comments: IPostComment[];
+  }
 
 function* workerCommentsFetchAll(action: T): Generator<any, void, any> {
-    const { payload: { url, method, body } } = action
-    const comments: Response = yield call(() => fetch(url, {
-        method: method,
-        body: JSON.stringify(body)
-    }))
-    const formattedComments: any[] = yield comments.json()
-    yield put(getCommentsSuccess(formattedComments))
+    try{
+        
+        const { payload: { url, method, body } } = action
+        const comments: Response = yield call(() => fetch(url, {
+            method: method,
+            body: JSON.stringify(body)
+        }))
+        const formattedComments: any[] = yield comments.json()
+        yield put(getCommentsSuccess(formattedComments))
+
+    } catch(err){
+        console.log(err)
+    }
+   
 }
 
 function* workerAddComment(action: any): Generator<any, void, any> {
     const { payload: { CommentObject, token, url, method } }: AddComment = action
     //yield delay(3000) //FOR TESTINH
-    const resultOfAddComment: Response = yield call(() => {
-        return (fetch(url, {
-            method: method,
-            body: JSON.stringify(CommentObject),
-            headers: {
-                Authorization: token,
-            },
-        }))
-    })
-    const { Comment } = yield resultOfAddComment.json()
-    yield put(addCommentSuccess(Comment))
+    try{
+        const AddCommentResult: Response = yield call(() => {
+            return (fetch(url, {
+                method: method,
+                body: JSON.stringify(CommentObject),
+                headers: {
+                    Authorization: token,
+                },
+            }))
+        })
+        const { Comment } = yield AddCommentResult.json()
+        yield put(addCommentSuccess(Comment))
+    }
+    catch(err){
+        yield put(addCommentFailure(err));
+    }
+   
 
 }
 
@@ -63,8 +79,8 @@ function* WatcherCommentsFetchAll(): Generator<ForkEffect<never>, void, unknown>
 }
 
 function* WatcherComments(): Generator<ForkEffect, void, void> {
-    yield fork(WatcherAddComment)
-    yield fork(WatcherCommentsFetchAll)
+    yield spawn(WatcherAddComment)
+    yield spawn(WatcherCommentsFetchAll)
 }
 
 export default WatcherComments

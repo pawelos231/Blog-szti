@@ -1,9 +1,9 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mongoose from 'mongoose';
-const BlogPosts = require("../../../server/models/BlogPosts")
-import { verify } from '../../../server/helpers/validateToken'
-import { SinglePostFromDatabase } from '../../../interfaces/PostsInterface';
+const BlogPosts = require("@server/models/BlogPosts")
+import { verify } from '@server/helpers/validateToken'
+import { IPost } from '@interfaces/PostsInterface';
 
 //add error checking
 
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
   
-  const parsedData: SinglePostFromDatabase = {...JSON.parse(req.body), Username: Name, UserEmail: Email }
+  const parsedData: IPost = {...JSON.parse(req.body), Username: Name, UserEmail: Email }
 
   const source: any = await BlogPosts.create(parsedData)
 

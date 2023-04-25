@@ -1,10 +1,10 @@
 import * as React from "react";
 import Image from "next/image";
-import { SinglePostFromDatabase } from "../../interfaces/PostsInterface";
+import { IPost } from "../../interfaces/PostsInterface";
 import { useEffect } from "react";
 import Comments from "./Comments/Comments";
 import CreateComment from "./Comments/CreateComment";
-const PostDetails = ({ post }: { post: SinglePostFromDatabase | any }) => {
+const PostDetails = ({ post }: { post: IPost }) => {
   useEffect(() => {
     if (document != undefined) {
       document.querySelector("#inner").innerHTML = post.Message;

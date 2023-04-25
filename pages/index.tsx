@@ -1,11 +1,11 @@
 import Header from "@components/Header/header";
 import AllPosts from "@components/Posts/AllPosts";
 import { GetStaticProps } from "next";
-import { SinglePostFromDatabase } from "../interfaces/PostsInterface";
+import { IPost } from "../interfaces/PostsInterface";
 import { getAllPosts } from "@server/db/posts";
 import { WrapperForQuery } from "@server/db/DatabaseFunctionsWrapper";
 
-type Posts = Array<SinglePostFromDatabase>;
+type Posts = Array<IPost>;
 
 export default function Home({ postsFinal }: { postsFinal: Posts }) {
   return (

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { IPost } from "@interfaces/PostsInterface";
 import PostDetails from "@components/PostDetailsPage/PostDetails";
 import mongoose from "mongoose";
 import { getPostById } from "@server/db/posts";
@@ -9,7 +9,7 @@ const BlogPosts = require("../../server/models/BlogPosts");
 const PostSite = ({
   formattedPost,
 }: {
-  formattedPost: SinglePostFromDatabase;
+  formattedPost: IPost;
 }) => {
   return (
     <div className="w-screen flex justify-center h-screen">
@@ -23,7 +23,7 @@ export default PostSite;
 export const getStaticPaths: GetStaticPaths = async () => {
   await mongoose.connect(process.env.DATABASE_URL);
   const data = await BlogPosts.find({});
-  const paths: any = data.map((item: SinglePostFromDatabase) => {
+  const paths: any = data.map((item: IPost) => {
     return {
       params: { id: String(item._id) },
     };
@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     console.log(error);
   }
 
-  const formattedPost: SinglePostFromDatabase = JSON.parse(
+  const formattedPost: IPost = JSON.parse(
     JSON.stringify(result)
   );
 

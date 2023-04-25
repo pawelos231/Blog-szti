@@ -1,7 +1,7 @@
 import { ComponentType, useEffect, useState } from "react";
 import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
 import dynamic from "next/dynamic";
-import { SinglePostFromDatabase } from "../../../interfaces/PostsInterface";
+import { IPost } from "../../../interfaces/PostsInterface";
 import { ADD_POST } from "@constants/apisEndpoints";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { stripTags } from "@helpers/stripTags";
@@ -35,7 +35,7 @@ const CreatePost = ({ Handle }): JSX.Element => {
 
   const SendPost: (e: any) => Promise<void> = async (e) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
-      const PostObjectToSend: Omit<SinglePostFromDatabase, "Username"> = {
+      const PostObjectToSend: Omit<IPost, "Username"> = {
         Message: message,
         Title: title,
         Tags: tags,

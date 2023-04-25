@@ -1,4 +1,4 @@
-export interface SinglePostFromDatabase {
+export interface IPost {
   CreatedAt: string;
   Tags: Array<string>;
   Message: string;
@@ -16,7 +16,7 @@ export interface SinglePostFromDatabase {
   _id?: string;
 }
 
-export interface CommentsOnPost {
+export interface IPostComment {
   _id?: string
   __v?: string
   UserId?: string
@@ -28,6 +28,6 @@ export interface CommentsOnPost {
   NestedLevel: number
   UpdatedAt: string
   UserName: string
-  childred?: CommentsOnPost | null
+  childred?: IPostComment[] | null
 }
   //add slug,number of visits

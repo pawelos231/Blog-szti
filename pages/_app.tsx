@@ -4,10 +4,10 @@ import Layout from "@components/Layout";
 import { store, saga } from "@redux/store/store";
 import { Provider } from "react-redux";
 import { useEffect } from "react";
-import WatcherComments from "@redux/sagas/PostSaga/commentSaga";
+import rootSaga from "@redux/sagas/rootSaga";
 import { ThemeProvider } from "next-themes";
 
-saga.run(WatcherComments);
+saga.run(rootSaga);
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {

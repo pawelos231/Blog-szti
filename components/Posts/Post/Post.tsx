@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { IPost } from "@interfaces/PostsInterface";
 import Image from "next/image";
 import { shimmer, toBase64 } from "../../ShimmerEffect/Shimmer";
 import {
@@ -30,7 +30,7 @@ interface LikedPosts {
 }
 
 interface Props {
-  item: SinglePostFromDatabase;
+  item: IPost;
   flag: boolean;
 }
 

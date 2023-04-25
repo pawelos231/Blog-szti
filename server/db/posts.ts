@@ -1,13 +1,12 @@
 import clientPromise from "./mongo";
-import { CommentsOnPost, SinglePostFromDatabase } from "@interfaces/PostsInterface";
+import { IPostComment, IPost } from "@interfaces/PostsInterface";
 import { ResponseWrapper } from "./interfaces/ResponseInterface";
 const BlogPosts = require("@server/models/BlogPosts")
 const CommentOnPost = require("@server/models/CommentModel")
 require("../cache/index")
 
-type Posts = Array<SinglePostFromDatabase>
-type Post = SinglePostFromDatabase
-type Comments = Array<CommentsOnPost>
+type Posts = Array<IPost>
+type Comments = Array<IPostComment>
 
 
 
@@ -48,12 +47,12 @@ export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts | un
 
 }
 
-export const getPostById = async (id: string):  ResponseWrapper<Post>=> {
+export const getPostById = async (id: string):  ResponseWrapper<IPost>=> {
 
     try{
         await clientPromise()
       
-      const result: Post = await BlogPosts.findById(id)
+      const result: IPost = await BlogPosts.findById(id)
       return {result}  
     } catch(error){
         return {error: 'Failed to fetch posts', result: undefined}
