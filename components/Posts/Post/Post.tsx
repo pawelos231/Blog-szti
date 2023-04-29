@@ -54,8 +54,7 @@ const Post = ({ item, flag }: Props) => {
   const [favourite, setFav] = useState<boolean>(true);
   const [like, setLiked] = useState<boolean>(false);
   const [likedArray, dispatchLikedArray] = useState<string[]>(item.WhoLiked);
-
-  const router: NextRouter = useRouter();
+  const router = useRouter();
 
   const LikesPosts = async (flag: number): Promise<void> => {
     setLiked(!like);
@@ -78,7 +77,7 @@ const Post = ({ item, flag }: Props) => {
       body: JSON.stringify(CombinedValues),
     })
       .then((res: Response) => {
-        isUserAuthorized(res.status as StatusType);
+        isUserAuthorized(res.status as StatusType, router);
         return res.json();
       })
       .then(({ Name }: ApiResponse) => {

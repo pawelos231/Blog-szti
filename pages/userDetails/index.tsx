@@ -44,7 +44,7 @@ const Index = (): JSX.Element => {
       },
     })
       .then((res: Response) => {
-        isUserAuthorized(res.status as StatusType);
+        isUserAuthorized(res.status as StatusType, router);
         return res.json();
       })
       .then((data) => {

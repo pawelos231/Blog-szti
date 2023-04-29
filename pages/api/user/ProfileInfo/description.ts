@@ -3,17 +3,18 @@ import {setProfileDescritpion, getUserDataByEmail} from '@server/db/user'
 import { verify } from "@server/helpers/validateToken";
 import {GET, POST} from '@constants/reqMeth'
 import { METHOD_NOT_ALLOWED } from "@constants/statusCodes";
+import { authMiddleware } from "@pages/api/middleware/authMiddleware";
 
-export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
+export default authMiddleware(async function Handler(req, res) {
 
-    const token: string = String(req.headers["authorization"])
-    const {Name, Email}: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+  
+   
     const METHOD: string = req.method
 
     try {
         switch(METHOD) {
             case GET: {
-                const {result, error} = await getUserDataByEmail(Email)
+                const {result, error} = await getUserDataByEmail(req.user.Email)
                 if(error){
                     console.log(error)
                     return
@@ -24,7 +25,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     
             case POST:{
                 const description: string = req.body
-                const {result, error} = await setProfileDescritpion(Email, description)
+                const {result, error} = await setProfileDescritpion(req.user.Email, description)
                 if(error){
                     console.log(error)
                     return
@@ -41,4 +42,4 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
         res.status(500).json({ message: 'Internal Server Error' })
     }
     
-}
+})

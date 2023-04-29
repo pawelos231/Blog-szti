@@ -14,7 +14,7 @@ type CommentsProps = { post: IPost };
 const CreateComment = ({ post }: CommentsProps) => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const router: NextRouter = useRouter();
-  const [comunicat, setMessage] = useState<boolean>(false);
+  const [message, setMessage] = useState<boolean>(false);
 
   const refText: MutableRefObject<any> = useRef(null);
 
@@ -49,18 +49,17 @@ const CreateComment = ({ post }: CommentsProps) => {
         }
       });
     };
-
     await sendCommentToReduxApi();
+    setMessage(true);
 
     setTimeout(() => {
       setMessage(false);
     }, 1000);
-    
   };
 
   return (
     <>
-      {comunicat ? (
+      {message ? (
         <>
           {!CommentState.failure ? (
             <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
@@ -74,7 +73,7 @@ const CreateComment = ({ post }: CommentsProps) => {
           ) : (
             <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
               <span id="comm" className="bg-red-600 rounded-sm p-2 text-white">
-                Nie udało się dodać komentarz
+                Nie udało się dodać komentarza
               </span>
             </p>
           )}

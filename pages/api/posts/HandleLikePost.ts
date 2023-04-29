@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { verify } from '@server/helpers/validateToken'
 import { likePost } from "@server/db/posts";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 interface LikedPosts {
     flag: number;
@@ -41,19 +42,11 @@ const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] 
     }
 
 }
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Partial<ResponseData>>) {
+export default authMiddleware(async function handler(req, res) {
 
     const {flag, WhoLiked, itemId, ValueToPass}: LikedPosts = JSON.parse(req.body)
 
-    const token: string = String(req.headers["authorization"])
-
-    if (token == "null") {
-        console.log("niezalogowany")
-        res.status(401).send({ text: "NOT authenticated" })
-        return
-    }
-
-    const {Name}: any = await verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const Name = req.user.Name
     const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
     const {result, error} = await likePost(newLikedArr, ValueToPass, itemId)
 
@@ -69,4 +62,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         res.status(500).json({ text: error})
     }
 
-}
+})
