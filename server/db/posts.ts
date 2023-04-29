@@ -34,7 +34,7 @@ export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
 
 }
 
-export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts | undefined> => {
+export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
@@ -86,7 +86,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).cache()
+      const result: Comments = await CommentOnPost.find({ PostId: postId })
       return {result}  
       
     } catch(error)

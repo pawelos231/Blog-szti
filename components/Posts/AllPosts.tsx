@@ -3,8 +3,8 @@ import Post from "./Post/Post";
 import { IPost } from "../../interfaces/PostsInterface";
 import { CircularProgress } from "@material-ui/core";
 
-type Posts = IPost[];
-const AllPosts = ({ posts }: { posts: Posts }): JSX.Element => {
+type Posts = { posts: IPost[] };
+const AllPosts = ({ posts }: Posts): JSX.Element => {
   if (posts?.length == 0) {
     return (
       <div className="flex justify-center mt-12 text-black">

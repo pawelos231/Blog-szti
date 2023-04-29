@@ -1,64 +1,68 @@
 import { Dispatch, MutableRefObject, useRef } from "react";
-import { IPostComment } from "@interfaces/PostsInterface";
 import { IPost } from "@interfaces/PostsInterface";
-import { GenerateDateString } from "@helpers/NormalizeDate";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
 import { AnyAction } from "redux";
-import { addComment } from "@redux/slices/PostsSlices/commentSlice";
-const CreateComment = ({ post }: { post: IPost }) => {
+import { addComment } from "@redux/slices/CommentSlice/commentSlice";
+import { useSelector } from "react-redux";
+import { NextRouter, useRouter } from "next/router";
+import { CommentObjCreator } from "./CommentsHelpers";
+
+type CommentsProps = { post: IPost };
+
+const CreateComment = ({ post }: CommentsProps) => {
   const dispatch: Dispatch<AnyAction> = useDispatch();
-  const [comunicat, setComunicat] = useState<boolean>(false);
-  const [status, setStatus] = useState<number | null>(0);
+  const router: NextRouter = useRouter();
+  const [comunicat, setMessage] = useState<boolean>(false);
 
   const refText: MutableRefObject<any> = useRef(null);
 
-  const AddCommentFunc = async (event: any): Promise<void> => {
+  const CommentState = useSelector((state: any) => {
+    return state.comments;
+  });
+
+  if (CommentState.Unathorized && !!CommentState.ErrorMessage) {
+    router.push("/");
+  }
+
+  const AddComment = async (event: any): Promise<void> => {
     event.preventDefault();
 
     const textOfComment: string = refText.current.value;
-    const token: string = localStorage.getItem("profile");
-    const date: string = GenerateDateString();
+    const UserAuthToken: string = localStorage.getItem("profile");
 
-    const CommentObject: IPostComment = {
-      PostId: post._id,
-      CreatedAt: date,
-      Content: textOfComment,
-      WhoLiked: [],
-      ParentId: "",
-      NestedLevel: 0,
-      UpdatedAt: "",
-      UserName: "",
-      childred: null,
-    };
-    const awaitForReponse = () => {
-      return new Promise((resolve, reject) => {
-        resolve(
-          dispatch(
+    const sendCommentToReduxApi = (): Promise<unknown> => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const response = dispatch(
             addComment({
-              CommentObject,
-              token,
+              CommentObject: CommentObjCreator(textOfComment, post._id),
+              UserAuthToken,
               method: "POST",
               url: ADD_COMMENT_URL,
             })
-          )
-        );
+          );
+          resolve(response);
+        } catch (error) {
+          reject(error);
+        }
       });
     };
-    await awaitForReponse();
-    setComunicat(true);
-    setStatus(1); //temporary solution
+
+    await sendCommentToReduxApi();
+
     setTimeout(() => {
-      setComunicat(false);
+      setMessage(false);
     }, 1000);
+    
   };
 
   return (
     <>
       {comunicat ? (
         <>
-          {status === 1 ? (
+          {!CommentState.failure ? (
             <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
               <span
                 id="comm"
@@ -80,7 +84,7 @@ const CreateComment = ({ post }: { post: IPost }) => {
       <section className="pt-8">
         <p className="text-2xl">Komentarze</p>
         <form
-          onSubmit={(e: any) => AddCommentFunc(e)}
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => AddComment(e)}
           className="pt-6 flex flex-col w-[50%]"
         >
           <textarea

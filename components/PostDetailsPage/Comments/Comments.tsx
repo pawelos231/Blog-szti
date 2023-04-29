@@ -2,17 +2,18 @@ import { useEffect, Dispatch, useState } from "react";
 import { IPost, IPostComment } from "@interfaces/PostsInterface";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { useDispatch, useSelector } from "react-redux";
-import { AnyAction } from "@reduxjs/toolkit";
 import SingleComment from "./SingleComment/SingleComment";
-import { getCommentsFetch } from "@redux/slices/PostsSlices/commentSlice";
+import { getCommentsFetch } from "@redux/slices/CommentSlice/commentSlice";
 import { FetchComments } from "@constants/apisEndpoints";
 import { loaderFor } from "../../userDetails/helpers";
+import { CommentAtionType } from "@redux/types/ActionTypes";
+type CommentsProps = { post: IPost };
 
-const Comments = ({ post }: { post: IPost }) => {
+const Comments = ({ post }: CommentsProps) => {
   const [openedCommentsView, handleopenedCommentsView] =
     useState<boolean>(false);
 
-  const dispatch: Dispatch<AnyAction> = useDispatch();
+  const dispatch: Dispatch<CommentAtionType> = useDispatch();
   const CommentsState = useSelector((state: any) => {
     return state.comments;
   });
@@ -31,15 +32,21 @@ const Comments = ({ post }: { post: IPost }) => {
   ): JSX.Element => {
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
-    let newArr: JSX.Element[] = children?.map((item, index: number) => {
-      if (openedCommentsView) return generateChildren(item, nestedLevel, false);
-      else return generateChildren(item, nestedLevel, true);
+
+    let CommentsArray: JSX.Element[] = children?.map((item, index: number) => {
+      return generateChildren(
+        item,
+        nestedLevel,
+        openedCommentsView ? false : true
+      );
     });
+
     if (children && index === 0 && children.length === 0) {
       return (
         <SingleComment depth={index} postId={post._id} comment={itemInit} />
       );
     }
+
     return (
       <>
         <div style={{ paddingLeft: `${index * 45}px` }}>
@@ -64,7 +71,7 @@ const Comments = ({ post }: { post: IPost }) => {
             </>
           )}
         </div>
-        {newArr}
+        {CommentsArray}
       </>
     );
   };

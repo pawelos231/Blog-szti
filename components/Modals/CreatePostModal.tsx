@@ -11,9 +11,9 @@ const ModalWrapper = ({ children, open, onClose }) => {
   }, []);
 
   if (!open || !ref.current || !mounted) return null;
-  
+
   return createPortal(
-    <div className="absolute w-screen h-screen backdrop-blur-xl flex justify-center flex-col items-center z-20 bg-black/30 top-0 left-0">
+    <div className="fixed w-screen h-screen backdrop-blur-xl flex justify-center flex-col items-center z-20 bg-black/30 top-0 left-0">
       <div
         className="absolute left-2 top-2 text-6xl cursor-pointer	dark:text-white"
         onClick={() => onClose(false)}

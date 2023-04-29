@@ -16,8 +16,9 @@ import { NextRouter } from "next/router";
 import { POST } from "@constants/reqMeth";
 import { stripTags } from "@helpers/stripTags";
 import { LIKE_POST_URL } from "@constants/apisEndpoints";
+import { isUserAuthorized, StatusType } from "@helpers/IsUserAuthorized";
 
-interface ReponseFromLikeApi {
+interface ApiResponse {
   text: string;
   Name?: string;
 }
@@ -33,12 +34,17 @@ interface Props {
   item: IPost;
   flag: boolean;
 }
+enum HandleLike {
+  LikePost = 1,
+  UnLikePost = -1,
+}
 
 const Post = ({ item, flag }: Props) => {
-  const checkIfPostIsAlreadyLiked = () => {
+  const checkIfPostIsAlreadyLiked = (): void => {
     const ifLiked: string | undefined = item.WhoLiked.find(
       (item: string) => item == localStorage.getItem("userName")
     );
+
     if (ifLiked) {
       setLiked(true);
     }
@@ -71,20 +77,20 @@ const Post = ({ item, flag }: Props) => {
       },
       body: JSON.stringify(CombinedValues),
     })
-      .then((res: Response) => res.json())
-      .then(({ text, Name }: ReponseFromLikeApi) => {
-        if (text === NOTAUTH) {
-          router.push("/userLogin/register");
-        }
-        if (flag == 1) {
+      .then((res: Response) => {
+        isUserAuthorized(res.status as StatusType);
+        return res.json();
+      })
+      .then(({ Name }: ApiResponse) => {
+        if (flag == HandleLike.LikePost) {
           dispatchLikedArray([...likedArray, Name]);
-        } else if (flag == -1) {
+        } else if (flag == HandleLike.UnLikePost) {
           dispatchLikedArray((prev: string[]) => {
             const index: number = prev.findIndex(
               (item: string) => item == Name
             );
-            index > -1 ? prev.splice(index, 1) : null;
 
+            index > -1 ? prev.splice(index, 1) : null;
             return [...prev];
           });
         } else {
@@ -153,7 +159,7 @@ const Post = ({ item, flag }: Props) => {
           <div className="text-4xl flex">
             {!like ? (
               <div className="flex items-center gap-4">
-                <div onClick={() => LikesPosts(1)}>
+                <div onClick={() => LikesPosts(HandleLike.LikePost)}>
                   <ThumbUpAltOutlined fontSize="inherit" />
                 </div>
                 <p
@@ -165,7 +171,7 @@ const Post = ({ item, flag }: Props) => {
               </div>
             ) : (
               <div className="flex items-center gap-4 ">
-                <div onClick={() => LikesPosts(-1)}>
+                <div onClick={() => LikesPosts(HandleLike.UnLikePost)}>
                   <ThumbUpAltRounded fontSize="inherit" />
                 </div>
                 <p

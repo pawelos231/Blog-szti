@@ -1,5 +1,5 @@
 interface GenericResponse<T> {
-    result: T
+    result: T | undefined
     error?: string
 }
 

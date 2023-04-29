@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     else {
-        res.status(200).json({ text: error})
+        res.status(500).json({ text: error})
     }
 
 }

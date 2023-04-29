@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-//const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+//alot of work to be done here
 
 export function useFetch<T>(url: string, token: string): [boolean, boolean, any, T] {
 

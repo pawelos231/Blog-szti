@@ -1,12 +1,20 @@
 import { verify } from "@server/helpers/validateToken";
 import { NextApiResponse, NextApiRequest } from "next";
-import { tcWrapper } from "@helpers/tcWrapper";
+import { NOTAUTH } from "@constants/auth";
 
-export const authMiddleware = <F extends Function>(handler: F) => async (req, res: NextApiResponse) => {
-  const token = req.headers.authorization;
+export interface AuthenticatedRequest extends NextApiRequest {
+  user?: any;
+}
+
+type handlerFunc =  (req: AuthenticatedRequest, res: NextApiResponse<any>) => Promise<any>
+
+
+
+export const authMiddleware = (handler: handlerFunc): handlerFunc => async (req, res): Promise<any> => {
+  const token: string = String(req.headers["authorization"])
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ text: NOTAUTH });
   }
 
   try {
@@ -14,7 +22,7 @@ export const authMiddleware = <F extends Function>(handler: F) => async (req, re
     req.user = user;
     return handler(req, res);
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ text: NOTAUTH });
   }
 };
 

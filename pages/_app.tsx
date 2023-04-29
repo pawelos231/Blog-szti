@@ -11,7 +11,6 @@ saga.run(rootSaga);
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    console.log("wywołanie");
     const init = async () => {
       await fetch("/api/init");
     };

@@ -22,7 +22,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
     if (await CheckIfEmailExists(email) !== false) {
         const UserData: ReceivedLoginData = await CheckIfEmailExists(email)
 
-        const PasswordInDatabase: string = UserData[0].Password
+        const PasswordInDatabase: string = UserData.Password
         const PasswordGivenByUser: string = password
         console.log(PasswordInDatabase, PasswordGivenByUser)
 
