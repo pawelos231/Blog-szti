@@ -11,8 +11,7 @@ import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST, GET } from "@constants/reqMeth";
 import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
-import { CheckIfLoggedIn } from "@server/helpers/checkIfLoggedIn";
-import useFetch from "@hooks/useFetchHook";
+import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
 import { ReceivedLoginData } from "@interfaces/UserLoginInterface";
 import { Unathorized } from "@interfaces/reponseTypeRegister";
 import { CircularProgress } from "@material-ui/core";
@@ -44,9 +43,11 @@ const Index = (): JSX.Element => {
         Authorization: token,
       },
     })
-      .then((res: Response) => res.json())
+      .then((res: Response) => {
+        isUserAuthorized(res.status as StatusType);
+        return res.json();
+      })
       .then((data) => {
-        CheckIfLoggedIn(data.text, router);
         setDescription(data.ProfileDescription.replaceAll(`"`, ""));
       })
       .catch((err) => {
@@ -67,7 +68,6 @@ const Index = (): JSX.Element => {
     })
       .then((res: Response) => res.json())
       .then(async (descriptionRes: any) => {
-        CheckIfLoggedIn(descriptionRes.text, router);
         setDescription(descriptionRes);
         setViewModal(true);
       });
