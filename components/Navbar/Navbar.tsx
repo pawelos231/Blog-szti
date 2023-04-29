@@ -13,7 +13,6 @@ const Navbar: () => JSX.Element = () => {
   const ROUTE_TO_LOGIN = "/userLogin/login";
 
   const [profileObj, setProfileObj] = useState<Object | string>({});
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [opened, HandleOpenModal] = useState<boolean>(false);
   const router: NextRouter = useRouter();
 

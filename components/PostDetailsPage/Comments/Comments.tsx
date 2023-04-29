@@ -33,13 +33,15 @@ const Comments = ({ post }: CommentsProps) => {
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
 
-    let CommentsArray: JSX.Element[] = children?.map((item, index: number) => {
-      return generateChildren(
-        item,
-        nestedLevel,
-        openedCommentsView ? false : true
-      );
-    });
+    const CommentsArray: JSX.Element[] = children?.map(
+      (item, index: number) => {
+        return generateChildren(
+          item,
+          nestedLevel,
+          openedCommentsView ? false : true
+        );
+      }
+    );
 
     if (children && index === 0 && children.length === 0) {
       return (

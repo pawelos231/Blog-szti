@@ -8,13 +8,15 @@ import { addComment } from "@redux/slices/CommentSlice/commentSlice";
 import { useSelector } from "react-redux";
 import { NextRouter, useRouter } from "next/router";
 import { CommentObjCreator } from "./CommentsHelpers";
+import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
+import { MessageType } from "@constants/helperEnums";
 
 type CommentsProps = { post: IPost };
 
 const CreateComment = ({ post }: CommentsProps) => {
+  const [indicator, setIndicator] = useState(false);
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const router: NextRouter = useRouter();
-  const [message, setMessage] = useState<boolean>(false);
 
   const refText: MutableRefObject<any> = useRef(null);
 
@@ -49,36 +51,28 @@ const CreateComment = ({ post }: CommentsProps) => {
         }
       });
     };
+    setIndicator(true);
     await sendCommentToReduxApi();
-    setMessage(true);
-
-    setTimeout(() => {
-      setMessage(false);
-    }, 1000);
+    refText.current.value = "";
   };
 
   return (
     <>
-      {message ? (
-        <>
-          {!CommentState.failure ? (
-            <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
-              <span
-                id="comm"
-                className="bg-green-600 rounded-sm p-2 text-white"
-              >
-                Udało się dodać komentarz
-              </span>
-            </p>
-          ) : (
-            <p className="text-black top-36 fixed left-0 text-center text-3xl w-full">
-              <span id="comm" className="bg-red-600 rounded-sm p-2 text-white">
-                Nie udało się dodać komentarza
-              </span>
-            </p>
-          )}
-        </>
-      ) : null}
+      {!CommentState.failure ? (
+        <MessageOnTopOfScreen
+          message="Udało się dodać komentarz!"
+          duration={1000}
+          status={MessageType.Normal}
+          indicator={indicator}
+        />
+      ) : (
+        <MessageOnTopOfScreen
+          message="Nie udało się dodać komentarza!"
+          duration={1000}
+          status={MessageType.Error}
+          indicator={indicator}
+        />
+      )}
 
       <section className="pt-8">
         <p className="text-2xl">Komentarze</p>

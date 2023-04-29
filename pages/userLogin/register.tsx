@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AuthView } from "@constants/AuthEnums";
+import { AuthView } from "@constants/helperEnums";
 import Link from "next/link";
 import LoginUserView from "@components/LoginUserView";
 const Register = () => {

@@ -1,11 +1,10 @@
-import { ComponentType, useEffect, useState } from "react";
+import { useState } from "react";
 import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
-import dynamic from "next/dynamic";
-import { IPost } from "../../../interfaces/PostsInterface";
 import { ADD_POST } from "@constants/apisEndpoints";
-import { GenerateDateString } from "@helpers/NormalizeDate";
 import { stripTags } from "@helpers/stripTags";
 import TextEditor from "@UI/TextEditor";
+import { MessageType } from "@constants/helperEnums";
+import { createPostObject } from "./PostCreatorHelper";
 
 const CreatePost = ({ Handle }): JSX.Element => {
   const [message, onHandleMessage] = useState<string>("");
@@ -14,6 +13,7 @@ const CreatePost = ({ Handle }): JSX.Element => {
   const [shortOpis, HandleShortOpis] = useState<string>("");
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
+  const [showComp, handleShowComp] = useState<boolean>(false);
 
   interface ResposnePostAPost {
     [x: string]: string;
@@ -35,20 +35,6 @@ const CreatePost = ({ Handle }): JSX.Element => {
 
   const SendPost: (e: any) => Promise<void> = async (e) => {
     if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
-      const PostObjectToSend: Omit<IPost, "Username"> = {
-        Message: message,
-        Title: title,
-        Tags: tags,
-        ShortDesc: shortOpis,
-        CreatedAt: GenerateDateString(),
-        Category: "test",
-        TimeToRead: 5,
-        TotalWords: CountWords(),
-        CommentsCount: 5,
-        Likes: 5,
-        WhoLiked: [],
-      };
-
       e.preventDefault();
       SetButtonActive(false);
 
@@ -57,19 +43,18 @@ const CreatePost = ({ Handle }): JSX.Element => {
         headers: {
           Authorization: localStorage.getItem("profile"),
         },
-        body: JSON.stringify(PostObjectToSend),
+        body: JSON.stringify(
+          createPostObject(message, title, tags, shortOpis, CountWords)
+        ),
       })
         .then((res: Response) => res.json())
-        .then((data: ResposnePostAPost) => TemporaryComponent(data));
+        .then((data: ResposnePostAPost) => {
+          handleShowComp(true);
+          TemporaryComponent(data);
+        });
     }
   };
 
-  useEffect(() => {
-    if (typeof localStorage != undefined) {
-      console.log(localStorage.getItem("profile"));
-    }
-  }, []);
-  //convert it later to use formik
   return (
     <>
       <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
@@ -118,9 +103,13 @@ const CreatePost = ({ Handle }): JSX.Element => {
           ) : null}
         </form>
       </div>
-      {Object.keys(resp).length != 0 ? (
-        <MessageOnTopOfScreen message={resp.message} />
-      ) : null}
+
+      <MessageOnTopOfScreen
+        message={resp.message}
+        status={MessageType.Normal}
+        duration={1000}
+        indicator={showComp}
+      />
     </>
   );
 };

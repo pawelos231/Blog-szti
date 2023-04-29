@@ -9,7 +9,7 @@ import { useRouter, NextRouter } from "next/router";
 import { POST } from "@constants/reqMeth";
 import * as Yup from "yup";
 import { CircularProgress } from "@material-ui/core";
-import { AuthView } from "@constants/AuthEnums";
+import { AuthView } from "@constants/helperEnums";
 import { EMAIL_VALIDATOR, PASSWORD_VALIDATIOR } from "@constants/validators";
 import styles from "./styles.module.css";
 
@@ -82,14 +82,12 @@ const LoginUserView = ({ view }): JSX.Element => {
     Yup.object().shape(
       {
         name: Yup.string().when("name", () => {
-
           if (view === AuthView.Register) {
             return Yup.string()
               .min(1, "imie moze mieć mininmalnie 10 znaków")
               .max(60, "imie moze mieć maksymalnie 60 znaków")
               .required("required");
-          } 
-          else if (view === AuthView.Login) {
+          } else if (view === AuthView.Login) {
             return Yup.mixed().notRequired();
           }
         }),
@@ -102,8 +100,7 @@ const LoginUserView = ({ view }): JSX.Element => {
         password: Yup.string().when("password", () => {
           if (AuthView.Login == view) {
             return Yup.string().required("required");
-          } 
-          else if (AuthView.Register == view) {
+          } else if (AuthView.Register == view) {
             return Yup.string()
               .min(10, "hasło musi mieć minimalnie 10 znaków")
               .max(32, "hasło moze mieć maksymalnie 32 znaki")

@@ -1,5 +1,5 @@
 import LoginUserView from "@components/LoginUserView";
-import { AuthView } from "@constants/AuthEnums";
+import { AuthView } from "@constants/helperEnums";
 import Link from "next/link";
 const Login = () => {
   return (
