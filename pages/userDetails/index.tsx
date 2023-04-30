@@ -35,7 +35,9 @@ const Index = (): JSX.Element => {
   };
 
   const fetchDescription = async (): Promise<void> => {
+    const token = localStorage.getItem("profile");
     if (token && token.length == 0) return;
+    console.log(token);
     setLoading(true);
     await fetch(DESCRIPTION_URL, {
       method: GET,
@@ -58,7 +60,11 @@ const Index = (): JSX.Element => {
   };
 
   const sendDescription = async (): Promise<void> => {
+
+    const token = localStorage.getItem("profile");
+
     if (String(DESC_REF.current.value).length === 0) return;
+    
     await fetch(DESCRIPTION_URL, {
       method: POST,
       body: JSON.stringify(String(DESC_REF.current.value)),
@@ -74,13 +80,9 @@ const Index = (): JSX.Element => {
   };
 
   useEffect(() => {
-    setToken(localStorage.getItem("profile"));
+    fetchDescription();
   }, []);
 
-  useEffect(() => {
-    fetchDescription();
-  }, [token]);
-  console.log(loading);
   return (
     <>
       <NavbarForUserDesktop />
