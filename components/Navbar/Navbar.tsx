@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
 import SwitchDarkMode from "../switchers/switchMode";
 import { Button } from "UI/Button";
-import ModalWrapper from "@components/Modals/CreatePostModal";
+import ModalWrapper from "@components/Modals/ModalWrapper";
 
 const Navbar: () => JSX.Element = () => {
   const ROUTE_TO_REGISTER = "/userLogin/register";

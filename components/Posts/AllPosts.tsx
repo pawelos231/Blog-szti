@@ -1,22 +1,38 @@
 import * as React from "react";
 import Post from "./Post/Post";
 import { IPost } from "../../interfaces/PostsInterface";
-import { CircularProgress } from "@material-ui/core";
+import NoPostView from "./NoPostView";
 
-type Posts = { posts: IPost[] };
-const AllPosts = ({ posts }: Posts): JSX.Element => {
+type Props = { posts: IPost[] };
+
+const AllPosts = ({ posts }: Props): JSX.Element => {
   if (posts?.length == 0) {
-    return (
-      <div className="flex justify-center mt-12 text-black">
-        <CircularProgress size={102} thickness={2.0} color="inherit" />
-      </div>
-    );
+    return <NoPostView />;
   }
   return (
     <div className="w-full flex justify-center mt-10">
       <section className="flex flex-wrap w-[80%] gap-16 justify-center">
-        {posts?.map((item: IPost, i: number) => {
-          return <Post key={i} item={item} flag={true} />;
+        {posts?.map((item, i) => {
+          return (
+            <Post
+              key={i}
+              post={item}
+              flag={true}
+              info={
+                <Post.Wrapper>
+                  <Post.Creator />
+                  <Post.Header>
+                    <Post.Title />
+                    <Post.Date />
+                  </Post.Header>
+                  <Post.Content>
+                    <Post.ShortDescriptio />
+                    <Post.Image />
+                  </Post.Content>
+                </Post.Wrapper>
+              }
+            />
+          );
         })}
       </section>
     </div>

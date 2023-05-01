@@ -6,7 +6,7 @@ import {
   useEffect,
 } from "react";
 import Image from "next/image";
-import NavbarForUserDesktop from "@components/userDetails/NavbarForUser/NavbarForUserDesktop";
+import NavbarForUserDesktop from "@components/userDetailsPages/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST, GET } from "@constants/reqMeth";
 import { useRouter, NextRouter } from "next/router";

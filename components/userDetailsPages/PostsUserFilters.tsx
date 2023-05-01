@@ -1,6 +1,6 @@
 import * as React from "react";
 import useFetch from "@hooks/useFetch";
-import CreatedPosts from "./CreatedPosts/CreatedPosts";
+import FilteredPosts from "./CreatedPosts/CreatedPosts";
 import { IPost } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
@@ -27,6 +27,7 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
     },
     router
   );
+  console.log(data, error, loading);
 
   return (
     <>
@@ -38,7 +39,7 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
           <div>
             {!!data != false && data.length != 0 ? (
               <div>
-                <CreatedPosts createdPosts={data} text={text} />
+                <FilteredPosts filteredPosts={data} text={text} />
               </div>
             ) : (
               <div>{!!error}</div>

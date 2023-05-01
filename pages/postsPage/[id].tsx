@@ -6,11 +6,7 @@ import mongoose from "mongoose";
 import { getPostById } from "@server/db/posts";
 const BlogPosts = require("../../server/models/BlogPosts");
 
-const PostSite = ({
-  formattedPost,
-}: {
-  formattedPost: IPost;
-}) => {
+const PostSite = ({ formattedPost }: { formattedPost: IPost }) => {
   return (
     <div className="w-screen flex justify-center h-screen">
       <PostDetails post={formattedPost} />
@@ -45,9 +41,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     console.log(error);
   }
 
-  const formattedPost: IPost = JSON.parse(
-    JSON.stringify(result)
-  );
+  const formattedPost: IPost = JSON.parse(JSON.stringify(result));
 
   return {
     props: {

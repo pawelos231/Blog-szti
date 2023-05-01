@@ -1,4 +1,4 @@
-import PostsUserFilter from "@components/userDetails/PostsUserFilters";
+import PostsUserFilter from "@components/userDetailsPages/PostsUserFilters";
 import { FETCH_USER_CREATED_POSTS } from "@constants/apisEndpoints";
 
 const userProfile = () => {

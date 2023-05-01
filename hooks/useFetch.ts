@@ -43,7 +43,6 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
             },
             signal
           };
-          console.log(fetchOptions)
 
           try{
             const res: Response = await fetch(url, fetchOptions)
@@ -52,7 +51,7 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
               router.push("/")
               abortControllerRef.current?.abort();
             }
-            
+
             const dataFromFetch: T = await res.json()
 
             setData(dataFromFetch)
@@ -65,8 +64,8 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
           }
        
     }
-    fetchData()
     clearState()
+    fetchData()
     return () => {
         abortControllerRef.current?.abort();
       };

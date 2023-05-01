@@ -1,6 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { verify } from '@server/helpers/validateToken'
-import { VerifiedToken } from '@interfaces/Token'
 import {getPostsByUser} from '@server/db/posts'
 import { authMiddleware } from '../middleware/authMiddleware'
 
@@ -10,6 +7,5 @@ export default authMiddleware(async function Handler(req, res) {
     if(error) {
         console.log(error)
     }
-    console.log(result)
     res.status(200).json(result)
 })

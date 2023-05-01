@@ -4,9 +4,7 @@ const MONGODB_URI = process.env.DATABASE_URL
 const ENV_VAR_NOT_FOUND = 'Please define the MONGODB_URI environment variable inside .env'
 
 if (!MONGODB_URI) {
-  throw new Error(
-    ENV_VAR_NOT_FOUND
-)
+  throw new Error(ENV_VAR_NOT_FOUND)
 }
 
 async function dbConnect(): Promise<void> {

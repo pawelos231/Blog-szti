@@ -1,4 +1,4 @@
-import PostsUserFilter from "@components/userDetails/PostsUserFilters";
+import PostsUserFilter from "@components/userDetailsPages/PostsUserFilters";
 import { FETCH_USER_LIKED_POSTS } from "@constants/apisEndpoints";
 const LikedPosts = () => {
   return (

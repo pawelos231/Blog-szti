@@ -1,10 +1,13 @@
 import * as React from "react";
 import Image from "next/image";
 import { IPost } from "../../interfaces/PostsInterface";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Comments from "./Comments/Comments";
 import CreateComment from "./Comments/CreateComment";
-const PostDetails = ({ post }: { post: IPost }) => {
+
+type Props = { post: IPost };
+
+const PostDetails = ({ post }: Props) => {
   useEffect(() => {
     if (document != undefined) {
       document.querySelector("#inner").innerHTML = post.Message;

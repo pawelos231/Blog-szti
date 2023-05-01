@@ -6,10 +6,7 @@ mongoose.Query.prototype.cache = async function(){
     return this
 }
 
-const exec: {
-    (callback: mongoose.Callback<any>): void;
-    (): Promise<any>;
-} = mongoose.Query.prototype.exec 
+const exec = mongoose.Query.prototype.exec 
 
 
 mongoose.Query.prototype.exec = async function(): Promise<any>{
@@ -17,6 +14,7 @@ mongoose.Query.prototype.exec = async function(): Promise<any>{
     if(!this.useCache) {
         return exec.apply(this, arguments)
     }
+    
     const key: string = JSON.stringify(
         Object.assign({}, this.getQuery(), {
             collection: this.mongooseCollection.name

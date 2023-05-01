@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SingleComment from "./SingleComment/SingleComment";
 import { getCommentsFetch } from "@redux/slices/CommentSlice/commentSlice";
 import { FetchComments } from "@constants/apisEndpoints";
-import { loaderFor } from "../../userDetails/helpers";
+import { loaderFor } from "../../userDetailsPages/helpers";
 import { CommentAtionType } from "@redux/types/ActionTypes";
 type CommentsProps = { post: IPost };
 
