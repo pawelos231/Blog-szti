@@ -26,7 +26,7 @@ export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
-        const result: Posts = await BlogPosts.find({ UserEmail: Email })
+        const result: Posts = await BlogPosts.find({ UserEmail: Email }).cache()
         return {result}  
       } catch(error){
           return {error: 'Failed to fetch posts by user', result: undefined}
