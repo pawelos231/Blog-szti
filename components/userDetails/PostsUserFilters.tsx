@@ -1,10 +1,9 @@
 import * as React from "react";
-import useFetch from "../../hooks/useFetchHook";
+import useFetch from "@hooks/useFetch";
 import CreatedPosts from "./CreatedPosts/CreatedPosts";
 import { IPost } from "../../interfaces/PostsInterface";
 import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
-import { NOTAUTH } from "@constants/auth";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { loaderFor } from "./helpers";
 
@@ -21,22 +20,13 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
     token = localStorage.getItem("profile");
   }
 
-  interface Unauth {
-    text: string;
-  }
-
-  const [loading, err, errMessage, FilteredPosts] = useFetch<IPost[] & Unauth>(
+  const { data, loading, error } = useFetch<IPost[]>(
     UrlToFetch,
-    token
+    {
+      Authorization: token,
+    },
+    router
   );
-
-  const createdPosts: IPost[] = FilteredPosts;
-  const NotAuthReceiver: string = FilteredPosts?.text;
-
-  if (NotAuthReceiver == NOTAUTH) {
-    router.push("/");
-    return <></>;
-  }
 
   return (
     <>
@@ -46,12 +36,12 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
           <SkletonLoader LoaderFor={loaderFor.post} />
         ) : (
           <div>
-            {!err ? (
+            {!!data != false && data.length != 0 ? (
               <div>
-                <CreatedPosts createdPosts={createdPosts} text={text} />
+                <CreatedPosts createdPosts={data} text={text} />
               </div>
             ) : (
-              <div>{errMessage}</div>
+              <div>{!!error}</div>
             )}
           </div>
         )}

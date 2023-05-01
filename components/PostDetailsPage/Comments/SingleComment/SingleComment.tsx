@@ -1,4 +1,4 @@
-import { useState, useRef, MutableRefObject } from "react";
+import { useState, useRef, MutableRefObject, memo } from "react";
 import { IPostComment } from "@interfaces/PostsInterface";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
@@ -13,7 +13,9 @@ const SingleComment = ({
   postId,
 }) => {
   const [opened, handleOpen] = useState<boolean>(false);
-  const valueOfReply: MutableRefObject<any> = useRef(null);
+  const valueOfReply = useRef<HTMLTextAreaElement>(null);
+
+  console.log("render");
 
   const ReplyToComment = async (): Promise<void> => {
     const date: string = GenerateDateString();
@@ -103,4 +105,4 @@ const SingleComment = ({
   );
 };
 
-export default SingleComment;
+export default memo(SingleComment);

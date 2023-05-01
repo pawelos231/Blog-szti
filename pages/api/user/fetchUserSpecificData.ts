@@ -10,6 +10,6 @@ export default authMiddleware(async function Handler(req, res) {
     if(error) {
         console.log(error)
     }
-
+    console.log(result)
     res.status(200).json(result)
 })
