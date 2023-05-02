@@ -22,7 +22,7 @@ import PostShortDesc from "./PostShortDesc";
 import PostTitle from "./PostTitle";
 import PostWrapper from "./PostWrapper";
 
-const Post = ({ post, flag, info }: Props) => {
+const Post = ({ post, info }: Props) => {
   const checkIfPostIsAlreadyLiked = (): void => {
     const ifLiked: string | undefined = post.WhoLiked.find(
       (item: string) => item == localStorage.getItem("userName")
@@ -90,11 +90,7 @@ const Post = ({ post, flag, info }: Props) => {
             : "basis-[75%]  rounded-md flex min-h-[55vh]  border-4 border-amber-300 relative"
         }
       >
-        <Link
-          href={flag ? `postsPage/${post._id}` : `../postsPage/${post._id}`}
-        >
-          <>{info}</>
-        </Link>
+        {info}
 
         <div className="absolute bottom-2 left-2 w-[97%] h-[10%]  flex justify-between items-end">
           <div className="text-4xl flex">

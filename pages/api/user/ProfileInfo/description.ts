@@ -1,6 +1,4 @@
-import { NextApiResponse, NextApiRequest } from "next";
 import {setProfileDescritpion, getUserDataByEmail} from '@server/db/user'
-import { verify } from "@server/helpers/validateToken";
 import {GET, POST} from '@constants/reqMeth'
 import { METHOD_NOT_ALLOWED } from "@constants/statusCodes";
 import { authMiddleware } from "@pages/api/middleware/authMiddleware";
@@ -19,7 +17,7 @@ export default authMiddleware(async function Handler(req, res) {
                     console.log(error)
                     return
                 }
-                res.status(200).json(result)
+                res.status(200).json(result.ProfileDescription.replaceAll('"', ""))
                 break;
             }
     

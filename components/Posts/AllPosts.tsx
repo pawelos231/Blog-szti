@@ -17,7 +17,6 @@ const AllPosts = ({ posts }: Props): JSX.Element => {
             <Post
               key={i}
               post={item}
-              flag={true}
               info={
                 <Post.Wrapper>
                   <Post.Creator />

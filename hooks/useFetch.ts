@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import * as METHODS from "@constants/reqMeth"
 import { NextRouter } from "next/router";
+import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
 import { UNATHORIZED } from "@constants/statusCodes";
 
 type Methods = typeof METHODS[keyof typeof METHODS]
@@ -47,10 +48,7 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
           try{
             const res: Response = await fetch(url, fetchOptions)
 
-            if(res.status === UNATHORIZED && router){
-              router.push("/")
-              abortControllerRef.current?.abort();
-            }
+            isUserAuthorized(res.status as StatusType, router)
 
             const dataFromFetch: T = await res.json()
 

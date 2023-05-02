@@ -8,24 +8,19 @@ import {
 import Image from "next/image";
 import NavbarForUserDesktop from "@components/userDetailsPages/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
-import { POST, GET } from "@constants/reqMeth";
+import { POST } from "@constants/reqMeth";
 import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
-import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
-import { ReceivedLoginData } from "@interfaces/UserLoginInterface";
-import { Unathorized } from "@interfaces/reponseTypeRegister";
 import { CircularProgress } from "@material-ui/core";
-
-type ResponseFromApi = ReceivedLoginData & Unathorized;
+import useFetch from "@hooks/useFetch";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
+import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
 
 const Index = (): JSX.Element => {
-  const DESC_REF: MutableRefObject<any> = useRef(null);
+  const DESC_REF: MutableRefObject<HTMLTextAreaElement> = useRef(null);
   const [viewModal, setViewModal] = useState<boolean>(true);
-  const [token, setToken] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>(null);
   const [file, setFile] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
   const router: NextRouter = useRouter();
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,37 +29,23 @@ const Index = (): JSX.Element => {
     }
   };
 
-  const fetchDescription = async (): Promise<void> => {
-    const token = localStorage.getItem("profile");
-    if (token && token.length == 0) return;
-    console.log(token);
-    setLoading(true);
-    await fetch(DESCRIPTION_URL, {
-      method: GET,
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res: Response) => {
-        isUserAuthorized(res.status as StatusType, router);
-        return res.json();
-      })
-      .then((data) => {
-        setDescription(data.ProfileDescription.replaceAll(`"`, ""));
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(true);
-      });
-    setLoading(false);
-  };
+  const {
+    data: ProfileDescription,
+    error,
+    loading,
+  } = useFetch<string>(
+    DESCRIPTION_URL,
+    {
+      Authorization: GetToken(),
+    },
+    router
+  );
 
   const sendDescription = async (): Promise<void> => {
-
     const token = localStorage.getItem("profile");
 
-    if (String(DESC_REF.current.value).length === 0) return;
-    
+    if (String(DESC_REF.current.value).trim().length === 0) return;
+
     await fetch(DESCRIPTION_URL, {
       method: POST,
       body: JSON.stringify(String(DESC_REF.current.value)),
@@ -73,15 +54,19 @@ const Index = (): JSX.Element => {
       },
     })
       .then((res: Response) => res.json())
-      .then(async (descriptionRes: any) => {
+      .then((descriptionRes: any) => {
         setDescription(descriptionRes);
         setViewModal(true);
       });
   };
 
   useEffect(() => {
-    fetchDescription();
-  }, []);
+    setDescription(ProfileDescription);
+  }, [ProfileDescription]);
+
+  if (!description) {
+    return <NoDescriptionView />;
+  }
 
   return (
     <>
@@ -131,7 +116,7 @@ const Index = (): JSX.Element => {
             {viewModal ? (
               <div className="w-[40%] h-[30%]">
                 {description.length === 0 ? (
-                  <div className=" text-center m-2 h-[90%] border-2 border-white rounded-sm flex justify-center items-center">
+                  <div className=" text-center m-2 h-[90%] rounded-sm flex justify-center items-center">
                     <p className="text-xl text-white">napisz tu coś...</p>
                   </div>
                 ) : (

@@ -26,7 +26,7 @@ export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
-        const result: Posts = await BlogPosts.find({ UserEmail: Email }).cache()
+        const result: Posts = await BlogPosts.find({ UserEmail: Email })
         return {result}  
       } catch(error){
           return {error: 'Failed to fetch posts by user', result: undefined}
@@ -86,7 +86,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).cache()
+      const result: Comments = await CommentOnPost.find({ PostId: postId })
       return {result}  
       
     } catch(error)

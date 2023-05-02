@@ -14,7 +14,6 @@ export interface ApiResponse {
   
   export interface Props {
     post: IPost;
-    flag: boolean;
     info?: ReactNode;
   }
   

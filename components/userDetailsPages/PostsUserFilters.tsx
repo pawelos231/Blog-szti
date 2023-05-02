@@ -6,6 +6,7 @@ import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { loaderFor } from "./helpers";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 
 type Props = {
   UrlToFetch: string;
@@ -14,20 +15,14 @@ type Props = {
 
 const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
   const router: NextRouter = useRouter();
-  let token: string = "";
-
-  if (typeof window != "undefined" || typeof localStorage != "undefined") {
-    token = localStorage.getItem("profile");
-  }
 
   const { data, loading, error } = useFetch<IPost[]>(
     UrlToFetch,
     {
-      Authorization: token,
+      Authorization: GetToken(),
     },
     router
   );
-  console.log(data, error, loading);
 
   return (
     <>
