@@ -21,7 +21,6 @@ const FilteredPosts = ({ filteredPosts, text }: Props) => {
                 <Post
                   key={i}
                   post={item}
-                  flag={flag}
                   info={
                     <Post.Wrapper>
                       <Post.Header>
