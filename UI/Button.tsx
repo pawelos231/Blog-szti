@@ -12,7 +12,7 @@ const buttonVariants = cva("", {
   variants: {
     variant: {
       default:
-        " bg-white transition-all duration-150  rounded-md border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105",
+        "bg-white transition-all duration-150 rounded-md border-2 border-gray-500 hover:border-gray-400 cursor-pointer z-10 hover:bg-black hover:text-white dark:bg-black dark:border-[#474E68] hover:scale-105 w-[100%] h-[100%]",
       outline: "",
     },
     size: {

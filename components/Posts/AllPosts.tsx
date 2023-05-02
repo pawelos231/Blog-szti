@@ -6,7 +6,7 @@ import NoPostView from "./NoPostView";
 type Props = { posts: IPost[] };
 
 const AllPosts = ({ posts }: Props): JSX.Element => {
-  if (posts?.length == 0) {
+  if (!!!posts.length) {
     return <NoPostView />;
   }
   return (

@@ -41,7 +41,7 @@ const Navbar: () => JSX.Element = () => {
           <li className="text-2xl  font-semibold absolute w-full text-center">
             <Link href={"/"}>SZTIBLOG</Link>
           </li>
-          <li>
+          <li className="w-[30%] h-[100%] flex flex-col justify-center">
             <div className="flex gap-14 items-center">
               <div className="text-4xl dark:text-[#474E68] hover:scale-110 trasition-all duration-150 cursor-pointer">
                 {Is_Authorized ? (
