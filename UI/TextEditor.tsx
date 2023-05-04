@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { CircularProgress } from "@material-ui/core";
 import "react-quill/dist/quill.snow.css";
+import { memo } from "react";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -28,6 +29,7 @@ const ToolbarView = {
 };
 
 const TextEditor = ({ handleMessage }): JSX.Element => {
+  console.log("render");
   return (
     <div className="flex h-[30%]">
       <QuillNoSSRWrapper
@@ -39,4 +41,4 @@ const TextEditor = ({ handleMessage }): JSX.Element => {
   );
 };
 
-export default TextEditor;
+export default memo(TextEditor);

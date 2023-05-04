@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
 import { ADD_POST } from "@constants/apisEndpoints";
 import { stripTags } from "@helpers/stripTags";
 import TextEditor from "@UI/TextEditor";
 import { MessageType } from "@constants/helperEnums";
 import { createPostObject } from "./PostCreatorHelper";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
+
+interface ResposnePostAPost {
+  [x: string]: string;
+}
 
 const CreatePost = ({ Handle }): JSX.Element => {
   const [message, onHandleMessage] = useState<string>("");
@@ -15,10 +20,6 @@ const CreatePost = ({ Handle }): JSX.Element => {
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
   const [showComp, handleShowComp] = useState<boolean>(false);
 
-  interface ResposnePostAPost {
-    [x: string]: string;
-  }
-
   const TemporaryComponent: (data: ResposnePostAPost) => void = (data) => {
     setTimeout(() => {
       setResp({});
@@ -28,6 +29,14 @@ const CreatePost = ({ Handle }): JSX.Element => {
     }, 1000);
     setResp(data);
   };
+
+  const HandleMessageMemo = useCallback(
+    (message: string) => {
+      onHandleMessage(message);
+    },
+    [message]
+  );
+  console.log(message);
 
   const CountWords = (): number => {
     return stripTags(message).split(" ").length;
@@ -41,7 +50,7 @@ const CreatePost = ({ Handle }): JSX.Element => {
       await fetch(ADD_POST, {
         method: "POST",
         headers: {
-          Authorization: localStorage.getItem("profile"),
+          Authorization: GetToken(),
         },
         body: JSON.stringify(
           createPostObject(message, title, tags, shortOpis, CountWords)
@@ -90,7 +99,7 @@ const CreatePost = ({ Handle }): JSX.Element => {
             placeholder="krótki opis, max 230 znaków"
             maxLength={230}
           />
-          <TextEditor handleMessage={onHandleMessage} />
+          <TextEditor handleMessage={HandleMessageMemo} />
 
           {buttonActive ? (
             <div className="flex justify-center mt-12">

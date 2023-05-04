@@ -36,7 +36,7 @@ const MessageOnTopOfScreen = ({
   if (!indicator || !isVisible) return null;
   if (status == MessageType.Normal) {
     return createPortal(
-      <div className="fixed w-screen flex  justify-center top-16 text-3xl text-green-700 z-10">
+      <div className="fixed w-screen flex  justify-center top-12 text-4xl text-green-700 z-50">
         <div>{message}</div>
       </div>,
       refToOuterDiv.current
@@ -44,7 +44,7 @@ const MessageOnTopOfScreen = ({
   }
   if (status == MessageType.Error) {
     return createPortal(
-      <div className="fixed w-screen flex  justify-center top-16 text-3xl text-red-700 z-10">
+      <div className="fixed w-screen flex  justify-center top-12 text-4xl text-red-700 z-50">
         <div>{message}</div>
       </div>,
       refToOuterDiv.current
@@ -52,7 +52,7 @@ const MessageOnTopOfScreen = ({
   }
   if (status == MessageType.Warn) {
     return createPortal(
-      <div className="fixed w-screen flex  justify-center top-16 text-3xl text-orange-400 z-10">
+      <div className="fixed w-screen flex  justify-center top-12 text-4xl text-orange-400 z-50">
         <div>{message}</div>
       </div>,
       refToOuterDiv.current

@@ -1,16 +1,8 @@
-import TextEditor from "@UI/TextEditor";
-import useFetch from "@hooks/useFetch";
-import { useEffect, useState, useCallback, useMemo } from "react";
-const Index = () => {
+import React, { useState, useCallback, useEffect } from "react";
 
+function App() {
+  console.log("rendering App");
 
-  return (
-    <div onClick={() => {}} className="absolute top-72 left-72">
-      Kliknij
-    </div>
-  );
-};
-
-
-
-export default Index;
+  return <div className="absolute top-72"></div>;
+}
+export default App;

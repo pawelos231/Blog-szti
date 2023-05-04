@@ -1,7 +1,6 @@
 import { IPost } from "@interfaces/PostsInterface";
 import Post from "../../Posts/Post/Post";
 import NoPosts from "./NoPostsView/NoPosts";
-const flag: boolean = false;
 
 type Props = {
   filteredPosts: IPost[];
