@@ -52,7 +52,7 @@ export const GetAllCommentsMostLiked = async(postId: string): ResponseWrapper<Co
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
         { $sort: { likesCount: -1 } },
-      ]).cache()
+      ])
       return {result}  
       
     } catch(error)
@@ -70,7 +70,7 @@ export const GetAllCommentsLeastLiked = async(postId: string): ResponseWrapper<C
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
         { $sort: { likesCount: 1 }},
-      ]).cache()
+      ])
       return {result}  
       
     } catch(error)
