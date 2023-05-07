@@ -40,7 +40,6 @@ const Comments = ({ post }: CommentsProps) => {
     index: number = 0,
     visibility: boolean = openedCommentsView
   ): JSX.Element => {
-    if (!itemInit || !itemInit.children) return;
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
 
@@ -69,7 +68,7 @@ const Comments = ({ post }: CommentsProps) => {
               handleopenedCommentsView={handleOpenCommentsView}
               openedCommentsView={openedCommentsView}
               depth={index}
-              postId={post._id}
+              postId={post?._id}
               comment={itemInit}
             />
           ) : (
@@ -77,7 +76,7 @@ const Comments = ({ post }: CommentsProps) => {
               {!visibility ? (
                 <SingleComment
                   depth={index}
-                  postId={post._id}
+                  postId={post?._id}
                   comment={itemInit}
                 />
               ) : null}
@@ -98,7 +97,7 @@ const Comments = ({ post }: CommentsProps) => {
 
   return (
     <section>
-      <CommentsFilter postId={post._id} />
+      <CommentsFilter postId={post?._id} />
       {!isLoading ? (
         <>
           <div className="flex">

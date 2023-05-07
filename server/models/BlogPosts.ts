@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import { BlogPost } from "./Interfaces/Post";
 mongoose.Promise = global.Promise;
 
 
-const BlogSchema = new Schema({
+const BlogSchema = new Schema<BlogPost>({
   Title: {
     type: String,
     maxLength: 40,
@@ -45,5 +46,5 @@ const BlogSchema = new Schema({
 });
 
 
-module.exports = mongoose.models.BlogPosts || mongoose.model('BlogPosts', BlogSchema);
+module.exports = mongoose.models.BlogPosts || mongoose.model<BlogPost>('BlogPosts', BlogSchema);
 

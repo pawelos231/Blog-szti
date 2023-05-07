@@ -6,7 +6,8 @@ import mongoose from "mongoose";
 import { getPostById } from "@server/db/posts";
 const BlogPosts = require("../../server/models/BlogPosts");
 
-const PostSite = ({ formattedPost }: { formattedPost: IPost }) => {
+type Props = { formattedPost: IPost };
+const PostSite = ({ formattedPost }: Props) => {
   return (
     <div className="w-screen flex justify-center h-screen">
       <PostDetails post={formattedPost} />

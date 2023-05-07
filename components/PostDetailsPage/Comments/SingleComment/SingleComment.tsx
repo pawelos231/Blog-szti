@@ -35,7 +35,7 @@ const SingleComment = ({
 
   const handleLike = async (flag: LikeCommentEnum) => {
     handleAddLike(!like);
-
+   
     const LikeComObj = {
       WhoLiked: comment.WhoLiked,
       flag,
