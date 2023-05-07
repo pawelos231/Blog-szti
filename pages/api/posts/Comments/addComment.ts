@@ -1,14 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { IPostComment } from "@interfaces/PostsInterface";
-import mongoose from 'mongoose'
-import { deleteAllRedisValues } from "@server/cache/cache";
-import { authMiddleware, AuthenticatedRequest } from "@pages/api/middleware/authMiddleware";
-const CommentOnPost = require("@server/models/CommentModel")
+import { authMiddleware} from "@pages/api/middleware/authMiddleware";
+import { CreateCommentDB } from "@server/db/comments";
 
 
 export default authMiddleware(async function Handler(req, res) {
-    await mongoose.connect(process.env.DATABASE_URL)
-    deleteAllRedisValues()
 
 
     const CommentObjectForFront: IPostComment = {
@@ -17,8 +12,11 @@ export default authMiddleware(async function Handler(req, res) {
         UserName: req.user.Name as string
     }
 
-    const createdComment: any = await CommentOnPost.create(CommentObjectForFront)
+    const {result, error} = await CreateCommentDB(CommentObjectForFront)
 
-    await createdComment.save()
-    res.status(200).json({ Comment: CommentObjectForFront, status: 1, text: "udało się dodać komentarz" })
+    if(error ){
+        return res.status(500).json(error)
+    }
+    
+    return res.status(200).json(result)
 })

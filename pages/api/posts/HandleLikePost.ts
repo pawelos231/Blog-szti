@@ -10,11 +10,6 @@ interface LikedPosts {
     WhoLiked: Array<string>;
 }
 
-type ResponseData = {
-    text: string
-    Name: string
-}
-
 const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
     if (flag === 1) {
 

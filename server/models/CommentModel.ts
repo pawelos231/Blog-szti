@@ -1,7 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, {Document} from "mongoose";
 const { Schema } = mongoose
 mongoose.Promise = global.Promise
-const CommentSchema = new Schema({
+import { Comment } from "./Interfaces/Comment";
+
+const CommentSchema = new Schema<Comment>({
     UserId: {
         type: String,
         required: true
@@ -23,4 +25,4 @@ const CommentSchema = new Schema({
     UserName: String,
 })
 
-module.exports = mongoose.models.CommentSchema || mongoose.model('CommentSchema', CommentSchema);
+module.exports = mongoose.models.CommentSchema || mongoose.model<Comment>('CommentSchema', CommentSchema);

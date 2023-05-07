@@ -1,12 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Notifications, Person } from "@material-ui/icons";
-import CreatePost from "../Header/CreatePost/CreatePost";
 import { useState } from "react";
 import { useRouter, NextRouter } from "next/router";
 import SwitchDarkMode from "../switchers/switchMode";
 import { Button } from "UI/Button";
-import ModalWrapper from "@components/Modals/ModalWrapper";
+import dynamic from "next/dynamic";
+
+const DynamicCreatePost = dynamic(
+  () => import("@components/Header/CreatePost/CreatePost")
+);
+const DynamicModalWrapper = dynamic(
+  () => import("@components/Modals/ModalWrapper")
+);
 
 const Navbar: () => JSX.Element = () => {
   const ROUTE_TO_REGISTER = "/userLogin/register";
@@ -15,6 +21,11 @@ const Navbar: () => JSX.Element = () => {
   const [profileObj, setProfileObj] = useState<Object | string>({});
   const [opened, HandleOpenModal] = useState<boolean>(false);
   const router: NextRouter = useRouter();
+
+  const OpenModal = useCallback(
+    (isOpened: boolean) => HandleOpenModal(isOpened),
+    [opened]
+  );
 
   const Logout: () => void = () => {
     localStorage.clear();
@@ -73,9 +84,9 @@ const Navbar: () => JSX.Element = () => {
         </ul>
       </nav>
       {opened ? (
-        <ModalWrapper open={opened} onClose={HandleOpenModal}>
-          <CreatePost Handle={HandleOpenModal} />
-        </ModalWrapper>
+        <DynamicModalWrapper open={opened} onClose={OpenModal}>
+          <DynamicCreatePost Handle={OpenModal} />
+        </DynamicModalWrapper>
       ) : null}
     </>
   );

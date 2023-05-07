@@ -5,7 +5,7 @@ interface Router {
 
 export const RoutingArray: Router[] = [
     {
-        desc: "Główna Posty",
+        desc: "Profil Użytkownika",
         href: "/userDetails",
     },
     {

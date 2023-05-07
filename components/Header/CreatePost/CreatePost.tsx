@@ -6,7 +6,7 @@ import TextEditor from "@UI/TextEditor";
 import { MessageType } from "@constants/helperEnums";
 import { createPostObject } from "./PostCreatorHelper";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
-
+import { memo } from "react";
 interface ResposnePostAPost {
   [x: string]: string;
 }
@@ -123,4 +123,4 @@ const CreatePost = ({ Handle }): JSX.Element => {
   );
 };
 
-export default CreatePost;
+export default memo(CreatePost);

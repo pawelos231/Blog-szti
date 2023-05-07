@@ -36,8 +36,9 @@ mongoose.Query.prototype.exec = async function(): Promise<any>{
 
     }
    
+    const CACHE_TIME = 60
     const result: any = await exec.apply(this, arguments)
-    setToCache(key, 60, JSON.stringify(result))
+    setToCache(key, CACHE_TIME, JSON.stringify(result))
     console.log("FROM MONGO")
 
     return result

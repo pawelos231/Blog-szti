@@ -1,8 +1,15 @@
-import { useState, useRef, MutableRefObject, memo } from "react";
+import { useState, useRef, MutableRefObject, memo, useEffect } from "react";
 import { IPostComment } from "@interfaces/PostsInterface";
 import { GenerateDateString } from "@helpers/NormalizeDate";
 import { ADD_COMMENT_URL } from "@constants/apisEndpoints";
 import { POST } from "@constants/reqMeth";
+import { ThumbUpAltOutlined, ThumbUpAltRounded } from "@material-ui/icons";
+import { SingleCommentProps, LikeCommentEnum } from "./types";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
+import { LIKE_COMMENT } from "@constants/apisEndpoints";
+import { isUserAuthorized, StatusType } from "@helpers/IsUserAuthorized";
+import { useRouter } from "next/router";
+
 const SingleComment = ({
   parentShowCommentsFlag = false,
   depth,
@@ -11,11 +18,43 @@ const SingleComment = ({
   handleopenedCommentsView = null,
   visibility = true,
   postId,
-}) => {
+}: SingleCommentProps) => {
   const [opened, handleOpen] = useState<boolean>(false);
+  const [like, handleAddLike] = useState<boolean>(false);
   const valueOfReply = useRef<HTMLTextAreaElement>(null);
+  const router = useRouter();
 
-  console.log("render");
+  const cheIfCommentLikedAlready = (): void => {
+    const ifLiked: string | undefined = comment.WhoLiked.find(
+      (item: string) => item == localStorage.getItem("userName")
+    );
+    if (ifLiked) {
+      handleAddLike(true);
+    }
+  };
+
+  const handleLike = async (flag: LikeCommentEnum) => {
+    handleAddLike(!like);
+
+    const LikeComObj = {
+      WhoLiked: comment.WhoLiked,
+      flag,
+      commentId: comment._id,
+    };
+
+    await fetch(LIKE_COMMENT, {
+      method: POST,
+      headers: {
+        Authorization: GetToken(),
+      },
+      body: JSON.stringify(LikeComObj),
+    })
+      .then((res: Response) => {
+        isUserAuthorized(res.status as StatusType, router);
+        return res.json();
+      })
+      .then((data) => console.log(data));
+  };
 
   const ReplyToComment = async (): Promise<void> => {
     const date: string = GenerateDateString();
@@ -43,6 +82,11 @@ const SingleComment = ({
       .then((res: Response) => res.json())
       .then((data) => console.log(data));
   };
+
+  useEffect(() => {
+    cheIfCommentLikedAlready();
+  }, []);
+
   return (
     <>
       <div className="flex">
@@ -64,12 +108,31 @@ const SingleComment = ({
           <div className="mt-4">{comment.Content}</div>
         </div>
       </div>
-      <button
-        onClick={() => handleOpen(!opened)}
-        className=" font-semibold mt-2 mb-4 p-2  w-[10%] rounded-sm"
-      >
-        Odpowiedz
-      </button>
+      <div className="flex items-center gap-12">
+        <div className="flex gap-5 items-center">
+          <div
+            onClick={() => handleLike(LikeCommentEnum.AddLike)}
+            className="text-2xl"
+          >
+            {!like ? (
+              <div onClick={() => handleLike(LikeCommentEnum.AddLike)}>
+                <ThumbUpAltOutlined fontSize="inherit" />
+              </div>
+            ) : (
+              <div onClick={() => handleLike(LikeCommentEnum.Remove)}>
+                <ThumbUpAltRounded fontSize="inherit" />
+              </div>
+            )}
+          </div>
+          <div>{comment.WhoLiked.length}</div>
+        </div>
+        <button
+          onClick={() => handleOpen(!opened)}
+          className=" font-semibold mt-2 mb-4 p-2  w-[10%] rounded-sm"
+        >
+          Odpowiedz
+        </button>
+      </div>
       {parentShowCommentsFlag ? (
         <button
           onClick={() => handleopenedCommentsView(!openedCommentsView)}

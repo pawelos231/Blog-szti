@@ -1,39 +1,46 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { IPostComment } from "@interfaces/PostsInterface";
-import {GetAllComments} from "@server/db/posts"
-
-interface TransformedComments extends IPostComment {
-  children: TransformedComments | any;
-}
-
-const normalizeComments = (
-  Comments: IPostComment[],
-  id = ""
-): TransformedComments[] => {
-  const newArr = Comments.filter(
-    (item) => item["ParentId"] == id
-  ).map((item) => ({
-    ...item,
-    children: normalizeComments(Comments, item._id),
-  }));
-  return newArr;
-};
+import { GetAllComments, GetAllCommentsOldest, GetAllCommentsLeastLiked, GetAllCommentsMostLiked } from "@server/db/comments";
+import { FilterOptionEnum } from "@components/PostDetailsPage/Comments/Filter/FilterData";
+import { normalizeComments } from "@helpers/NormalizeComments";
+import { FetchBody } from "@components/PostDetailsPage/Comments/Filter/FilterData";
 
 
 export default async function Handler(req: NextApiRequest, res: NextApiResponse) {
   
-  const postId: string = JSON.parse(req.body)
 
-  const {result, error} = await GetAllComments(String(postId))
- 
+  const {postId, filter}: FetchBody = JSON.parse(req.body)
 
-  const comms: TransformedComments[] = normalizeComments(JSON.parse(JSON.stringify(result)))
+  const FilterComments = async <F extends Function>(getFilteredComments: F) => {
 
-  if(comms){
-    res.status(200).json(comms)
-  } 
-  else {
-    res.status(200).json(error)
+    const {result, error} = await getFilteredComments(String(postId))
+    const comms = normalizeComments(JSON.parse(JSON.stringify(result)))
+    if(error){
+      return res.status(500).json(error)
+    }
+    return res.status(200).json(comms)
   }
+
+
+  switch(filter){
+    case FilterOptionEnum.Native: {
+      return FilterComments(GetAllComments)
+    }
+    case FilterOptionEnum.Newest: {
+      return FilterComments(GetAllComments)
+    }
+    case FilterOptionEnum.Oldest: {
+      return FilterComments(GetAllCommentsOldest)
+    }
+    case FilterOptionEnum.MostLiked: {
+      return FilterComments(GetAllCommentsMostLiked)
+    }
+    case FilterOptionEnum.LeastLiked: {
+      return FilterComments(GetAllCommentsLeastLiked)
+    }
+    default: {
+      return res.status(500).json("unknown error")
+    }
+  }
+
   
 }

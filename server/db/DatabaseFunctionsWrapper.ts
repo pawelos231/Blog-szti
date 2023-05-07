@@ -4,7 +4,7 @@ type GenericResults<K> =  {
 }
 
 
-export const WrapperForQuery = async <T extends Function, K extends Object>(func: T): Promise<K> => {
+export const WrapperForQuery = async <T extends Function, K>(func: T): Promise<K> => {
     const { result, error }: GenericResults<K> = await func();
     if (error) {
         throw new Error(error)

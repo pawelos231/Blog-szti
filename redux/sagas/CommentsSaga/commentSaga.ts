@@ -11,6 +11,7 @@ function* workerCommentsFetchAll(action: TActionComment): GenFuncType {
     try{
         
         const { payload: { url, method, body } } = action
+        console.log(body, method, url)
         const comments: Response = yield call(() => fetch(url, {
             method: method,
             body: JSON.stringify(body)

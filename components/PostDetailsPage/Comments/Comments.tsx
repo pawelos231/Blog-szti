@@ -7,13 +7,27 @@ import { getCommentsFetch } from "@redux/slices/CommentSlice/commentSlice";
 import { FetchComments } from "@constants/apisEndpoints";
 import { loaderFor } from "../../userDetailsPages/helpers";
 import { CommentAtionType } from "@redux/types/ActionTypes";
+import CommentsFilter from "./Filter/CommentsFilter";
+import { useCallback } from "react";
+import { FilterOptionEnum } from "./Filter/FilterData";
+import { TransformedComments } from "@helpers/NormalizeComments";
+import { FetchBody } from "./Filter/FilterData";
+
 type CommentsProps = { post: IPost };
 
 const Comments = ({ post }: CommentsProps) => {
   const [openedCommentsView, handleopenedCommentsView] =
     useState<boolean>(false);
 
+  const handleOpenCommentsView = useCallback(
+    (opened: boolean) => {
+      handleopenedCommentsView(opened);
+    },
+    [openedCommentsView]
+  );
+
   const dispatch: Dispatch<CommentAtionType> = useDispatch();
+
   const CommentsState = useSelector((state: any) => {
     return state.comments;
   });
@@ -21,15 +35,12 @@ const Comments = ({ post }: CommentsProps) => {
   const isLoading: boolean = CommentsState.isLoading;
   const Comments: IPostComment[] = CommentsState.Comments;
 
-  interface TransformedComments extends IPostComment {
-    children: TransformedComments | any;
-  }
-
   const generateChildren = (
     itemInit: TransformedComments,
     index: number = 0,
     visibility: boolean = openedCommentsView
   ): JSX.Element => {
+    if (!itemInit || !itemInit.children) return;
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
 
@@ -55,7 +66,7 @@ const Comments = ({ post }: CommentsProps) => {
           {children && index == 0 && children.length !== 0 ? (
             <SingleComment
               parentShowCommentsFlag={true}
-              handleopenedCommentsView={handleopenedCommentsView}
+              handleopenedCommentsView={handleOpenCommentsView}
               openedCommentsView={openedCommentsView}
               depth={index}
               postId={post._id}
@@ -78,13 +89,16 @@ const Comments = ({ post }: CommentsProps) => {
     );
   };
   useEffect(() => {
-    dispatch(
-      getCommentsFetch({ url: FetchComments, body: post._id, method: "POST" })
-    );
+    const body: FetchBody = {
+      postId: post._id,
+      filter: FilterOptionEnum.Native,
+    };
+    dispatch(getCommentsFetch({ url: FetchComments, body, method: "POST" }));
   }, [dispatch]);
 
   return (
     <section>
+      <CommentsFilter postId={post._id} />
       {!isLoading ? (
         <>
           <div className="flex">
