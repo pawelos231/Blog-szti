@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import { BlogPost } from "./Interfaces/Post";
 mongoose.Promise = global.Promise;
 
 
-const BlogSchema = new Schema<BlogPost>({
+const BlogSchema = new Schema({
   Title: {
     type: String,
     maxLength: 40,
