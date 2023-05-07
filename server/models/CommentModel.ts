@@ -1,4 +1,4 @@
-import mongoose, {Document} from "mongoose";
+import mongoose from "mongoose";
 const { Schema } = mongoose
 mongoose.Promise = global.Promise
 import { Comment } from "./Interfaces/Comment";

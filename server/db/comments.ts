@@ -20,7 +20,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: -1 });
+      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: -1 }).cache();
       return {result}  
       
     } catch(error)
@@ -34,7 +34,7 @@ export const GetAllCommentsOldest = async(postId: string): ResponseWrapper<Comme
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: 1 });
+      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: 1 }).cache();
       return {result}  
       
     } catch(error)
@@ -52,7 +52,7 @@ export const GetAllCommentsMostLiked = async(postId: string): ResponseWrapper<Co
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
         { $sort: { likesCount: -1 } },
-      ])
+      ]).cache()
       return {result}  
       
     } catch(error)
@@ -69,8 +69,8 @@ export const GetAllCommentsLeastLiked = async(postId: string): ResponseWrapper<C
       const result: Comments = await CommentOnPost.aggregate([
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
-        { $sort: { likesCount: 1 } },
-      ])
+        { $sort: { likesCount: 1 }},
+      ]).cache()
       return {result}  
       
     } catch(error)

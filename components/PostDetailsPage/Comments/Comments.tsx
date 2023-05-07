@@ -40,6 +40,7 @@ const Comments = ({ post }: CommentsProps) => {
     index: number = 0,
     visibility: boolean = openedCommentsView
   ): JSX.Element => {
+    if (!itemInit?.children) return;
     const children: TransformedComments[] = itemInit.children;
     let nestedLevel: number = index + 1;
 
