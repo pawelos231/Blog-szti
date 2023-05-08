@@ -34,13 +34,11 @@ mongoose.Aggregate.prototype.exec = async function(): Promise<any>{
     if(!this.useCache) {
         return execAggregate.call(this, ...arguments)
     }
-    console.log("CO KURWAAAAAAAAAAAAAAAAAAAAAAAAA")
     const key: string = JSON.stringify(
         Object.assign({}, this.pipeline(), {
             cacheOptions: this.cacheOptions
         })
     )
-    console.log(key, "chuj")
     const cachedValue: any = await getFromCache(key)
     console.log(cachedValue)
    

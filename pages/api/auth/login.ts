@@ -20,7 +20,7 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse<
     await mongoose.connect(process.env.DATABASE_URL)
     const {email, password}: Login = JSON.parse(req.body)
     if (await CheckIfEmailExists(email) !== false) {
-        const UserData: ReceivedLoginData = await CheckIfEmailExists(email)
+        const UserData: ReceivedLoginData = await CheckIfEmailExists(email) as  ReceivedLoginData 
 
         const PasswordInDatabase: string = UserData.Password
         const PasswordGivenByUser: string = password
