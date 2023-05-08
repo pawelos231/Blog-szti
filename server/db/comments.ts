@@ -20,7 +20,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).cache();
+      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: -1 }).cache();
       return {result}  
       
     } catch(error)
