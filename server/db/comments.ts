@@ -20,7 +20,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId });
+      const result: Comments = await CommentOnPost.find({ PostId: postId }).cache();
       return {result}  
       
     } catch(error)
@@ -71,7 +71,7 @@ export const GetAllCommentsLeastLiked = async(postId: string): ResponseWrapper<C
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
         { $sort: { likesCount: 1 }},
-      ])
+      ]).cache()
       return {result}  
       
     } catch(error)

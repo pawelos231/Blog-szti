@@ -2,26 +2,22 @@ import mongoose from "mongoose";
 import {setToCache, getFromCache} from '@server/cache/cache'
 
 
-type cacheOptions = {
+type CacheOptions = {
     TIME: number
-}
-
-const cacheOptions: cacheOptions = {
-    TIME: 60
 }
 
 const execQuery = mongoose.Query.prototype.exec 
 const execAggregate = mongoose.Aggregate.prototype.exec 
 
 //@ts-ignore
-mongoose.Query.prototype.cache = async function({...cacheOptions}: cacheOptions){
+mongoose.Query.prototype.cache = async function(cacheOptions: CacheOptions = {TIME: 60}){
     this.useCache = true
     this.cacheOptions = cacheOptions
     return this
 }
 
 //@ts-ignore
-mongoose.Aggregate.prototype.cache = async function({...cacheOptions}: cacheOptions){
+mongoose.Aggregate.prototype.cache = async function(cacheOptions: CacheOptions ={TIME: 60}){
     this.useCache = true
     this.cacheOptions = cacheOptions
     return this
@@ -34,13 +30,13 @@ mongoose.Aggregate.prototype.exec = async function(): Promise<any>{
     if(!this.useCache) {
         return execAggregate.call(this, ...arguments)
     }
+
     const key: string = JSON.stringify(
         Object.assign({}, this.pipeline(), {
             cacheOptions: this.cacheOptions
         })
     )
     const cachedValue: any = await getFromCache(key)
-    console.log(cachedValue)
    
 
     if(cachedValue && cachedValue.length !== 0){
@@ -70,13 +66,13 @@ mongoose.Query.prototype.exec = async function(): Promise<any>{
     if(!this.useCache) {
         return execQuery.apply(this, arguments)
     }
-    
+ 
     const key: string = JSON.stringify(
         Object.assign({}, this.getQuery(), {
             collection: this.mongooseCollection.name,
         })
     )
-    console.log(this.getOptions(), key, "chuj")
+   
     const cachedValue: any = await getFromCache(key)
    
 
