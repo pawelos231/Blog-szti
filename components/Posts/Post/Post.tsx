@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ThumbUpAltOutlined,
   ThumbUpAltRounded,
@@ -10,7 +10,7 @@ import { POST } from "@constants/reqMeth";
 import { LIKE_POST_URL } from "@constants/apisEndpoints";
 import { isUserAuthorized, StatusType } from "@helpers/IsUserAuthorized";
 import { Props, ApiResponse, HandleLike, LikedPosts } from "./PostInterface";
-import UsersWhichLikedPostModal from "./UsersWhichLikedPostModal";
+import UsersWhichLikedPostModal from "./usersLikes/UsersWhichLikedPostModal";
 import PostContext from "./PostContext";
 import PostContent from "./PostContent";
 import PostCreatedBy from "./PostCreatedBy";
@@ -35,6 +35,13 @@ const Post = ({ post, info }: Props) => {
   const [favourite, setFav] = useState<boolean>(true);
   const [like, setLiked] = useState<boolean>(false);
   const [likedArray, dispatchLikedArray] = useState<string[]>(post.WhoLiked);
+
+  const onClose = useCallback(
+    (flag: boolean) => {
+      openModal(flag);
+    },
+    [modal]
+  );
 
   const router = useRouter();
 
@@ -132,7 +139,7 @@ const Post = ({ post, info }: Props) => {
 
         <UsersWhichLikedPostModal
           open={modal}
-          onClose={openModal}
+          onClose={onClose}
           likedArray={likedArray}
         />
       </div>

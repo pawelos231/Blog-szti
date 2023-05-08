@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 export interface BlogPost extends Document {
     Title?: string;
     CreatedAt?: Date;

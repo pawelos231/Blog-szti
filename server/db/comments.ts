@@ -20,7 +20,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
     {
       await clientPromise()
 
-      const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: -1 }).cache();
+      const result: Comments = await CommentOnPost.find({ PostId: postId });
       return {result}  
       
     } catch(error)
@@ -52,7 +52,8 @@ export const GetAllCommentsMostLiked = async(postId: string): ResponseWrapper<Co
         { $match: { PostId: postId } },
         { $addFields: { likesCount: { $size: "$WhoLiked" } } },
         { $sort: { likesCount: -1 } },
-      ])
+      ]).cache()
+    
       return {result}  
       
     } catch(error)

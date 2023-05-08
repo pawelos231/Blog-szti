@@ -35,9 +35,28 @@ const BlogSchema = new Schema<BlogPost>({
       message: (props: any) => `${props.value} must be longer than 0`
     }
   },
-  ShortDesc: String,
-  Message: String,
-  Category: String,
+  ShortDesc: {
+    type: String,
+    required: true,
+    maxLength: 250,
+    validate: {
+      validator: (message: string) => message.length < 250,
+      message: (props: any) => `${props.value} is longer than expected`
+    }
+  },
+  Message: {
+    type: String,
+    required: true,
+    maxLength: 25000,
+    validate: {
+      validator: (message: string) => message.length < 25000,
+      message: (props: any) => `${props.value} is longer than expected`
+    }
+  },
+  Category: {
+    type: String,
+    required: true,
+  },
   CommentsCount: Number,
   TimeToRead: Number,
   TotalWords: Number,

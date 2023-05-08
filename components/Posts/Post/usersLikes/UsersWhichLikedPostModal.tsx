@@ -1,6 +1,6 @@
 import ModalWrapper from "@components/Modals/ModalWrapper";
 import UsersWhichLikedPostView from "./UsersWhichLikedPostView";
-
+import { memo } from "react";
 type Props = {
   open: boolean;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,4 +15,4 @@ const UsersWhichLikedPostModal = ({ open, onClose, likedArray }: Props) => {
   );
 };
 
-export default UsersWhichLikedPostModal;
+export default memo(UsersWhichLikedPostModal);

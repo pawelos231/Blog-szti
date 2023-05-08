@@ -1,9 +1,9 @@
 import {getUserDataByEmail} from '../db/user'
+import { ReceivedLoginData } from '@interfaces/UserLoginInterface'
 
-export const CheckIfEmailExists = async (email: string): Promise<boolean | any> => {
+export const CheckIfEmailExists = async (email: string): Promise<boolean | ReceivedLoginData> => {
 
-    const {result, errorGet}: any = await getUserDataByEmail(email)
-    console.log(result)
+    const {result, error} = await getUserDataByEmail(email)
     if(result != null){
         console.log(result)
         return result
