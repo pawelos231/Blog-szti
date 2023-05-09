@@ -1,20 +1,19 @@
-
-import mongoose from 'mongoose';
-const BlogPosts = require("@server/models/BlogPosts")
 import { IPost } from '@interfaces/PostsInterface';
 import { authMiddleware } from '../middleware/authMiddleware';
+import { CreatePost } from '@server/db/posts';
 
-//add error checking
 
 export default authMiddleware(async function handler(req, res) {
-  await mongoose.connect(process.env.DATABASE_URL)
+ 
   
   const parsedData: IPost = {...JSON.parse(req.body), Username: req.user.Name, UserEmail: req.user.Email }
 
-  const source: any = await BlogPosts.create(parsedData)
-
-  await source.save()
-
+   const {result, error} = await CreatePost(parsedData)
+   
+  if(error) {
+    console.log(error)
+    return res.status(500).json(error)
+  }
 
   res.status(200).json({ message: 'udało się dodać post' })
 })

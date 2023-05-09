@@ -28,7 +28,7 @@ const CommentSchema = new Schema<Comment>({
         type: Date,
         validate: {
           validator: function (this: Comment, updatedAt: Date) {
-            return !this.CreatedAt || updatedAt >= this.CreatedAt;
+            return  !updatedAt || !this.CreatedAt || updatedAt >= this.CreatedAt;
           },
           message: "UpdatedAt must be a valid date and greater than or equal to CreatedAt"
         }

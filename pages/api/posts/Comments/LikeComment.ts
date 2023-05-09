@@ -43,6 +43,9 @@ export default authMiddleware(async function Handler(req, res) {
     const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
 
     const {result, error} = await LikeCommentDB(newLikedArr, commentId)
+    if(error) {
+        return res.status(500).json(error)
+    }
     if (flag === LikeCommentEnum.AddLike) {
         res.status(200).json({ text: "pomyślnie dodano like'a", Name })
     }

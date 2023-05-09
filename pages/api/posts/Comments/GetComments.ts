@@ -25,18 +25,23 @@ export default async function Handler(req: NextApiRequest, res: NextApiResponse)
     case FilterOptionEnum.Native: {
       return FilterComments(GetAllComments)
     }
+
     case FilterOptionEnum.Newest: {
       return FilterComments(GetAllComments)
     }
+
     case FilterOptionEnum.Oldest: {
       return FilterComments(GetAllCommentsOldest)
     }
+    
     case FilterOptionEnum.MostLiked: {
       return FilterComments(GetAllCommentsMostLiked)
     }
+
     case FilterOptionEnum.LeastLiked: {
       return FilterComments(GetAllCommentsLeastLiked)
     }
+    
     default: {
       return res.status(500).json("unknown error")
     }

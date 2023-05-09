@@ -25,7 +25,7 @@ export const GetAllComments = async (postId: string):  ResponseWrapper<Comments>
       
     } catch(error)
     {
-        return {error: 'Failed to fetch Comments', result: undefined}
+        return {error, result: undefined}
     } 
 }
 
@@ -39,7 +39,7 @@ export const GetAllCommentsOldest = async(postId: string): ResponseWrapper<Comme
       
     } catch(error)
     {
-        return {error: 'Failed to fetch Comments', result: undefined}
+        return {error, result: undefined}
     } 
 }
 
@@ -58,7 +58,7 @@ export const GetAllCommentsMostLiked = async(postId: string): ResponseWrapper<Co
       
     } catch(error)
     {
-        return {error: 'Failed to fetch Comments', result: undefined}
+        return {error, result: undefined}
     } 
 }
 
@@ -76,7 +76,7 @@ export const GetAllCommentsLeastLiked = async(postId: string): ResponseWrapper<C
       
     } catch(error)
     {
-        return {error: 'Failed to fetch Comments', result: undefined}
+        return {error, result: undefined}
     } 
 }
 
@@ -91,7 +91,7 @@ export const CreateCommentDB = async (CommentObjectForFront: IPostComment): Prom
 
         return {result: {status: 1, text: "udało się dodać komentarz" }}
     }catch(error){
-        return {result: undefined, error: "nie udało się ododać komentarza"}
+        return {result: undefined, error}
     }
 }
 

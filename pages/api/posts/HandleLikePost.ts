@@ -1,5 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { verify } from '@server/helpers/validateToken'
 import { likePost } from "@server/db/posts";
 import { authMiddleware } from "../middleware/authMiddleware";
 
@@ -45,6 +43,11 @@ export default authMiddleware(async function handler(req, res) {
     const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
     const {result, error} = await likePost(newLikedArr, ValueToPass, itemId)
 
+
+    if(error) {
+        return res.status(500).json(error)
+    }
+
     if (flag === 1) {
         res.status(200).json({ text: "pomyślnie dodano like'a", Name })
     }
@@ -53,8 +56,5 @@ export default authMiddleware(async function handler(req, res) {
         res.status(200).json({ text: "pomyślnie odlikowano", Name })
     }
 
-    else {
-        res.status(500).json({ text: error})
-    }
 
 })
