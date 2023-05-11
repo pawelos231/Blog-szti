@@ -6,9 +6,9 @@ import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
-import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
 import NoDescription from "./NoDescription";
+import { OTHER_USER_DESCRIPTION_URL } from "@constants/apisEndpoints";
 
 type Props = { userMail: string };
 
@@ -20,14 +20,8 @@ const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
     data: ProfileDescription,
     error,
     loading,
-  } = useFetch<string>(
-    DESCRIPTION_URL,
-    {
-      Authorization: GetToken(),
-    },
-    router
-  );
-
+  } = useFetch<string>(`${OTHER_USER_DESCRIPTION_URL}/${userMail}`);
+  console.log(description);
   useEffect(() => {
     setDescription(ProfileDescription);
   }, [ProfileDescription]);
