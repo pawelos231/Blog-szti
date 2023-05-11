@@ -1,6 +1,3 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import { VerifiedToken } from '@interfaces/Token'
-import { verify } from '@server/helpers/validateToken'
 import { getLikedUserPosts } from "@server/db/posts";
 import { authMiddleware } from "../middleware/authMiddleware";
 export default authMiddleware(async function Handler(req, res) {

@@ -3,7 +3,7 @@ interface Router {
     href: string;
 }
 
-export const RoutingArray: Router[] = [
+export const RoutingArrayLoggedUser: Router[] = [
     {
         desc: "Profil Użytkownika",
         href: "/userDetails",
@@ -25,3 +25,28 @@ export const RoutingArray: Router[] = [
         href: "/userDetails/userLikedComments",
     },
 ];
+
+export const RoutingArrayOtherUser = (userMail: string) => {
+    return [
+        {
+            desc: "Profil Użytkownika",
+            href: `/userDetails/${userMail}`,
+        },
+        {
+            desc: "Stworzone Posty",
+            href: `/userDetails/${userMail}/userProfile`,
+        },
+        {
+            desc: "Stworzone Komentarze",
+            href: `/userDetails/${userMail}/userComments`,
+        },
+        {
+            desc: "Polikowane Posty",
+            href: `/userDetails/${userMail}/userLikedPosts`,
+        },
+        {
+            desc: "Polikowane Komentarze",
+            href: `/userDetails/${userMail}/userLikedComments`,
+        },
+    ]
+}

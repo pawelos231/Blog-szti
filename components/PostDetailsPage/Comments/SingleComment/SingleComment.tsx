@@ -9,6 +9,7 @@ import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { LIKE_COMMENT } from "@constants/apisEndpoints";
 import { isUserAuthorized, StatusType } from "@helpers/IsUserAuthorized";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SingleComment = ({
   parentShowCommentsFlag = false,
@@ -24,7 +25,7 @@ const SingleComment = ({
   const valueOfReply = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
-  const cheIfCommentLikedAlready = (): void => {
+  const checkIfCommentLikedAlready = (): void => {
     const ifLiked: string | undefined = comment.WhoLiked.find(
       (item: string) => item == localStorage.getItem("userName")
     );
@@ -35,7 +36,7 @@ const SingleComment = ({
 
   const handleLike = async (flag: LikeCommentEnum) => {
     handleAddLike(!like);
-   
+
     const LikeComObj = {
       WhoLiked: comment.WhoLiked,
       flag,
@@ -84,7 +85,7 @@ const SingleComment = ({
   };
 
   useEffect(() => {
-    cheIfCommentLikedAlready();
+    checkIfCommentLikedAlready();
   }, []);
 
   return (
@@ -100,7 +101,9 @@ const SingleComment = ({
                 alt="temp"
               />
             </div>
-            <p className="text-md pb-2 font-semibold">{comment.UserName}</p>
+            <Link href={`/userDetails/${comment.UserId}`}>
+              <p className="text-md pb-2 font-semibold">{comment.UserName}</p>
+            </Link>
             <p className="text-sm text-gray-500 pb-2">
               {comment.CreatedAt.toString().split("T")[0]}
             </p>

@@ -9,3 +9,5 @@ export const DELETE_COMMENT = '/api/posts/Comments/DeleteComment'
 export const LIKE_COMMENT = '/api/posts/Comments/LikeComment'
 export const ADD_POST = "/api/posts/HandlePostSub"
 export const LIKE_POST_URL = "/api/posts/HandleLikePost"
+export const OTHER_USER_CREATED_POSTS = '/api/user/OtherUserCreatedPosts'
+export const OTHER_USER_LIKED_POSTS = '/api/user/OtherUserLikedPosts'

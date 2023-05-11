@@ -30,4 +30,26 @@ export const getUserDataByEmail = async (Email: string): ResponseWrapper<Receive
           return {error: 'nothing here', result: undefined}
       } 
 }
+export type UserWithoutPassword = Omit<UserData, "Password">
 
+export const getUserByEmailWithoutPassword = async (Email: string): ResponseWrapper<UserWithoutPassword> => {
+    try{
+        await clientPromise()
+        
+        const result: UserData = await UserData.findOne({Email},"Name Email ProfileImage ProfileDescription createdAt updatedAt" )
+        return {result}  
+      } catch(error){
+          return {error: 'nothing here', result: undefined}
+      } 
+}
+
+
+export const getAllUsers = async (): ResponseWrapper<UserWithoutPassword[]> => {
+    try{
+        await clientPromise()
+        const result: UserWithoutPassword[] = await UserData.find({}, "Name Email ProfileImage ProfileDescription createdAt updatedAt" )
+        return {result}  
+      } catch(error){
+          return {error, result: undefined}
+      } 
+}
