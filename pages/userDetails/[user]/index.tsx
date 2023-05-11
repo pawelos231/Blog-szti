@@ -7,7 +7,7 @@ import { UserWithoutPassword } from "@server/db/user";
 type Props = { user: UserWithoutPassword };
 
 const Index = ({ user }: Props) => {
-  return <ProfileUserDescription userMail={user.Email} />;
+  return <ProfileUserDescription userMail={user?.Email} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

@@ -10,9 +10,9 @@ type Props = { user: UserWithoutPassword };
 const UserProfile = ({ user }: Props) => {
   return (
     <OtherUserPostsFilter
-      UrlToFetch={`${OTHER_USER_CREATED_POSTS}/${user.Email}`}
-      text={`${user.Name} Created Posts`}
-      userMail={user.Email}
+      UrlToFetch={`${OTHER_USER_CREATED_POSTS}/${user?.Email}`}
+      text={`${user?.Name} Created Posts`}
+      userMail={user?.Email}
     />
   );
 };

@@ -10,9 +10,9 @@ type Props = { user: UserWithoutPassword };
 const UserProfile = ({ user }: Props) => {
   return (
     <OtherUserPostsFilter
-      UrlToFetch={`${OTHER_USER_LIKED_POSTS}/${user.Name}`}
-      text={`${user.Name} Liked Posts`}
-      userMail={user.Email}
+      UrlToFetch={`${OTHER_USER_LIKED_POSTS}/${user?.Name}`}
+      text={`${user?.Name} Liked Posts`}
+      userMail={user?.Email}
     />
   );
 };
@@ -40,7 +40,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     params.user as string
   );
   const user: UserWithoutPassword = JSON.parse(JSON.stringify(result));
-  console.log(user);
   return {
     props: {
       user,
