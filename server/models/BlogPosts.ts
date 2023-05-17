@@ -47,11 +47,6 @@ const BlogSchema = new Schema<BlogPost>({
   Message: {
     type: String,
     required: true,
-    maxLength: 25000,
-    validate: {
-      validator: (message: string) => message.length < 25000,
-      message: (props: any) => `${props.value} is longer than expected`
-    }
   },
   Category: {
     type: String,

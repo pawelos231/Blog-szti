@@ -7,6 +7,7 @@ import { MessageType } from "@constants/helperEnums";
 import { createPostObject } from "./PostCreatorHelper";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { memo } from "react";
+import { error } from "console";
 interface ResposnePostAPost {
   [x: string]: string;
 }
@@ -36,7 +37,6 @@ const CreatePost = ({ Handle }): JSX.Element => {
     },
     [message]
   );
-  console.log(message);
 
   const CountWords = (): number => {
     return stripTags(message).split(" ").length;
@@ -47,19 +47,25 @@ const CreatePost = ({ Handle }): JSX.Element => {
       e.preventDefault();
       SetButtonActive(false);
 
+      const payload = JSON.stringify(
+        createPostObject(message, title, tags, shortOpis, CountWords)
+      );
+      const contentLength = Buffer.byteLength(payload, "utf8");
+      console.log(payload, contentLength);
       await fetch(ADD_POST, {
         method: "POST",
         headers: {
           Authorization: GetToken(),
         },
-        body: JSON.stringify(
-          createPostObject(message, title, tags, shortOpis, CountWords)
-        ),
+        body: payload,
       })
         .then((res: Response) => res.json())
         .then((data: ResposnePostAPost) => {
           handleShowComp(true);
           TemporaryComponent(data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   };

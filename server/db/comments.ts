@@ -109,7 +109,7 @@ export const LikeCommentDB = async (arrOfLikes: string[], commentId: string):  R
         })
         return {result: "successufully liked post"}  
       } catch(error){
-          return {error: 'Failed to add like', result: undefined}
+          return {error, result: undefined}
     } 
 
 }

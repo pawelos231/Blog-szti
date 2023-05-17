@@ -1,8 +1,6 @@
-import { useState, useRef, MutableRefObject, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import OtherUserNavbar from "../NavbarForUser/OtherUserNavbar";
-import { DESCRIPTION_URL } from "@constants/apisEndpoints";
-import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
@@ -14,14 +12,13 @@ type Props = { userMail: string };
 
 const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
   const [description, setDescription] = useState<string>(null);
-  const router: NextRouter = useRouter();
 
   const {
     data: ProfileDescription,
     error,
     loading,
   } = useFetch<string>(`${OTHER_USER_DESCRIPTION_URL}/${userMail}`);
-  console.log(description);
+
   useEffect(() => {
     setDescription(ProfileDescription);
   }, [ProfileDescription]);

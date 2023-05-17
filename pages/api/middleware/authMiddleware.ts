@@ -13,7 +13,6 @@ type handlerFunc =  (req: AuthenticatedRequest, res: NextApiResponse<any>) => Pr
 export const authMiddleware = (handler: handlerFunc): handlerFunc => async (req, res): Promise<any> => {
   const token: string = String(req.headers["authorization"])
 
-  console.log(token)
   if (!token) {
     return res.status(401).json({ text: NOTAUTH });
   }

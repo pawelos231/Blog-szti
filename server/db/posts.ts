@@ -24,7 +24,6 @@ export const CreatePost = async (Post: IPost): ResponseWrapper<string> => {
     try{
       
       await clientPromise()
-
       const source = await BlogPosts.create(Post)
       await source.save()
 
