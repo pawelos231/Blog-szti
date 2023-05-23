@@ -1,5 +1,6 @@
-const CreatedComments = () => {
-  return <section>Comments</section>;
+import CreatedComments from "@components/userDetailsPages/CreatedComments/CreatedComments";
+const CreatedComms = () => {
+  return <CreatedComments />;
 };
 
-export default CreatedComments;
+export default CreatedComms;

@@ -12,3 +12,4 @@ export const LIKE_POST_URL = "/api/posts/HandleLikePost"
 export const OTHER_USER_CREATED_POSTS = '/api/user/OtherUserCreatedPosts'
 export const OTHER_USER_LIKED_POSTS = '/api/user/OtherUserLikedPosts'
 export const OTHER_USER_DESCRIPTION_URL = '/api/user/OtherUserDescription'
+export const LIKED_COMMENTS = "/api/user/userCreatedComments"
