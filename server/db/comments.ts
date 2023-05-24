@@ -107,9 +107,17 @@ export const LikeCommentDB = async (arrOfLikes: string[], commentId: string): Re
 }
 
 
-export const CreatedCommentsDB = async (userEmail: string): ResponseWrapper<Comments> => {
+export const CreatedCommentsDB = async (userEmail: string, PAGE_SIZE: number, skipAmount: number): ResponseWrapper<Comments> => {
     try {
-        const result: Comments = await CommentOnPost.find({ UserId: userEmail })
+
+        const pipeline = [
+            { $match: { UserId: userEmail } },
+            { $skip: skipAmount * PAGE_SIZE },
+            { $limit: PAGE_SIZE }
+          ];
+          
+        const result: Comments = await CommentOnPost.aggregate(pipeline).cache()
+        
         return { result }
     }
     catch (error) {

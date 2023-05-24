@@ -20,8 +20,7 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
  const [data, setData] = useState<T>(null)
  const [loading, setLoading] = useState<boolean>(true)
  const [error, setError] = useState<Error | null>(null);
-
-
+console.log(headers)
  const clearState = (): void => {
     setData(null)
     setLoading(true)
@@ -67,7 +66,7 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
     return () => {
         abortControllerRef.current?.abort();
       };
- }, [url])
+ }, [url, headers])
 
  return {data, loading, error}
 

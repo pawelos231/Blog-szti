@@ -1,9 +1,13 @@
 import { authMiddleware } from "../middleware/authMiddleware";
 import {CreatedCommentsDB } from "@server/db/comments";
+import { paginateMiddleware } from "../middleware/paginate";
 
-export default authMiddleware( async function Handler(req, res){
+export default authMiddleware(paginateMiddleware(async function Handler(req, res){
     const userEmail = req.user.Email
-    const {result, error} = await CreatedCommentsDB(userEmail)
+    const skipValue = req.skipValue
+    const PAGE_SIZE  = req.PAGE_SIZE
+
+    const {result, error} = await CreatedCommentsDB(userEmail, Number(PAGE_SIZE), Number(skipValue))
     
     if(error){
         console.warn(error)
@@ -11,4 +15,4 @@ export default authMiddleware( async function Handler(req, res){
         return 
     }
     res.status(200).json(result)
-})
+}))

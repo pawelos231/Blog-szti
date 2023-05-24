@@ -46,9 +46,9 @@ const SingleCommentUserProfile = ({ comment }: Props) => {
     <>
       <NavbarForUserDesktop />
       <section className="flex flex-col justify-center items-center mb-4">
-        <div className="flex w-[40%] justify-center">
+        <div className="flex w-[100%] justify-center">
           <p className="w-[2px] bg-slate-300 text-slate-300 mt-8"></p>
-          <div className="w-[100%] flex flex-col pt-8 ml-3">
+          <div className="w-[70%] flex flex-col pt-8 ml-3">
             <div className=" flex items-center gap-4">
               <div className="overflow-hidden">
                 <Link href={`/userDetails/${comment.UserId}`}>
@@ -70,7 +70,7 @@ const SingleCommentUserProfile = ({ comment }: Props) => {
           </div>
         </div>
 
-        <div className="flex gap-5 items-center w-[38%] justify-start mt-2">
+        <div className="flex gap-5 items-center w-[70%] justify-start mt-2">
           <div
             onClick={() => handleLike(LikeCommentEnum.AddLike)}
             className="text-2xl"
