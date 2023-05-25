@@ -6,7 +6,7 @@ export default authMiddleware(paginateMiddleware(async function Handler(req, res
     const userEmail = req.user.Email
     const skipValue = req.skipValue
     const PAGE_SIZE  = req.PAGE_SIZE
-
+    console.log(req.user)
     const {result, error} = await CreatedCommentsDB(userEmail, Number(PAGE_SIZE), Number(skipValue))
     
     if(error){

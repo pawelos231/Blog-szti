@@ -15,6 +15,11 @@ import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
+import { useMemo } from "react";
+
+type Headers = {
+  Authorization: string;
+};
 
 const ProfileDescription = (): JSX.Element => {
   const DESC_REF: MutableRefObject<HTMLTextAreaElement> = useRef(null);
@@ -29,17 +34,17 @@ const ProfileDescription = (): JSX.Element => {
     }
   };
 
+  const headers: Headers = useMemo(() => {
+    return {
+      Authorization: GetToken(),
+    };
+  }, []);
+
   const {
     data: ProfileDescription,
     error,
     loading,
-  } = useFetch<string>(
-    DESCRIPTION_URL,
-    {
-      Authorization: GetToken(),
-    },
-    router
-  );
+  } = useFetch<string>(DESCRIPTION_URL, headers, router);
 
   const sendDescription = async (): Promise<void> => {
     const token = localStorage.getItem("profile");

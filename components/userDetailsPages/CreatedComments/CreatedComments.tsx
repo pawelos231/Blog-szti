@@ -8,12 +8,19 @@ import NoComments from "./NoComments";
 import { loaderFor } from "../helpers";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { Pagination, createTheme, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useMemo } from "react";
+import { Theme } from "@emotion/react";
+
+type Headers = {
+  Authorization: string;
+  skipValue: number;
+  PAGE_SIZE: number;
+};
 
 const PAGE_SIZE = 15;
 
-const theme = createTheme({
+const theme: Theme = createTheme({
   palette: {
     text: {
       primary: "#ffffff", // Set primary text color to white
@@ -23,8 +30,9 @@ const theme = createTheme({
 
 const CreatedComments = (): JSX.Element => {
   const router = useRouter();
-  const [pageNumber, setPageNumber] = useState(1);
-  const headers = useMemo(() => {
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
+  const headers: Headers = useMemo(() => {
     return {
       Authorization: GetToken(),
       skipValue: pageNumber,
@@ -38,7 +46,7 @@ const CreatedComments = (): JSX.Element => {
     router
   );
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {
     setPageNumber(value);
   };
 
