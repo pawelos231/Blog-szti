@@ -21,8 +21,7 @@ export default authMiddleware(paginateMiddleware(async function Handler(req, res
   
       if (postsObj.error || countObj.error) {
         console.warn(postsObj.error || countObj.error);
-        res.status(500).json("error with route: userCreatedComments");
-        return;
+        return res.status(500).json(`error with route: ${postsObj.error || countObj.error}`);
       }
   
       return res.status(200).json({ posts, count });

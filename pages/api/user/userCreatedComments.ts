@@ -7,7 +7,7 @@ export default authMiddleware(paginateMiddleware(async function Handler(req, res
     const skipValue = Number(req.skipValue)
     const PAGE_SIZE  = Number(req.PAGE_SIZE)    
 
-   const [commentsObj, countObj] = await Promise.all([CountCreatedCommentsDB(userEmail), CreatedCommentsDB(userEmail, PAGE_SIZE, skipValue)])
+   const [countObj, commentsObj] = await Promise.all([CountCreatedCommentsDB(userEmail), CreatedCommentsDB(userEmail, PAGE_SIZE, skipValue)])
 
    const comments = commentsObj.result
    const count = countObj.result

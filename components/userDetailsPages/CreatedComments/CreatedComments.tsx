@@ -50,7 +50,7 @@ const CreatedComments = (): JSX.Element => {
     headers,
     router
   );
-
+  console.log(data);
   const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {
     setPageNumber(value);
   };

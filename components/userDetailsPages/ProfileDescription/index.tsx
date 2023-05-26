@@ -16,12 +16,13 @@ import useFetch from "@hooks/useFetch";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
 import { useMemo } from "react";
+import withSidebar from "../NavbarLayoutWrapper";
 
 type Headers = {
   Authorization: string;
 };
 
-const ProfileDescription = (): JSX.Element => {
+const ProfileDescription = withSidebar((): JSX.Element => {
   const DESC_REF: MutableRefObject<HTMLTextAreaElement> = useRef(null);
   const [viewModal, setViewModal] = useState<boolean>(true);
   const [description, setDescription] = useState<string>(null);
@@ -75,7 +76,6 @@ const ProfileDescription = (): JSX.Element => {
 
   return (
     <>
-      <NavbarForUserDesktop />
       <div className="w-full h-screen flex justify-center items-center flex-col">
         <div className="absolute top-0 w-full">
           <Image
@@ -165,6 +165,6 @@ const ProfileDescription = (): JSX.Element => {
       </div>
     </>
   );
-};
+});
 
 export default ProfileDescription;

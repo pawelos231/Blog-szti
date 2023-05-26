@@ -44,7 +44,7 @@ export const getPostsByUser = async(Email: string, PAGE_SIZE: number, skipAmount
             { $limit: PAGE_SIZE }
           ];
 
-        const result: Posts = await BlogPosts.aggregate(pipeline).cache()
+        const result: Posts = await BlogPosts.aggregate(pipeline)
       
 
         return {result}  
@@ -65,7 +65,7 @@ export const getLikedUserPosts = async(Name: string, PAGE_SIZE: number, skipAmou
             { $limit: PAGE_SIZE }
           ];
 
-        const result: Posts = await BlogPosts.aggregate(pipeline).cache()
+        const result: Posts = await BlogPosts.aggregate(pipeline)
         return {result}  
       } catch(error){
           return {error, result: undefined}
@@ -110,7 +110,7 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
 export const CountCreatedPostssDB = async(userEmail: string): ResponseWrapper<number> => {
     try {
         
-        const result: number = await BlogPosts.countDocuments({UserEmail: userEmail}).cache()
+        const result: number = await BlogPosts.countDocuments({UserEmail: userEmail})
 
         return {result}
 
@@ -123,7 +123,7 @@ export const CountCreatedPostssDB = async(userEmail: string): ResponseWrapper<nu
 export const CountLikedPostssDB = async(userName: string): ResponseWrapper<number> => {
     try {
         
-        const result: number = await BlogPosts.countDocuments({WhoLiked: userName}).cache()
+        const result: number = await BlogPosts.countDocuments({WhoLiked: userName})
 
         return {result}
 

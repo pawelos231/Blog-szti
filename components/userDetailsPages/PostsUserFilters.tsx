@@ -11,6 +11,7 @@ import { useMemo, useCallback } from "react";
 import { useState } from "react";
 import NoPosts from "./CreatedPosts/NoPostsView/NoPosts";
 import { ChangeEvent } from "react";
+import withSidebar from "./NavbarLayoutWrapper";
 
 const PAGE_SIZE = 10;
 
@@ -30,7 +31,7 @@ type Response = {
   count: number;
 };
 
-const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
+const PostsUserFilter = withSidebar(({ UrlToFetch, text }: Props) => {
   const router: NextRouter = useRouter();
   const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -66,7 +67,6 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
 
   return (
     <>
-      <NavbarForUserDesktop />
       <div className="w-full h-screen">
         <div>
           <div>
@@ -82,6 +82,6 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
       </div>
     </>
   );
-};
+});
 
 export default PostsUserFilter;
