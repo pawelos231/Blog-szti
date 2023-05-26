@@ -7,48 +7,78 @@ import { NextRouter, useRouter } from "next/router";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { loaderFor } from "./helpers";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useState } from "react";
+import NoPosts from "./CreatedPosts/NoPostsView/NoPosts";
+import { ChangeEvent } from "react";
+
+const PAGE_SIZE = 10;
 
 type Props = {
   UrlToFetch: string;
   text: string;
 };
+
 type Headers = {
   Authorization: string;
 };
 
+type Response = {
+  posts: IPost[];
+  count: number;
+};
+
 const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
   const router: NextRouter = useRouter();
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
   const headers: Headers = useMemo(() => {
     return {
       Authorization: GetToken(),
+      skipValue: pageNumber,
+      PAGE_SIZE: PAGE_SIZE,
     };
-  }, []);
+  }, [pageNumber]);
 
-  const { data, loading, error } = useFetch<IPost[]>(
+  const handlePageChange = useCallback(
+    (event: ChangeEvent<unknown>, value: number) => {
+      setPageNumber(value);
+    },
+    []
+  );
+
+  const { data, loading, error } = useFetch<Response>(
     UrlToFetch,
     headers,
     router
   );
+  console.log(data);
+
+  if (loading || !data) {
+    return (
+      <section className="w-[100%] flex justify-center">
+        <SkletonLoader LoaderFor={loaderFor.post} />
+      </section>
+    );
+  }
+  if (data.posts.length === 0) return <NoPosts />;
 
   return (
     <>
       <NavbarForUserDesktop />
       <div className="w-full h-screen">
-        {loading ? (
-          <SkletonLoader LoaderFor={loaderFor.post} />
-        ) : (
+        <div>
           <div>
-            {!!data != false && data.length != 0 ? (
-              <div>
-                <FilteredPosts filteredPosts={data} text={text} />
-              </div>
-            ) : (
-              <div>{!!error}</div>
-            )}
+            <FilteredPosts
+              filteredPosts={data.posts}
+              text={text}
+              handlePageChange={handlePageChange}
+              count={Math.ceil(data.count / PAGE_SIZE)}
+              PAGE_SIZE={PAGE_SIZE}
+              pageNumber={pageNumber}
+            />
           </div>
-        )}
+        </div>
       </div>
     </>
   );

@@ -24,9 +24,7 @@ const OtherUserPostsFilter = ({ UrlToFetch, text, userMail }: Props) => {
         ) : (
           <div>
             {!!data != false && data.length != 0 ? (
-              <div>
-                <FilteredPosts filteredPosts={data} text={text} />
-              </div>
+              <div></div>
             ) : (
               <div>{!!error}</div>
             )}

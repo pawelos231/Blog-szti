@@ -112,15 +112,28 @@ export const CreatedCommentsDB = async (userEmail: string, PAGE_SIZE: number, sk
 
         const pipeline = [
             { $match: { UserId: userEmail } },
-            { $skip: skipAmount * PAGE_SIZE },
+            { $skip: (skipAmount-1) * PAGE_SIZE },
             { $limit: PAGE_SIZE }
           ];
           
-        const result: Comments = await CommentOnPost.aggregate(pipeline).cache()
+        const result: Comments = await CommentOnPost.aggregate(pipeline)
         
         return { result }
     }
     catch (error) {
         return { result: undefined, error }
     }
+}
+
+export const CountCreatedCommentsDB = async(userEmail: string): ResponseWrapper<number> => {
+    try {
+        
+        const result: number = await CommentOnPost.countDocuments({UserId: userEmail})
+
+        return {result}
+
+    } catch(error){
+        return { result: undefined, error }
+    }
+    
 }

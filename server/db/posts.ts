@@ -33,11 +33,20 @@ export const CreatePost = async (Post: IPost): ResponseWrapper<string> => {
     } 
 }
 
-export const getPostsByUser = async(Email: string): ResponseWrapper<Posts> => {
+export const getPostsByUser = async(Email: string, PAGE_SIZE: number, skipAmount: number): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
-        const result: Posts = await BlogPosts.find({ UserEmail: Email }).cache()
+
+        const pipeline = [
+            { $match: { UserEmail: Email } },
+            { $skip: (skipAmount-1) * PAGE_SIZE },
+            { $limit: PAGE_SIZE }
+          ];
+
+        const result: Posts = await BlogPosts.aggregate(pipeline)
+      
+
         return {result}  
       } catch(error){
           return {error, result: undefined}
@@ -49,7 +58,7 @@ export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts> => 
 
     try{
         await clientPromise()
-        const result: Posts = await BlogPosts.find({ WhoLiked: Name }).cache()
+        const result: Posts = await BlogPosts.find({ WhoLiked: Name })
        
         return {result}  
       } catch(error){
@@ -92,3 +101,15 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
 }
 
 
+export const CountCreatedPostssDB = async(userEmail: string): ResponseWrapper<number> => {
+    try {
+        
+        const result: number = await BlogPosts.countDocuments({UserEmail: userEmail})
+
+        return {result}
+
+    } catch(error){
+        return { result: undefined, error }
+    }
+    
+}

@@ -18,7 +18,12 @@ type Headers = {
   PAGE_SIZE: number;
 };
 
-const PAGE_SIZE = 15;
+type Response = {
+  comments: IPostComment[];
+  count: number;
+};
+
+const PAGE_SIZE = 10;
 
 const theme: Theme = createTheme({
   palette: {
@@ -40,7 +45,7 @@ const CreatedComments = (): JSX.Element => {
     };
   }, [pageNumber]);
 
-  const { data, loading, error } = useFetch<IPostComment[]>(
+  const { data, loading, error } = useFetch<Response>(
     LIKED_COMMENTS,
     headers,
     router
@@ -57,12 +62,12 @@ const CreatedComments = (): JSX.Element => {
       </section>
     );
 
-  if (data && !Boolean(data.length)) return <NoComments />;
+  if (data && !Boolean(data.comments.length)) return <NoComments />;
 
   return (
     <section className="w-[100%] flex justify-center">
       <div className="w-[40%]">
-        {data?.map((item) => {
+        {data?.comments?.map((item: IPostComment) => {
           return <SingleCommentUserProfile comment={item} />;
         })}
         <ThemeProvider theme={theme}>
@@ -72,7 +77,7 @@ const CreatedComments = (): JSX.Element => {
               shape="rounded"
               size="large"
               variant="outlined"
-              count={6}
+              count={Math.ceil(data?.count / PAGE_SIZE)}
               page={pageNumber}
               onChange={handlePageChange}
             />
