@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import * as METHODS from "@constants/reqMeth"
 import { NextRouter } from "next/router";
 import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
-import { UNATHORIZED } from "@constants/statusCodes";
 
 type Methods = typeof METHODS[keyof typeof METHODS]
+
 type FetchOptions = {
     method?: Methods
     headers?: { [key: string]: string };
@@ -20,7 +20,9 @@ const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
  const [data, setData] = useState<T>(null)
  const [loading, setLoading] = useState<boolean>(true)
  const [error, setError] = useState<Error | null>(null);
+
 console.log(headers)
+
  const clearState = (): void => {
     setData(null)
     setLoading(true)

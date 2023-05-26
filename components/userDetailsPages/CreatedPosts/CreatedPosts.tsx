@@ -10,7 +10,6 @@ type Props = {
   pageNumber: number;
   handlePageChange: any;
   count: number;
-  PAGE_SIZE: number;
 };
 
 const theme: Theme = createTheme({
@@ -27,7 +26,6 @@ const FilteredPosts = ({
   pageNumber,
   handlePageChange,
   count,
-  PAGE_SIZE,
 }: Props) => {
   return (
     <div>
@@ -35,7 +33,7 @@ const FilteredPosts = ({
 
       <section className="absolute top-60 left-0 w-screen flex justify-center items-center flex-col ">
         <div className="flex  w-[50%] justify-center flex-col gap-4 ">
-          {filteredPosts.map((item, i) => {
+          {filteredPosts?.map((item, i) => {
             return (
               <Post
                 key={i}

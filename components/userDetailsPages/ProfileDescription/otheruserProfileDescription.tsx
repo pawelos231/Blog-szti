@@ -5,19 +5,23 @@ import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
 import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
-import NoDescription from "./NoDescription";
 import { OTHER_USER_DESCRIPTION_URL } from "@constants/apisEndpoints";
+import { useMemo } from "react";
 
 type Props = { userMail: string };
 
 const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
   const [description, setDescription] = useState<string>(null);
 
+  const headers = useMemo(() => {
+    return {};
+  }, []);
+
   const {
     data: ProfileDescription,
     error,
     loading,
-  } = useFetch<string>(`${OTHER_USER_DESCRIPTION_URL}/${userMail}`);
+  } = useFetch<string>(`${OTHER_USER_DESCRIPTION_URL}/${userMail}`, headers);
 
   useEffect(() => {
     setDescription(ProfileDescription);
@@ -59,7 +63,7 @@ const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
             {" "}
             <div className="w-[40%] h-[30%]">
               {description.length === 0 ? (
-                <NoDescription />
+                <NoDescriptionView />
               ) : (
                 <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
                   {description}

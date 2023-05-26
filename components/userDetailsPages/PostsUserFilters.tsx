@@ -21,6 +21,8 @@ type Props = {
 
 type Headers = {
   Authorization: string;
+  skipValue: number;
+  PAGE_SIZE: number;
 };
 
 type Response = {
@@ -52,7 +54,6 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
     headers,
     router
   );
-  console.log(data);
 
   if (loading || !data) {
     return (
@@ -61,7 +62,7 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
       </section>
     );
   }
-  if (data.posts.length === 0) return <NoPosts />;
+  if (data?.posts?.length === 0) return <NoPosts />;
 
   return (
     <>
@@ -70,11 +71,10 @@ const PostsUserFilter = ({ UrlToFetch, text }: Props) => {
         <div>
           <div>
             <FilteredPosts
-              filteredPosts={data.posts}
+              filteredPosts={data?.posts}
               text={text}
               handlePageChange={handlePageChange}
               count={Math.ceil(data.count / PAGE_SIZE)}
-              PAGE_SIZE={PAGE_SIZE}
               pageNumber={pageNumber}
             />
           </div>

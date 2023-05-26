@@ -44,7 +44,7 @@ export const getPostsByUser = async(Email: string, PAGE_SIZE: number, skipAmount
             { $limit: PAGE_SIZE }
           ];
 
-        const result: Posts = await BlogPosts.aggregate(pipeline)
+        const result: Posts = await BlogPosts.aggregate(pipeline).cache()
       
 
         return {result}  
@@ -54,12 +54,18 @@ export const getPostsByUser = async(Email: string, PAGE_SIZE: number, skipAmount
 
 }
 
-export const getLikedUserPosts = async(Name: string): ResponseWrapper<Posts> => {
+export const getLikedUserPosts = async(Name: string, PAGE_SIZE: number, skipAmount: number): ResponseWrapper<Posts> => {
 
     try{
         await clientPromise()
-        const result: Posts = await BlogPosts.find({ WhoLiked: Name })
-       
+        
+        const pipeline = [
+            { $match: { WhoLiked: Name } },
+            { $skip: (skipAmount-1) * PAGE_SIZE },
+            { $limit: PAGE_SIZE }
+          ];
+
+        const result: Posts = await BlogPosts.aggregate(pipeline).cache()
         return {result}  
       } catch(error){
           return {error, result: undefined}
@@ -104,7 +110,20 @@ export const likePost = async (arrOfLikes: string[], valueToPass: number, itemId
 export const CountCreatedPostssDB = async(userEmail: string): ResponseWrapper<number> => {
     try {
         
-        const result: number = await BlogPosts.countDocuments({UserEmail: userEmail})
+        const result: number = await BlogPosts.countDocuments({UserEmail: userEmail}).cache()
+
+        return {result}
+
+    } catch(error){
+        return { result: undefined, error }
+    }
+    
+}
+
+export const CountLikedPostssDB = async(userName: string): ResponseWrapper<number> => {
+    try {
+        
+        const result: number = await BlogPosts.countDocuments({WhoLiked: userName}).cache()
 
         return {result}
 
