@@ -9,6 +9,7 @@ import { useRouter, NextRouter } from "next/router";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { useState, useMemo, useCallback, ChangeEvent } from "react";
 import withSidebarOther from "./NavbarOtherUserWrapper";
+import NoPosts from "./CreatedPosts/NoPostsView/NoPosts";
 
 type Props = {
   UrlToFetch: string;
@@ -55,12 +56,7 @@ const OtherUserPostsFilter = withSidebarOther(
     );
 
     if (loading && !data) return <SkletonLoader LoaderFor={loaderFor.post} />;
-    if (data?.posts?.length === 0)
-      return (
-        <div className="absolute top-96 left-96 text-white">
-          <h1> No view</h1>
-        </div>
-      );
+    if (data?.posts?.length === 0) return <NoPosts />;
 
     return (
       <>

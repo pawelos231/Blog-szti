@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Head from "next/head";
 import { useTheme } from "next-themes";
-const Layout = ({ children }: { children: any }) => {
+
+type Props = { children: any };
+
+const Layout = ({ children }: Props) => {
   const { theme, setTheme } = useTheme();
-  console.log(theme);
+
   return (
     <>
       <Head>
@@ -54,7 +57,7 @@ const Layout = ({ children }: { children: any }) => {
           content="Strona poświęcona aktualnym wydarzeniom w szti"
         />
         <meta property="og:locale" content="pl_PL" />
-        <meta property="og:site_name" content="BB customs" />
+        <meta property="og:site_name" content="Blog szti" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@LinekPawel" />

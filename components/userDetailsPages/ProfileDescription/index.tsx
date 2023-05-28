@@ -4,9 +4,9 @@ import {
   useRef,
   MutableRefObject,
   useEffect,
+  useMemo,
 } from "react";
 import Image from "next/image";
-import NavbarForUserDesktop from "@components/userDetailsPages/NavbarForUser/NavbarForUserDesktop";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { POST } from "@constants/reqMeth";
 import { useRouter, NextRouter } from "next/router";
@@ -14,8 +14,6 @@ import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
-import NoDescriptionView from "@components/userDetailsPages/ProfileDescription/NoDescriptionView";
-import { useMemo } from "react";
 import withSidebar from "../NavbarLayoutWrapper";
 
 type Headers = {
@@ -49,8 +47,9 @@ const ProfileDescription = withSidebar((): JSX.Element => {
 
   const sendDescription = async (): Promise<void> => {
     const token = localStorage.getItem("profile");
+    const descriptionLength = String(DESC_REF.current.value).trim().length;
 
-    if (String(DESC_REF.current.value).trim().length === 0) return;
+    if (descriptionLength === 0) return;
 
     await fetch(DESCRIPTION_URL, {
       method: POST,
@@ -69,10 +68,6 @@ const ProfileDescription = withSidebar((): JSX.Element => {
   useEffect(() => {
     setDescription(ProfileDescription);
   }, [ProfileDescription]);
-
-  if (!description) {
-    return <NoDescriptionView />;
-  }
 
   return (
     <>
@@ -120,7 +115,7 @@ const ProfileDescription = withSidebar((): JSX.Element => {
             {" "}
             {viewModal ? (
               <div className="w-[40%] h-[30%]">
-                {description.length === 0 ? (
+                {!description || description.length === 0 ? (
                   <div className=" text-center m-2 h-[90%] rounded-sm flex justify-center items-center">
                     <p className="text-xl text-white">napisz tu coś...</p>
                   </div>

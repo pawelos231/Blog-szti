@@ -12,9 +12,6 @@ type FetchOptions = {
     signal?: AbortSignal
 }
 
-const promise = (ms: number) => new Promise((res, rej) => setTimeout(()=> res(true), ms))
-
-
 const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
 
  const [data, setData] = useState<T>(null)
@@ -58,16 +55,19 @@ console.log(headers)
           } 
           catch(err){
             setError(err)
-          } finally {
+          } 
+          finally {
             setLoading(false)
           }
        
     }
     clearState()
     fetchData()
+
     return () => {
         abortControllerRef.current?.abort();
       };
+      
  }, [url, headers])
 
  return {data, loading, error}

@@ -2,7 +2,6 @@ import * as React from "react";
 import useFetch from "@hooks/useFetch";
 import FilteredPosts from "./CreatedPosts/CreatedPosts";
 import { IPost } from "../../interfaces/PostsInterface";
-import NavbarForUserDesktop from "./NavbarForUser/NavbarForUserDesktop";
 import { NextRouter, useRouter } from "next/router";
 import SkletonLoader from "@helpers/views/SkeletonLoading";
 import { loaderFor } from "./helpers";

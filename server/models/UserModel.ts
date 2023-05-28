@@ -14,7 +14,6 @@ const UserSchema = new Schema<IUserModel>({
     type: String,
     required: [true, 'Password is required'],
     minlength: [10, 'Password must be at least 10 characters long'],
-    maxlength: [50, 'Password must be at most 50 characters long'],
     match: [
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'

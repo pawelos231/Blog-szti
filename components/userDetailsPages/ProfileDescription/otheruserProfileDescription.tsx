@@ -9,6 +9,21 @@ import { OTHER_USER_DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { useMemo } from "react";
 
 type Props = { userMail: string };
+type DescriptionProps = { description: string };
+
+const Description = ({ description }: DescriptionProps) => {
+  return (
+    <div className="w-[40%] h-[30%]">
+      {description.length === 0 ? (
+        <NoDescriptionView />
+      ) : (
+        <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
+          {description}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
   const [description, setDescription] = useState<string>(null);
@@ -59,18 +74,7 @@ const ProfileUserDescription = ({ userMail }: Props): JSX.Element => {
         </div>
         <div className="p-2 w-[20%] m-2 text-center rounded-sm hover:scale-105 cursor-pointer transition-all"></div>
         {!loading ? (
-          <>
-            {" "}
-            <div className="w-[40%] h-[30%]">
-              {description.length === 0 ? (
-                <NoDescriptionView />
-              ) : (
-                <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
-                  {description}
-                </div>
-              )}
-            </div>
-          </>
+          <Description description={description} />
         ) : (
           <CircularProgress />
         )}

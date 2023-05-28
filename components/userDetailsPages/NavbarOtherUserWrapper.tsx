@@ -4,9 +4,11 @@ type MailProp = {
   userMail: string;
 };
 
-const withSidebarOther = (Component) => {
-  return function WithSidebar(props) {
-    const { userMail }: MailProp = props;
+const withSidebarOther = <P extends MailProp>(
+  Component: React.ComponentType<P>
+) => {
+  return function WithSidebar(props: P) {
+    const { userMail } = props;
     return (
       <>
         <OtherUserNavbar userMail={userMail} />

@@ -3,10 +3,6 @@ import { NextRouter } from "next/router"
 
 export type StatusType = (typeof Statues)[keyof typeof Statues]
 
-type ResponseRedux = {
-    Unathorized: boolean,
-    ErrorMessage: string
-}
 
 export const isUserAuthorized = (status: StatusType, router: NextRouter) => {
     
