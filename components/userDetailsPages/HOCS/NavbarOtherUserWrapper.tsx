@@ -1,4 +1,4 @@
-import OtherUserNavbar from "./NavbarForUser/OtherUserNavbar";
+import OtherUserNavbar from "../NavbarForUser/OtherUserNavbar";
 
 type MailProp = {
   userMail: string;
@@ -7,7 +7,7 @@ type MailProp = {
 const withSidebarOther = <P extends MailProp>(
   Component: React.ComponentType<P>
 ) => {
-  return function WithSidebar(props: P) {
+  return function WrappedWithSidebar(props: P) {
     const { userMail } = props;
     return (
       <>

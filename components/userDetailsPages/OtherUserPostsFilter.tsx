@@ -8,7 +8,7 @@ import { loaderFor } from "./helpers";
 import { useRouter, NextRouter } from "next/router";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { useState, useMemo, useCallback, ChangeEvent } from "react";
-import withSidebarOther from "./NavbarOtherUserWrapper";
+import withSidebarOther from "./HOCS/NavbarOtherUserWrapper";
 import NoPosts from "./CreatedPosts/NoPostsView/NoPosts";
 
 type Props = {
@@ -60,7 +60,6 @@ const OtherUserPostsFilter = withSidebarOther(
 
     return (
       <>
-        <OtherUserNavbar userMail={userMail} />
         <div className="w-full h-screen">
           <div>
             <div>

@@ -10,7 +10,7 @@ import { useMemo, useCallback } from "react";
 import { useState } from "react";
 import NoPosts from "./CreatedPosts/NoPostsView/NoPosts";
 import { ChangeEvent } from "react";
-import withSidebar from "./NavbarLayoutWrapper";
+import withSidebar from "./HOCS/NavbarLayoutWrapper";
 
 const PAGE_SIZE = 10;
 

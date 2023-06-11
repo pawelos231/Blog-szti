@@ -14,7 +14,7 @@ import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
 import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
-import withSidebar from "../NavbarLayoutWrapper";
+import withSidebar from "../HOCS/NavbarLayoutWrapper";
 
 type Headers = {
   Authorization: string;
