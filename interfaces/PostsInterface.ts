@@ -31,5 +31,5 @@ export interface IPostComment {
   ParentId: string;
   NestedLevel: number;
   UserName: string;
-  children?: IPostComment[] | null;
+  childred?: IPostComment[] | null;
 }
