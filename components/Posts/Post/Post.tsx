@@ -10,6 +10,7 @@ import { POST } from "@constants/reqMeth";
 import { LIKE_POST_URL } from "@constants/apisEndpoints";
 import { isUserAuthorized, StatusType } from "@helpers/IsUserAuthorized";
 import { Props, ApiResponse, HandleLike, LikedPosts } from "./PostInterface";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import UsersWhichLikedPostModal from "./usersLikes/UsersWhichLikedPostModal";
 import PostContext from "./PostContext";
 import PostContent from "./PostContent";
@@ -22,65 +23,66 @@ import PostTitle from "./PostTitle";
 import PostWrapper from "./PostWrapper";
 
 const Post = ({ post, info }: Props) => {
-  const checkIfPostIsAlreadyLiked = (): void => {
-    const ifLiked: string | undefined = post.WhoLiked.find(
-      (item: string) => item == localStorage.getItem("userName")
-    );
-    if (ifLiked) {
-      setLiked(true);
-    }
-  };
-
-  const [modal, openModal] = useState<boolean>(false);
-  const [favourite, setFav] = useState<boolean>(true);
-  const [like, setLiked] = useState<boolean>(false);
-  const [likedArray, dispatchLikedArray] = useState<string[]>(post.WhoLiked);
-
-  const onClose = useCallback(
-    (flag: boolean) => {
-      openModal(flag);
-    },
-    [modal]
-  );
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(true);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likedArray, setLikedArray] = useState<string[]>(post.WhoLiked);
 
   const router = useRouter();
 
-  const LikesPosts = async (flag: HandleLike): Promise<void> => {
-    setLiked(!like);
+  const checkIfPostIsAlreadyLiked = (): void => {
+    const isAlreadyLiked = post.WhoLiked.includes(
+      localStorage.getItem("userName")
+    );
+    setIsLiked(isAlreadyLiked);
+  };
 
-    const CombinedValues: LikedPosts = {
+  const handleModalClose = useCallback((flag: boolean) => {
+    setModalOpen(flag);
+  }, []);
+
+  const handleLikes = async (flag: HandleLike): Promise<void> => {
+    setIsLiked((prevIsLiked) => !prevIsLiked);
+
+    const combinedValues: LikedPosts = {
       ValueToPass: likedArray.length + flag,
       flag: flag,
       itemId: post._id,
       WhoLiked: post.WhoLiked,
     };
 
-    const userToken: string = localStorage.getItem("profile");
-
-    await fetch(LIKE_POST_URL, {
-      method: POST,
-      headers: {
-        Authorization: userToken,
-      },
-      body: JSON.stringify(CombinedValues),
-    })
-      .then((res: Response) => {
-        isUserAuthorized(res.status as StatusType, router);
-        return res.json();
-      })
-      .then(({ Name }: ApiResponse) => {
-        if (flag == HandleLike.LikePost) {
-          dispatchLikedArray([...likedArray, Name]);
-        } else if (flag == HandleLike.UnLikePost) {
-          dispatchLikedArray((prev) => {
-            const index = prev.findIndex((item: string) => item == Name);
-            index > -1 ? prev.splice(index, 1) : null;
-            return [...prev];
-          });
-        } else {
-          console.log("bad flag");
-        }
+    try {
+      const response = await fetch(LIKE_POST_URL, {
+        method: POST,
+        headers: {
+          Authorization: GetToken(),
+        },
+        body: JSON.stringify(combinedValues),
       });
+
+      isUserAuthorized(response.status as StatusType, router);
+
+      const { Name }: ApiResponse = await response.json();
+
+      if (flag === HandleLike.LikePost) {
+        setLikedArray((prevLikedArray) => [...prevLikedArray, Name]);
+      } else if (flag === HandleLike.UnLikePost) {
+        setLikedArray((prevLikedArray) => {
+          const index = prevLikedArray.findIndex(
+            (item: string) => item === Name
+          );
+          if (index > -1) {
+            prevLikedArray.splice(index, 1);
+          }
+          return [...prevLikedArray];
+        });
+      } else {
+        console.log("Invalid flag");
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error scenario and display an error message
+    }
   };
 
   useEffect(() => {
@@ -91,29 +93,29 @@ const Post = ({ post, info }: Props) => {
     <PostContext.Provider value={{ post }}>
       <div
         className={
-          favourite
-            ? "basis-[75%]  rounded-sm flex min-h-[55vh]  border-y-[1.5px] relative"
-            : "basis-[75%]  rounded-md flex min-h-[55vh]  border-4 border-amber-300 relative"
+          isFavorite
+            ? "basis-[75%] rounded-sm flex min-h-[55vh] border-y-[1.5px] relative"
+            : "basis-[75%] rounded-md flex min-h-[55vh] border-4 border-amber-300 relative"
         }
       >
         {info}
 
-        <div className="absolute bottom-2 left-2 w-[97%] h-[10%]  flex justify-between items-end">
+        <div className="absolute bottom-2 left-2 w-[97%] h-[10%] flex justify-between items-end">
           <div className="text-4xl flex">
             <div className="flex items-center gap-4">
-              {!like ? (
-                <div onClick={() => LikesPosts(HandleLike.LikePost)}>
+              {!isLiked ? (
+                <div onClick={() => handleLikes(HandleLike.LikePost)}>
                   <ThumbUpAltOutlined fontSize="inherit" />
                 </div>
               ) : (
-                <div onClick={() => LikesPosts(HandleLike.UnLikePost)}>
+                <div onClick={() => handleLikes(HandleLike.UnLikePost)}>
                   <ThumbUpAltRounded fontSize="inherit" />
                 </div>
               )}
 
               <p
-                className="text-lg  cursor-pointer "
-                onClick={() => openModal(!modal)}
+                className="text-lg cursor-pointer"
+                onClick={() => setModalOpen(!modalOpen)}
               >
                 {likedArray.length}
               </p>
@@ -122,10 +124,10 @@ const Post = ({ post, info }: Props) => {
             <div
               className="text-4xl pl-6"
               onClick={() => {
-                setFav(!favourite);
+                setIsFavorite(!isFavorite);
               }}
             >
-              {favourite ? (
+              {isFavorite ? (
                 <FavoriteBorderOutlined fontSize="inherit" />
               ) : (
                 <Favorite fontSize="inherit" />
@@ -138,8 +140,8 @@ const Post = ({ post, info }: Props) => {
         </div>
 
         <UsersWhichLikedPostModal
-          open={modal}
-          onClose={onClose}
+          open={modalOpen}
+          onClose={handleModalClose}
           likedArray={likedArray}
         />
       </div>

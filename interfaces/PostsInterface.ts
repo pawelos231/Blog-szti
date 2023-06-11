@@ -1,33 +1,35 @@
 export interface IPost {
+  _id?: string;
   CreatedAt: string;
-  Tags: Array<string>;
+  UpdatedAt?: string;
+  Tags: string[];
   Message: string;
-  ShortDesc: string
+  ShortDesc: string;
   Title: string;
   Username?: string;
-  Email?: string
+  Email?: string;
   Category: string;
   CommentsCount: number;
   TimeToRead: number;
   TotalWords: number;
   Likes: number;
-  WhoLiked: Array<string>;
+  WhoLiked: string[];
   __v?: number;
-  _id?: string;
+  slug?: string;
+  numberOfVisits?: number;
 }
 
 export interface IPostComment {
-  _id?: string
-  __v?: string
-  UserId?: string
-  PostId: string
-  CreatedAt: string
-  Content: string
-  WhoLiked: Array<string>
-  ParentId: string
-  NestedLevel: number
-  UpdatedAt: string
-  UserName: string
-  childred?: IPostComment[] | null
+  _id?: string;
+  __v?: string;
+  UserId?: string;
+  PostId: string;
+  CreatedAt: string;
+  UpdatedAt?: string;
+  Content: string;
+  WhoLiked: string[];
+  ParentId: string;
+  NestedLevel: number;
+  UserName: string;
+  children?: IPostComment[] | null;
 }
-  //add slug,number of visits

@@ -7,7 +7,7 @@ import { MessageType } from "@constants/helperEnums";
 import { createPostObject } from "./PostCreatorHelper";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { memo } from "react";
-import { error } from "console";
+
 interface ResposnePostAPost {
   [x: string]: string;
 }

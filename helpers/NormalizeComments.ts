@@ -1,19 +1,22 @@
 import { IPostComment } from "@interfaces/PostsInterface";
 
 export interface TransformedComments extends IPostComment {
-    children: TransformedComments | any;
-  }
-
+  children: TransformedComments[];
+}
 
 export const normalizeComments = (
-    Comments: IPostComment[],
-    id = ""
-  ): TransformedComments[] => {
-    const newArr = Comments.filter(
-      (item) => item["ParentId"] == id
-    ).map((item) => ({
-      ...item,
-      children: normalizeComments(Comments, item._id),
-    }));
-    return newArr;
-  };
+  comments: IPostComment[],
+  parentId = ""
+): TransformedComments[] => {
+  const filteredComments = comments.filter((comment) => comment.ParentId === parentId);
+
+  const transformedComments = filteredComments.map((comment) => {
+    const children = normalizeComments(comments, comment._id);
+    return {
+      ...comment,
+      children,
+    };
+  });
+
+  return transformedComments;
+};

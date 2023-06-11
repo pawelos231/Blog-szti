@@ -1,77 +1,70 @@
 import { useState, useEffect, useRef } from "react";
-import * as METHODS from "@constants/reqMeth"
+import * as METHODS from "@constants/reqMeth";
 import { NextRouter } from "next/router";
 import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
 
-type Methods = typeof METHODS[keyof typeof METHODS]
+type Methods = typeof METHODS[keyof typeof METHODS];
 
 type FetchOptions = {
-    method?: Methods
-    headers?: { [key: string]: string };
-    body?: string
-    signal?: AbortSignal
-}
+  method?: Methods;
+  headers?: { [key: string]: string };
+  body?: string;
+  signal?: AbortSignal;
+};
 
-const useFetch = <T>(url: string, headers ={}, router: NextRouter = null) => {
+const useFetch = <T>(url: string, headers = {}, router: NextRouter = null) => {
+  const [data, setData] = useState<T>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
- const [data, setData] = useState<T>(null)
- const [loading, setLoading] = useState<boolean>(true)
- const [error, setError] = useState<Error | null>(null);
+  console.log(headers);
 
-console.log(headers)
+  const clearState = (): void => {
+    setData(null);
+    setLoading(true);
+    setError(null);
+  };
 
- const clearState = (): void => {
-    setData(null)
-    setLoading(true)
-    setError(null)
- }
+  const abortControllerRef = useRef<AbortController>();
 
- const abortControllerRef = useRef<AbortController>()
-
- useEffect(() => {
-
-    abortControllerRef.current = new AbortController();
-    const { signal } = abortControllerRef.current;
-
+  useEffect(() => {
     const fetchData = async (): Promise<void> => {
-        const fetchOptions: FetchOptions = {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              ...headers,
-            },
-            signal
-          };
+      abortControllerRef.current = new AbortController();
+      const { signal } = abortControllerRef.current;
 
-          try{
-            const res: Response = await fetch(url, fetchOptions)
+      const fetchOptions: FetchOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
+        signal,
+      };
 
-            isUserAuthorized(res.status as StatusType, router)
+      try {
+        const res: Response = await fetch(url, fetchOptions);
 
-            const dataFromFetch: T = await res.json()
+        isUserAuthorized(res.status as StatusType, router);
 
-            setData(dataFromFetch)
+        const dataFromFetch: T = await res.json();
 
-          } 
-          catch(err){
-            setError(err)
-          } 
-          finally {
-            setLoading(false)
-          }
-       
-    }
-    clearState()
-    fetchData()
+        setData(dataFromFetch);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    clearState();
+    fetchData();
 
     return () => {
-        abortControllerRef.current?.abort();
-      };
-      
- }, [url, headers])
+      abortControllerRef.current?.abort();
+    };
+  }, [url, headers, router]);
 
- return {data, loading, error}
-
-}
+  return { data, loading, error };
+};
 
 export default useFetch;

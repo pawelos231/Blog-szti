@@ -6,12 +6,10 @@ export interface AuthenticatedRequest extends NextApiRequest {
   user?: any;
 }
 
-type handlerFunc =  (req: AuthenticatedRequest, res: NextApiResponse<any>) => Promise<any>
+type HandlerFunc = (req: AuthenticatedRequest, res: NextApiResponse<any>) => Promise<any>;
 
-
-
-export const authMiddleware = (handler: handlerFunc): handlerFunc => async (req, res): Promise<any> => {
-  const token: string = String(req.headers["authorization"])
+export const authMiddleware = (handler: HandlerFunc): HandlerFunc => async (req, res) => {
+  const token: string = String(req.headers["authorization"]);
 
   if (!token) {
     return res.status(401).json({ text: NOTAUTH });
@@ -25,4 +23,3 @@ export const authMiddleware = (handler: handlerFunc): handlerFunc => async (req,
     return res.status(401).json({ text: NOTAUTH });
   }
 };
-
