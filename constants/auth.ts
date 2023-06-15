@@ -1,1 +1,1 @@
-export const NOTAUTH = "NOT authenticated"
+export const NOTAUTH = "NOT authenticated";

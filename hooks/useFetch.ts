@@ -3,7 +3,7 @@ import * as METHODS from "@constants/reqMeth";
 import { NextRouter } from "next/router";
 import { StatusType, isUserAuthorized } from "@helpers/IsUserAuthorized";
 
-type Methods = typeof METHODS[keyof typeof METHODS];
+type Methods = (typeof METHODS)[keyof typeof METHODS];
 
 type FetchOptions = {
   method?: Methods;

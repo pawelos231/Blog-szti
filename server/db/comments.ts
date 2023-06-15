@@ -1,139 +1,155 @@
 import clientPromise from "./mongo";
 import { IPostComment } from "@interfaces/PostsInterface";
 import { ResponseWrapper } from "./interfaces/ResponseInterface";
-const CommentOnPost = require("@server/models/CommentModel")
-require("../cache/index")
+const CommentOnPost = require("@server/models/CommentModel");
+require("../cache/index");
 import { deleteAllRedisValues } from "@server/cache/cache";
 
-type Comments = Array<IPostComment>
+type Comments = Array<IPostComment>;
 type AddCommentRes = {
-    result: {
-        status: number
-        text: string
-    }
-    error?: string | undefined
-}
+  result: {
+    status: number;
+    text: string;
+  };
+  error?: string | undefined;
+};
 
+export const GetAllComments = async (
+  postId: string
+): ResponseWrapper<Comments> => {
+  try {
+    await clientPromise();
 
-export const GetAllComments = async (postId: string): ResponseWrapper<Comments> => {
-    try {
-        await clientPromise()
+    const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({
+      CreatedAt: -1,
+    });
+    return { result };
+  } catch (error) {
+    return { error, result: undefined };
+  }
+};
 
-        const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: -1 });
-        return { result }
+export const GetAllCommentsOldest = async (
+  postId: string
+): ResponseWrapper<Comments> => {
+  try {
+    await clientPromise();
 
-    } catch (error) {
-        return { error, result: undefined }
-    }
-}
+    const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({
+      CreatedAt: 1,
+    });
+    return { result };
+  } catch (error) {
+    return { error, result: undefined };
+  }
+};
 
-export const GetAllCommentsOldest = async (postId: string): ResponseWrapper<Comments> => {
-    try {
-        await clientPromise()
+export const GetAllCommentsMostLiked = async (
+  postId: string
+): ResponseWrapper<Comments> => {
+  try {
+    await clientPromise();
 
-        const result: Comments = await CommentOnPost.find({ PostId: postId }).sort({ CreatedAt: 1 });
-        return { result }
+    const result: Comments = await CommentOnPost.aggregate([
+      { $match: { PostId: postId } },
+      { $addFields: { likesCount: { $size: "$WhoLiked" } } },
+      { $sort: { likesCount: -1 } },
+    ]).cache();
 
-    } catch (error) {
-        return { error, result: undefined }
-    }
-}
+    return { result };
+  } catch (error) {
+    return { error, result: undefined };
+  }
+};
 
-export const GetAllCommentsMostLiked = async (postId: string): ResponseWrapper<Comments> => {
-    try {
-        await clientPromise()
+export const GetAllCommentsLeastLiked = async (
+  postId: string
+): ResponseWrapper<Comments> => {
+  try {
+    await clientPromise();
 
-        const result: Comments = await CommentOnPost.aggregate([
-            { $match: { PostId: postId } },
-            { $addFields: { likesCount: { $size: "$WhoLiked" } } },
-            { $sort: { likesCount: -1 } },
-        ]).cache()
+    const result: Comments = await CommentOnPost.aggregate([
+      { $match: { PostId: postId } },
+      { $addFields: { likesCount: { $size: "$WhoLiked" } } },
+      { $sort: { likesCount: 1 } },
+    ]).cache();
+    return { result };
+  } catch (error) {
+    return { error, result: undefined };
+  }
+};
 
-        return { result }
+export const CreateCommentDB = async (
+  CommentObjectForFront: IPostComment
+): Promise<AddCommentRes> => {
+  try {
+    deleteAllRedisValues();
 
-    } catch (error) {
-        return { error, result: undefined }
-    }
-}
+    const createdComment: any = await CommentOnPost.create(
+      CommentObjectForFront
+    );
 
-export const GetAllCommentsLeastLiked = async (postId: string): ResponseWrapper<Comments> => {
-    try {
-        await clientPromise()
+    await createdComment.save();
 
-        const result: Comments = await CommentOnPost.aggregate([
-            { $match: { PostId: postId } },
-            { $addFields: { likesCount: { $size: "$WhoLiked" } } },
-            { $sort: { likesCount: 1 } },
-        ]).cache()
-        return { result }
+    return { result: { status: 1, text: "udało się dodać komentarz" } };
+  } catch (error) {
+    return { result: undefined, error };
+  }
+};
 
-    } catch (error) {
-        return { error, result: undefined }
-    }
-}
+export const LikeCommentDB = async (
+  arrOfLikes: string[],
+  commentId: string
+): ResponseWrapper<string> => {
+  try {
+    await clientPromise();
 
-export const CreateCommentDB = async (CommentObjectForFront: IPostComment): Promise<AddCommentRes> => {
-    try {
+    await CommentOnPost.updateOne(
+      {
+        _id: commentId,
+      },
+      {
+        $set: {
+          WhoLiked: arrOfLikes,
+        },
+      }
+    );
+    return { result: "successufully liked post" };
+  } catch (error) {
+    return { error, result: undefined };
+  }
+};
 
-        deleteAllRedisValues()
+export const CreatedCommentsDB = async (
+  userEmail: string,
+  PAGE_SIZE: number,
+  skipAmount: number
+): ResponseWrapper<Comments> => {
+  try {
+    const pipeline = [
+      { $match: { UserId: userEmail } },
+      { $skip: (skipAmount - 1) * PAGE_SIZE },
+      { $limit: PAGE_SIZE },
+    ];
 
-        const createdComment: any = await CommentOnPost.create(CommentObjectForFront)
+    const result: Comments = await CommentOnPost.aggregate(pipeline);
 
-        await createdComment.save()
+    return { result };
+  } catch (error) {
+    return { result: undefined, error };
+  }
+};
 
-        return { result: { status: 1, text: "udało się dodać komentarz" } }
-    } catch (error) {
-        return { result: undefined, error }
-    }
-}
+export const CountCreatedCommentsDB = async (
+  userEmail: string
+): ResponseWrapper<number> => {
+  try {
+    const result: number = await CommentOnPost.countDocuments({
+      UserId: userEmail,
+    });
 
-export const LikeCommentDB = async (arrOfLikes: string[], commentId: string): ResponseWrapper<string> => {
-
-    try {
-        await clientPromise()
-
-        await CommentOnPost.updateOne({
-            _id: commentId
-        }, {
-            $set: {
-                WhoLiked: arrOfLikes
-            }
-        })
-        return { result: "successufully liked post" }
-    } catch (error) {
-        return { error, result: undefined }
-    }
-
-}
-
-
-export const CreatedCommentsDB = async (userEmail: string, PAGE_SIZE: number, skipAmount: number): ResponseWrapper<Comments> => {
-    try {
-
-        const pipeline = [
-            { $match: { UserId: userEmail } },
-            { $skip: (skipAmount-1) * PAGE_SIZE },
-            { $limit: PAGE_SIZE }
-          ];
-          
-        const result: Comments = await CommentOnPost.aggregate(pipeline)
-        
-        return { result }
-    }
-    catch (error) {
-        return { result: undefined, error }
-    }
-}
-
-export const CountCreatedCommentsDB = async(userEmail: string): ResponseWrapper<number> => {
-    try {
-        
-        const result: number = await CommentOnPost.countDocuments({UserId: userEmail})
-
-        return {result}
-
-    } catch(error){
-        return { result: undefined, error }
-    }
-    
-}
+    return { result };
+  } catch (error) {
+    return { result: undefined, error };
+  }
+};

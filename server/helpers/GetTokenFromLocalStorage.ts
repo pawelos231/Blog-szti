@@ -1,8 +1,8 @@
 export const GetToken = () => {
-    let token: string = "";
+  let token: string = "";
 
-    if (typeof window != "undefined" || typeof localStorage != "undefined") {
-      token = localStorage.getItem("profile");
-    }
-    return token
-}
+  if (typeof window != "undefined" || typeof localStorage != "undefined") {
+    token = localStorage.getItem("profile");
+  }
+  return token;
+};

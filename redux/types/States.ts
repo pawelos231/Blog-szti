@@ -1,9 +1,9 @@
-import { IPostComment } from "@interfaces/PostsInterface"
+import { IPostComment } from "@interfaces/PostsInterface";
 
-export interface CommentsState  {
-    isLoading: boolean
-    failure: boolean
-    ErrorMessage: string | null
-    Unathorized: boolean,
-    Comments: IPostComment[]
+export interface CommentsState {
+  isLoading: boolean;
+  failure: boolean;
+  ErrorMessage: string | null;
+  Unathorized: boolean;
+  Comments: IPostComment[];
 }

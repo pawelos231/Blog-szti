@@ -2,59 +2,52 @@ import { likePost } from "@server/db/posts";
 import { authMiddleware } from "../middleware/authMiddleware";
 
 interface LikedPosts {
-    flag: number;
-    ValueToPass: number;
-    itemId: string;
-    WhoLiked: Array<string>;
+  flag: number;
+  ValueToPass: number;
+  itemId: string;
+  WhoLiked: Array<string>;
 }
 
-const checkIfToAdd = (flag: number, name: string, whoLiked: string[]): string[] => {
-    if (flag === 1) {
-
-        if (!whoLiked.find((item: string) => item === name)) {
-            return [...whoLiked, name]
-        }
-
-        return whoLiked
+const checkIfToAdd = (
+  flag: number,
+  name: string,
+  whoLiked: string[]
+): string[] => {
+  if (flag === 1) {
+    if (!whoLiked.find((item: string) => item === name)) {
+      return [...whoLiked, name];
     }
 
-    else if (flag === -1) {
+    return whoLiked;
+  } else if (flag === -1) {
+    const newArr: string[] = whoLiked.filter((item: string) => item !== name);
 
-        const newArr: string[] = whoLiked.filter((item: string) => item !== name)
-
-        if (newArr.length === 0) {
-            return []
-        }
-
-        return newArr
+    if (newArr.length === 0) {
+      return [];
     }
 
-    else {
-        console.log("niepoprawne dane")
-        return []
-    }
-
-}
+    return newArr;
+  } else {
+    console.log("niepoprawne dane");
+    return [];
+  }
+};
 export default authMiddleware(async function handler(req, res) {
+  const { flag, WhoLiked, itemId, ValueToPass }: LikedPosts = JSON.parse(
+    req.body
+  );
 
-    const {flag, WhoLiked, itemId, ValueToPass}: LikedPosts = JSON.parse(req.body)
+  const Name = req.user.Name;
+  const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked);
+  const { result, error } = await likePost(newLikedArr, ValueToPass, itemId);
 
-    const Name = req.user.Name
-    const newLikedArr: string[] = checkIfToAdd(flag, Name, WhoLiked)
-    const {result, error} = await likePost(newLikedArr, ValueToPass, itemId)
+  if (error) {
+    return res.status(500).json(error);
+  }
 
-
-    if(error) {
-        return res.status(500).json(error)
-    }
-
-    if (flag === 1) {
-        res.status(200).json({ text: "pomyślnie dodano like'a", Name })
-    }
-
-    else if (flag === -1) {
-        res.status(200).json({ text: "pomyślnie odlikowano", Name })
-    }
-
-
-})
+  if (flag === 1) {
+    res.status(200).json({ text: "pomyślnie dodano like'a", Name });
+  } else if (flag === -1) {
+    res.status(200).json({ text: "pomyślnie odlikowano", Name });
+  }
+});

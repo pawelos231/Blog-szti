@@ -1,6 +1,6 @@
 interface GenericResponse<T> {
-    result: T | undefined
-    error?: string
+  result: T | undefined;
+  error?: string;
 }
 
-export type ResponseWrapper<T> = Promise<GenericResponse<T>> 
+export type ResponseWrapper<T> = Promise<GenericResponse<T>>;

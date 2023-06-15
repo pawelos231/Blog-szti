@@ -1,9 +1,9 @@
 export enum AuthView {
-    Login = 1,
-    Register = 2
+  Login = 1,
+  Register = 2,
 }
 export enum MessageType {
-    Error = 2,
-    Warn = 1,
-    Normal = 0
+  Error = 2,
+  Warn = 1,
+  Normal = 0,
 }

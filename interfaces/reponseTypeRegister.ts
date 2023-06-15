@@ -1,17 +1,17 @@
 type LoggingInterfaceSchema = {
-    text: string,
-    status: number
-}
+  text: string;
+  status: number;
+};
 
 export type LoggingInterface = {
-    message: LoggingInterfaceSchema
-}
+  message: LoggingInterfaceSchema;
+};
 
 export type ReposneInterface = {
-    message: LoggingInterfaceSchema
-    token: string
-    name: string
-}
+  message: LoggingInterfaceSchema;
+  token: string;
+  name: string;
+};
 export interface Unathorized {
-    text: string;
-  }
+  text: string;
+}

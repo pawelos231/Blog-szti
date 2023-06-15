@@ -8,7 +8,9 @@ export const normalizeComments = (
   comments: IPostComment[],
   parentId = ""
 ): TransformedComments[] => {
-  const filteredComments = comments.filter((comment) => comment.ParentId === parentId);
+  const filteredComments = comments.filter(
+    (comment) => comment.ParentId === parentId
+  );
 
   const transformedComments = filteredComments.map((comment) => {
     const children = normalizeComments(comments, comment._id);
