@@ -1,14 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { getAllUsers, getUserByEmailWithoutPassword } from "@server/db/user";
+import { getAllUsers } from "@server/db/user";
+import { getUserByEmailWithoutPassword } from "@server/db/user";
 import { UserWithoutPassword } from "@server/db/user";
 import OtherUserPostsFilter from "@components/userDetailsPages/OtherUserPostsFilter";
 import { OTHER_USER_LIKED_POSTS } from "@constants/apisEndpoints";
 
-type Props = {
-  user: UserWithoutPassword;
-};
+type Props = { user: UserWithoutPassword };
 
-const UserProfile: React.FC<Props> = ({ user }) => {
+const UserProfile = ({ user }: Props) => {
   return (
     <OtherUserPostsFilter
       UrlToFetch={`${OTHER_USER_LIKED_POSTS}/${user?.Name}`}
@@ -20,14 +19,11 @@ const UserProfile: React.FC<Props> = ({ user }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { result, error } = await getAllUsers();
+  console.log(result);
   if (error) {
     console.log(error);
-    return {
-      paths: [],
-      fallback: true,
-    };
   }
-  const paths = result.map((item: UserWithoutPassword) => {
+  const paths = result.map((item) => {
     return {
       params: {
         user: item.Email,
@@ -41,15 +37,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const userEmail = params?.user as string;
-  const { result, error } = await getUserByEmailWithoutPassword(userEmail);
-  if (error || !result) {
-    console.log(error);
-    return {
-      notFound: true,
-    };
-  }
-  const user: UserWithoutPassword = result;
+  const { result, error } = await getUserByEmailWithoutPassword(
+    params.user as string
+  );
+  const user: UserWithoutPassword = JSON.parse(JSON.stringify(result));
   return {
     props: {
       user,
