@@ -5,8 +5,10 @@ import { usePostContext } from "./PostContext";
 type Props = {
   children: ReactNode;
 };
+
 const PostWrapper = ({ children }: Props) => {
   const { post } = usePostContext();
+  if (!post._id) return null;
   return (
     <Link href={`/postsPage/${post._id}`}>
       <div className="flex flex-col cursor-pointer w-[100%] transition-all duration-100 h-[85%] border-gray-300 relative hover:bg-gray-100 hover:dark:bg-black  ">
