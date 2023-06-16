@@ -3,20 +3,12 @@ import type { AppProps } from "next/app";
 import Layout from "@components/Layout";
 import { store, saga } from "@redux/store/store";
 import { Provider } from "react-redux";
-import { useEffect } from "react";
 import rootSaga from "@redux/sagas/rootSaga";
 import { ThemeProvider } from "next-themes";
 
 saga.run(rootSaga);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    const init = async () => {
-      await fetch("/api/init");
-    };
-    init();
-  }, []);
-
   return (
     <Provider store={store}>
       <ThemeProvider attribute="class">

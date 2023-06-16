@@ -32,7 +32,6 @@ const Comments = ({ post }: CommentsProps) => {
     return state.comments;
   });
 
-
   const isLoading: boolean = CommentsState.isLoading;
   const Comments: IPostComment[] = CommentsState.Comments;
 

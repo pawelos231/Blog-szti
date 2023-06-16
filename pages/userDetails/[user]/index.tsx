@@ -1,10 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { getAllUsers } from "@server/db/user";
+import { getAllUsers, getUserByEmailWithoutPassword } from "@server/db/user";
 import ProfileUserDescription from "@components/userDetailsPages/ProfileDescription/otheruserProfileDescription";
-import { getUserByEmailWithoutPassword } from "@server/db/user";
 import { UserWithoutPassword } from "@server/db/user";
 
-type Props = { user: UserWithoutPassword };
+type Props = {
+  user: UserWithoutPassword;
+};
 
 const Index = ({ user }: Props) => {
   return <ProfileUserDescription userMail={user?.Email} />;
@@ -14,8 +15,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { result, error } = await getAllUsers();
   if (error) {
     console.log(error);
+    return {
+      paths: [],
+      fallback: true,
+    };
   }
-  const paths = result.map((item) => {
+  const paths = result.map((item: UserWithoutPassword) => {
     return {
       params: {
         user: item.Email,
@@ -29,11 +34,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { result, error } = await getUserByEmailWithoutPassword(
-    params.user as string
-  );
+  const userEmail = params?.user as string;
+  const { result, error } = await getUserByEmailWithoutPassword(userEmail);
+  if (error || !result) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
+  }
   const user: UserWithoutPassword = JSON.parse(JSON.stringify(result));
-  console.log(user);
   return {
     props: {
       user,

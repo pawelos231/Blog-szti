@@ -29,7 +29,6 @@ const ToolbarView = {
 };
 
 const TextEditor = ({ handleMessage }): JSX.Element => {
-  console.log("render");
   return (
     <div className="flex h-[30%]">
       <QuillNoSSRWrapper

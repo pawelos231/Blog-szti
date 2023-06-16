@@ -6,8 +6,9 @@ import { getAllPosts } from "@server/db/posts";
 import { WrapperForQuery } from "@server/db/DatabaseFunctionsWrapper";
 
 type Posts = Array<IPost>;
+type Props = { postsFinal: Posts };
 
-export default function Home({ postsFinal }: { postsFinal: Posts }) {
+export default function Home({ postsFinal }: Props) {
   return (
     <div className="flex justify-center w-full flex-col">
       <Header />
