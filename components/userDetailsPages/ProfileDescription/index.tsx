@@ -5,23 +5,25 @@ import {
   MutableRefObject,
   useEffect,
   useMemo,
+  useCallback,
 } from "react";
 import Image from "next/image";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
-import { POST } from "@constants/reqMeth";
 import { useRouter, NextRouter } from "next/router";
 import { toBase64, shimmer } from "@components/ShimmerEffect/Shimmer";
-import { CircularProgress } from "@material-ui/core";
 import useFetch from "@hooks/useFetch";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import withSidebar from "../HOCS/NavbarLayoutWrapper";
+import withDataLoading from "@components/Wrappers/LoadingHOC";
+import DescriptionComponentCurrent from "./DescLoggedUser";
+import Loader from "./DescLoggedUser/loading";
+import { forwardRef } from "react";
 
 type Headers = {
   Authorization: string;
 };
 
 const ProfileDescription = withSidebar((): JSX.Element => {
-  const DESC_REF: MutableRefObject<HTMLTextAreaElement> = useRef(null);
   const [viewModal, setViewModal] = useState<boolean>(true);
   const [description, setDescription] = useState<string>(null);
   const [file, setFile] = useState<File>();
@@ -32,7 +34,6 @@ const ProfileDescription = withSidebar((): JSX.Element => {
       setFile(e.target.files[0]);
     }
   };
-
   const headers: Headers = useMemo(() => {
     return {
       Authorization: GetToken(),
@@ -45,29 +46,15 @@ const ProfileDescription = withSidebar((): JSX.Element => {
     loading,
   } = useFetch<string>(DESCRIPTION_URL, headers, router);
 
-  const sendDescription = async (): Promise<void> => {
-    const token = localStorage.getItem("profile");
-    const descriptionLength = String(DESC_REF.current.value).trim().length;
-
-    if (descriptionLength === 0) return;
-
-    await fetch(DESCRIPTION_URL, {
-      method: POST,
-      body: JSON.stringify(String(DESC_REF.current.value)),
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res: Response) => res.json())
-      .then((descriptionRes: any) => {
-        setDescription(descriptionRes);
-        setViewModal(true);
-      });
-  };
-
   useEffect(() => {
     setDescription(ProfileDescription);
   }, [ProfileDescription]);
+
+  const DescriptionWrapped = withDataLoading(
+    loading,
+    DescriptionComponentCurrent,
+    Loader
+  );
 
   return (
     <>
@@ -110,53 +97,16 @@ const ProfileDescription = withSidebar((): JSX.Element => {
             accept=".jpg, .jpeg, .png"
           />
         </div>
-        {!loading ? (
-          <>
-            {" "}
-            {viewModal ? (
-              <div className="w-[40%] h-[30%]">
-                {!description || description.length === 0 ? (
-                  <div className=" text-center m-2 h-[90%] rounded-sm flex justify-center items-center">
-                    <p className="text-xl text-white">napisz tu coś...</p>
-                  </div>
-                ) : (
-                  <div className=" text-center m-2 h-[90%]  border-white rounded-sm flex justify-center items-center">
-                    {description}
-                  </div>
-                )}
-                <div
-                  className="p-2 w-full text-end cursor-pointer transition hover:scale-105"
-                  onClick={() => setViewModal(!viewModal)}
-                >
-                  Dodaj opis
-                </div>
-              </div>
-            ) : (
-              <>
-                <textarea
-                  ref={DESC_REF}
-                  className="w-[30%] h-[30%] p-2"
-                ></textarea>
-                <div className="flex">
-                  <button
-                    onClick={() => setViewModal(true)}
-                    className="p-2 text-end hover:text-red-500"
-                  >
-                    Anuluj
-                  </button>
-                  <button
-                    onClick={() => sendDescription()}
-                    className="p-2 text-end hover:text-green-500"
-                  >
-                    Dodaj!
-                  </button>
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <CircularProgress />
-        )}
+        <DescriptionWrapped
+          viewModal={viewModal}
+          setViewModal={useCallback((value: boolean) => {
+            setViewModal(value);
+          }, [])}
+          setDescription={useCallback((value: string) => {
+            setDescription(value);
+          }, [])}
+          description={description}
+        />
       </div>
     </>
   );

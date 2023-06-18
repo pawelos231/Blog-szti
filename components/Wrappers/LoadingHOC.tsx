@@ -16,12 +16,14 @@ const withDataLoading = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
   LoadingComponent: React.ComponentType<LoadingComponentProps> = DefaultLoader
 ) => {
-  const LoaderWrapper: React.FC<P> = (props) => {
+  const LoaderWrapper: React.ForwardRefRenderFunction<P, P> = (props, ref) => {
     if (loading) return <LoadingComponent />;
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...props} ref={ref} />;
   };
 
-  return LoaderWrapper;
+  const forwardRefWrapper = React.forwardRef<P, P>(LoaderWrapper);
+
+  return forwardRefWrapper;
 };
 
 export default withDataLoading;
