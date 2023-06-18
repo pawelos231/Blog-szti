@@ -16,9 +16,6 @@ type Props = { postId: string };
 const CommentsFilter = ({ postId }: Props): JSX.Element => {
   const [change, handleChange] = useState<string>("Native");
   const dispatch: Dispatch<CommentAtionType> = useDispatch();
-  const Comments = useSelector((state: any) => {
-    return state.comments;
-  });
 
   const handleCommentFilter = (e: ChangeEvent<HTMLSelectElement>) => {
     handleChange(e.target.value);

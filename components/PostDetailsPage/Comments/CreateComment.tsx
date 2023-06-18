@@ -24,7 +24,6 @@ const CreateComment = ({ post }: CommentsProps) => {
     return state.comments;
   });
 
-
   if (CommentState.Unathorized && !!CommentState.ErrorMessage) {
     router.push("/");
   }
@@ -36,7 +35,7 @@ const CreateComment = ({ post }: CommentsProps) => {
     const UserAuthToken: string = localStorage.getItem("profile");
 
     const sendCommentToReduxApi = (): Promise<unknown> => {
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         try {
           const response = dispatch(
             addComment({
