@@ -7,13 +7,20 @@ import { createPostObject } from "./PostCreatorHelper";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
-import { PostCreationRequest, PostValidator } from "lib/validators/post";
+import { PostValidator } from "lib/validators/post";
 import { yupResolver } from "@hookform/resolvers/yup";
 import TextEditor from "@UI/TextEditor";
 
 interface ResposnePostAPost {
   [x: string]: string;
 }
+
+type PostCreationRequest = {
+  title?: string;
+  shortDescription?: string;
+  tags?: string;
+};
+
 const CreatePost = ({ Handle } = null): JSX.Element => {
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
