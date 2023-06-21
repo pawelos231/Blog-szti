@@ -35,15 +35,5 @@ export const PostValidator = yup
   .required();
 
 // Log the validation errors
-try {
-  PostValidator.validateSync({
-    title: "", // Invalid title, triggers validation error
-    shortDescription: "Short description",
-    description: "Description",
-    tags: "Tag",
-  });
-} catch (error) {
-  console.log("Validation Error:", error);
-}
 
-export type PostCreationRequest = yup.InferType<typeof PostValidator>;
+export type PostCreationRequest = Partial<yup.Asserts<typeof PostValidator>>;
