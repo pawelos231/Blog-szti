@@ -16,9 +16,9 @@ interface ResposnePostAPost {
 }
 
 type PostCreationRequest = {
-  title?: string;
-  shortDescription?: string;
-  tags?: string;
+  title: string;
+  shortDescription: string;
+  tags: string;
 };
 
 const CreatePost = ({ Handle } = null): JSX.Element => {
