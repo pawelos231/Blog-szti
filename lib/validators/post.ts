@@ -36,4 +36,8 @@ export const PostValidator = yup
 
 // Log the validation errors
 
-export type PostCreationRequest = Partial<yup.Asserts<typeof PostValidator>>;
+export type PostCreationRequest = {
+  title?: string;
+  shortDescription?: string;
+  tags?: string;
+};
