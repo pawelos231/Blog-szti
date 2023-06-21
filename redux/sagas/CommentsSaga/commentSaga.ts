@@ -69,7 +69,7 @@ function* workerAddComment(action: any): GenFuncType {
 }
 
 function* WatcherAddComment(): Generator<ForkEffect<never>, void, unknown> {
-  yield takeLatest("Comments/addComment", workerAddComment);
+  yield takeEvery("Comments/addComment", workerAddComment);
 }
 
 function* WatcherCommentsFetchAll(): Generator<

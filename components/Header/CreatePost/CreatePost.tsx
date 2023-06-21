@@ -2,24 +2,41 @@ import { useCallback, useState } from "react";
 import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
 import { ADD_POST } from "@constants/apisEndpoints";
 import { stripTags } from "@helpers/stripTags";
-import TextEditor from "@UI/TextEditor";
 import { MessageType } from "@constants/helperEnums";
 import { createPostObject } from "./PostCreatorHelper";
 import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
 import { memo } from "react";
+import { useForm } from "react-hook-form";
+import { PostCreationRequest, PostValidator } from "lib/validators/post";
+import { yupResolver } from "@hookform/resolvers/yup";
+import TextEditor from "@UI/TextEditor";
 
 interface ResposnePostAPost {
   [x: string]: string;
 }
-
-const CreatePost = ({ Handle }): JSX.Element => {
-  const [message, onHandleMessage] = useState<string>("");
-  const [title, onHandleTitle] = useState<string>("");
-  const [tags, onHandleTags] = useState<Array<string>>([]);
-  const [shortOpis, HandleShortOpis] = useState<string>("");
+const CreatePost = ({ Handle } = null): JSX.Element => {
   const [resp, setResp] = useState<ResposnePostAPost>({});
   const [buttonActive, SetButtonActive] = useState<boolean>(true);
   const [showComp, handleShowComp] = useState<boolean>(false);
+  const [desc, setDesc] = useState<string>("");
+
+  const setMemoDesc = useCallback((value: string) => {
+    setDesc(value);
+  }, []);
+
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors }, // Get the form validation errors
+  } = useForm<PostCreationRequest>({
+    resolver: yupResolver(PostValidator),
+    defaultValues: {
+      title: "",
+      tags: "",
+      shortDescription: "",
+    },
+  });
 
   const TemporaryComponent: (data: ResposnePostAPost) => void = (data) => {
     setTimeout(() => {
@@ -31,81 +48,73 @@ const CreatePost = ({ Handle }): JSX.Element => {
     setResp(data);
   };
 
-  const HandleMessageMemo = useCallback(
-    (message: string) => {
-      onHandleMessage(message);
-    },
-    [message]
-  );
-
   const CountWords = (): number => {
-    return stripTags(message).split(" ").length;
+    return stripTags(watch("tags")).split(" ").length;
   };
 
-  const SendPost: (e: any) => Promise<void> = async (e) => {
-    if (stripTags(message) !== "" && title !== "" && shortOpis !== "") {
-      e.preventDefault();
-      SetButtonActive(false);
+  const SendPost = async () => {
+    SetButtonActive(false);
 
-      const payload = JSON.stringify(
-        createPostObject(message, title, tags, shortOpis, CountWords)
-      );
-      const contentLength = Buffer.byteLength(payload, "utf8");
-      console.log(payload, contentLength);
-      await fetch(ADD_POST, {
-        method: "POST",
-        headers: {
-          Authorization: GetToken(),
-        },
-        body: payload,
+    const payload = JSON.stringify(
+      createPostObject(
+        desc,
+        watch("title"),
+        watch("tags"),
+        watch("shortDescription"),
+        CountWords
+      )
+    );
+    console.log(payload);
+    await fetch(ADD_POST, {
+      method: "POST",
+      headers: {
+        Authorization: GetToken(),
+      },
+      body: payload,
+    })
+      .then((res: Response) => res.json())
+      .then((data: ResposnePostAPost) => {
+        handleShowComp(true);
+        console.log(data);
+        TemporaryComponent(data);
       })
-        .then((res: Response) => res.json())
-        .then((data: ResposnePostAPost) => {
-          handleShowComp(true);
-          TemporaryComponent(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <>
       <div className="m-10 flex justify-center w-[50%] h-[80%] rounded text-black bg-white dark:bg-black dark:border-white border-[1px]">
         <form
-          onSubmit={(e: React.SyntheticEvent) => SendPost(e)}
+          onSubmit={handleSubmit(SendPost)}
           className="flex justify-center flex-col w-[80%] gap-2 text-white"
         >
           <input
-            maxLength={80}
-            required
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              onHandleTitle(e.target.value)
-            }
+            {...register("title")}
             className="p-3 rounded-sm text-black border-[1px] border-gray-300 dark:text-white"
             type="text"
             placeholder="tytuł, max 80 znaków"
           />
+          {errors.title && (
+            <p className="text-red-500">{errors.title.message}</p>
+          )}
+
           <input
-            required
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              onHandleTags(e.target.value.split("#"))
-            }
+            {...register("tags")}
             className="p-3 rounded-sm text-black border-[1px] border-gray-300 dark:text-white"
             type="text"
             placeholder="tagi: #siema #gówno"
           />
+          {errors.shortDescription && (
+            <p className="text-red-500">{errors.shortDescription.message}</p>
+          )}
           <textarea
-            required
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              HandleShortOpis(e.target.value)
-            }
+            {...register("shortDescription")}
             className="p-3 rounded-sm text-black border-[1px] border-gray-300 h-[15%] dark:text-white"
             placeholder="krótki opis, max 230 znaków"
-            maxLength={230}
           />
-          <TextEditor handleMessage={HandleMessageMemo} />
+          <TextEditor HandleChange={setMemoDesc} />
 
           {buttonActive ? (
             <div className="flex justify-center mt-12">

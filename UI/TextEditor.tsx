@@ -3,9 +3,13 @@ import { CircularProgress } from "@material-ui/core";
 import "react-quill/dist/quill.snow.css";
 import { memo } from "react";
 
+const Loader = () => {
+  return <CircularProgress />;
+};
+
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
-  loading: () => <CircularProgress />,
+  loading: () => <Loader />,
 });
 
 const ToolbarView = {
@@ -28,13 +32,17 @@ const ToolbarView = {
   },
 };
 
-const TextEditor = ({ handleMessage }): JSX.Element => {
+type Props = {
+  HandleChange: (value: string) => void;
+};
+
+const TextEditor = ({ HandleChange }: Props): JSX.Element => {
   return (
     <div className="flex h-[30%]">
       <QuillNoSSRWrapper
         modules={ToolbarView}
         theme="snow"
-        onChange={handleMessage}
+        onChange={HandleChange}
       />
     </div>
   );
