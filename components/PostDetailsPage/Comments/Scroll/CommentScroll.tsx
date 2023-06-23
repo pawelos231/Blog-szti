@@ -34,7 +34,7 @@ const CommentScroll = memo(
       },
     };
 
-    if (scrollRef.current.getPosFromTop() - 550 > scrollPos) return;
+    if (scrollRef.current?.getPosFromTop() - 550 > scrollPos) return;
 
     return (
       <AnimatePresence>
