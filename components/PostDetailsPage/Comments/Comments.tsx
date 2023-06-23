@@ -1,4 +1,4 @@
-import React, { useEffect, Dispatch } from "react";
+import React, { useEffect, Dispatch, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IPost, IPostComment } from "@interfaces/PostsInterface";
 import { getCommentsFetch } from "@redux/slices/CommentSlice/commentSlice";
@@ -9,18 +9,24 @@ import { CommentLoaderComp, CommentsComp } from "./CommentComponents";
 import CommentsFilter from "./Filter/CommentsFilter";
 import { FilterOptionEnum } from "./Filter/FilterData";
 import { FetchBody } from "./Filter/FilterData";
+import CommentScroll from "./Scroll/CommentScroll";
+import { useScroll } from "@hooks/useScroll";
 
-type CommentsProps = { post: IPost };
+type Props = { post: IPost };
 
-const Comments = ({ post }: CommentsProps) => {
+export interface CommentScrollRef {
+  scrollBot: () => void;
+}
+
+const Comments = ({ post }: Props) => {
   const dispatch: Dispatch<CommentAtionType> = useDispatch();
 
   const CommentsState = useSelector((state: any) => {
     return state.comments;
   });
 
-  const isLoading: boolean = CommentsState.isLoading;
-  const Comments: IPostComment[] = CommentsState.Comments;
+  const { isLoading, Comments, errorMessage, unauthorized, failure } =
+    CommentsState;
 
   useEffect(() => {
     const body: FetchBody = {
@@ -28,7 +34,9 @@ const Comments = ({ post }: CommentsProps) => {
       filter: FilterOptionEnum.Native,
     };
     dispatch(getCommentsFetch({ url: FetchComments, body, method: "POST" }));
-  }, [dispatch]);
+  }, [dispatch, post._id]);
+
+  const ref = useRef<CommentScrollRef>(null);
 
   const CommentsView = withDataLoading(
     isLoading,
@@ -36,10 +44,24 @@ const Comments = ({ post }: CommentsProps) => {
     CommentLoaderComp
   );
 
+  function handleClick() {
+    console.log("scrolll");
+    console.log(ref.current.scrollBot);
+    ref.current.scrollBot();
+  }
+
   return (
     <section>
-      <CommentsFilter postId={post?._id} />
-      <CommentsView post={post} Comments={Comments} />
+      {unauthorized && <p>Unauthorized to fetch comments.</p>}
+      {failure && <p>Failed to fetch comments.</p>}
+      {errorMessage && <p>{errorMessage}</p>}
+      {!unauthorized && !failure && !errorMessage && (
+        <>
+          <CommentScroll ref={ref} scrollRef={ref} />
+          <CommentsFilter postId={post?._id} />
+          <CommentsView post={post} Comments={Comments} ref={ref} />
+        </>
+      )}
     </section>
   );
 };

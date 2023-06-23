@@ -17,8 +17,6 @@ const useFetch = <T>(url: string, headers = {}, router: NextRouter = null) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  console.log(headers);
-
   const clearState = (): void => {
     setData(null);
     setLoading(true);

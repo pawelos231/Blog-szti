@@ -1,7 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { IPost } from "../../interfaces/PostsInterface";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Comments from "./Comments/Comments";
 import CreateComment from "./Comments/CreateComment";
 
@@ -32,7 +32,9 @@ const PostDetails = ({ post }: Props) => {
         <p>{post?.CreatedAt.toString().split("T")[0]}</p>
       </div>
 
-      <div className="w-[60vw]" id="inner"></div>
+      <div className="w-[60vw]" id="inner">
+        {post?.Message}
+      </div>
       <div className="w-[60vw] h-[1px] bg-gray-300 mt-16"></div>
       <CreateComment post={post} />
       <Comments post={post} />

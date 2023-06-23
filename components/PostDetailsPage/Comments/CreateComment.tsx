@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, useRef } from "react";
+import { Dispatch } from "react";
 import { IPost } from "@interfaces/PostsInterface";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,13 @@ import { NextRouter, useRouter } from "next/router";
 import { CommentObjCreator } from "./CommentsHelpers";
 import MessageOnTopOfScreen from "@components/Modals/MessageTopOfScreen";
 import { MessageType } from "@constants/helperEnums";
+import { useForm } from "react-hook-form";
+import { GetToken } from "@server/helpers/GetTokenFromLocalStorage";
+import {
+  CommentCreationRequest,
+  CommentValidator,
+} from "lib/validators/comment";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type CommentsProps = { post: IPost };
 
@@ -17,8 +24,6 @@ const CreateComment = ({ post }: CommentsProps) => {
   const [indicator, setIndicator] = useState(false);
   const dispatch: Dispatch<AnyAction> = useDispatch();
   const router: NextRouter = useRouter();
-
-  const refText: MutableRefObject<any> = useRef(null);
 
   const CommentState = useSelector((state: any) => {
     return state.comments;
@@ -28,19 +33,28 @@ const CreateComment = ({ post }: CommentsProps) => {
     router.push("/");
   }
 
-  const AddComment = async (event: any): Promise<void> => {
-    event.preventDefault();
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<CommentCreationRequest>({
+    resolver: yupResolver(CommentValidator),
+    defaultValues: {
+      content: "",
+    },
+  });
 
-    const textOfComment: string = refText.current.value;
-    const UserAuthToken: string = localStorage.getItem("profile");
+  const AddComment = async (): Promise<void> => {
+    const textOfComment: string = watch("content");
 
-    const sendCommentToReduxApi = (): Promise<unknown> => {
+    const sendComment = (): Promise<unknown> => {
       return new Promise((resolve, reject) => {
         try {
           const response = dispatch(
             addComment({
               CommentObject: CommentObjCreator(textOfComment, post._id),
-              UserAuthToken,
+              UserAuthToken: GetToken(),
               method: "POST",
               url: ADD_COMMENT_URL,
             })
@@ -52,8 +66,7 @@ const CreateComment = ({ post }: CommentsProps) => {
       });
     };
     setIndicator(true);
-    await sendCommentToReduxApi();
-    refText.current.value = "";
+    await sendComment();
   };
 
   return (
@@ -77,14 +90,17 @@ const CreateComment = ({ post }: CommentsProps) => {
       <section className="pt-8">
         <p className="text-2xl">Komentarze</p>
         <form
-          onSubmit={(e: React.FormEvent<HTMLFormElement>) => AddComment(e)}
+          onSubmit={handleSubmit(AddComment)}
           className="pt-6 flex flex-col w-[50%]"
         >
           <textarea
             className="border-gray-300 rounded-sm border-[1px] p-2 	"
             placeholder="wpisz komentarz"
-            ref={refText}
+            {...register("content")}
           />
+          {errors.content && (
+            <p className="text-red-500">{errors.content.message}</p>
+          )}
           <input
             className="self-start mt-4 p-2 w-48 bg-black text-white transition-all duration-100 cursor-pointer rounded-sm hover:scale-105 hover:bg-gray-400 hover:text-black	"
             type="submit"

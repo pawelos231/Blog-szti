@@ -5,11 +5,9 @@ import { useDispatch } from "react-redux";
 import { getCommentsFetch } from "@redux/slices/CommentSlice/commentSlice";
 import { CommentAtionType } from "@redux/types/ActionTypes";
 import { Dispatch } from "redux";
-import { useSelector } from "react-redux";
 import { filterOptions } from "./FilterData";
 import { FetchBody } from "./FilterData";
 import { FilterOptionEnum } from "./FilterData";
-
 
 type Props = { postId: string };
 

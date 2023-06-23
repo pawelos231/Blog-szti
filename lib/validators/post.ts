@@ -34,5 +34,4 @@ export const PostValidator = yup
   })
   .required();
 
-// Log the validation errors
-
+export type PostCreationRequest = Required<yup.InferType<typeof PostValidator>>;

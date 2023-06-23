@@ -1,9 +1,9 @@
 import clientPromise from "./mongo";
 import { IPostComment } from "@interfaces/PostsInterface";
 import { ResponseWrapper } from "./interfaces/ResponseInterface";
+import { deleteAllRedisValues } from "@server/cache/cache";
 const CommentOnPost = require("@server/models/CommentModel");
 require("../cache/index");
-import { deleteAllRedisValues } from "@server/cache/cache";
 
 type Comments = Array<IPostComment>;
 type AddCommentRes = {
