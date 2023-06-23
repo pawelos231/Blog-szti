@@ -34,7 +34,7 @@ const Comments = ({ post }: Props) => {
       filter: FilterOptionEnum.Native,
     };
     dispatch(getCommentsFetch({ url: FetchComments, body, method: "POST" }));
-  }, [dispatch, post._id]);
+  }, [dispatch, post?._id]);
 
   const ref = useRef<CommentScrollRef>(null);
 
@@ -43,12 +43,6 @@ const Comments = ({ post }: Props) => {
     CommentsComp,
     CommentLoaderComp
   );
-
-  function handleClick() {
-    console.log("scrolll");
-    console.log(ref.current.scrollBot);
-    ref.current.scrollBot();
-  }
 
   return (
     <section>
