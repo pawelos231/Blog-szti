@@ -16,6 +16,9 @@ type Props = { post: IPost };
 
 export interface CommentScrollRef {
   scrollBot: () => void;
+  scrollTop: () => void;
+  getHeight: () => number;
+  getPosFromTop: () => number;
 }
 
 const Comments = ({ post }: Props) => {
