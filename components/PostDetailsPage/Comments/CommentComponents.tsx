@@ -43,7 +43,7 @@ export const CommentsComp = memo(
           });
         },
         getHeight(): number {
-          return lastCommentRef.current.offsetHeight;
+          return lastCommentRef.current.offsetHeight - 100;
         },
         getPosFromTop(): number {
           return Math.floor(

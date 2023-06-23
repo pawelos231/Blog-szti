@@ -11,11 +11,10 @@ const CommentScroll = memo(
     const handleScrollUp = () => {
       scrollRef.current?.scrollTop();
     };
-
     const { end, scrollPos } = useScroll(scrollRef.current?.getHeight());
 
     const handleClick = end ? handleScrollUp : handleScrollDown;
-
+    console.log(end);
     const buttonVariants = {
       initial: {
         scale: 0,
