@@ -5,7 +5,6 @@ import {
   takeEvery,
   spawn,
   takeLatest,
-  select,
 } from "redux-saga/effects";
 import {
   getCommentsSuccess,

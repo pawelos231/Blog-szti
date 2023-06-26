@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import { BlogPost } from "./Interfaces/Post";
+import { PostModel } from "./Interfaces/Post";
 mongoose.Promise = global.Promise;
 
-const BlogSchema = new Schema<BlogPost>({
+const BlogSchema = new Schema<PostModel>({
   Title: {
     type: String,
     maxLength: 40,
@@ -60,4 +60,4 @@ const BlogSchema = new Schema<BlogPost>({
 
 module.exports =
   mongoose.models.BlogPosts ||
-  mongoose.model<BlogPost>("BlogPosts", BlogSchema);
+  mongoose.model<PostModel>("BlogPosts", BlogSchema);

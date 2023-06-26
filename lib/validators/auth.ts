@@ -2,14 +2,14 @@ import * as Yup from "yup";
 import { AuthView } from "@constants/helperEnums";
 import { EMAIL_VALIDATOR, PASSWORD_VALIDATIOR } from "@constants/validators";
 
-export const AuthValidator = (view) => {
+export const AuthValidator = (view: AuthView) => {
   const validationSchema: Yup.ObjectSchema<{}, Yup.AnyObject, {}, ""> =
     Yup.object().shape(
       {
         name: Yup.string().when("name", () => {
           if (view === AuthView.Register) {
             return Yup.string()
-              .min(1, "imie moze mieć mininmalnie 10 znaków")
+              .min(10, "imie moze mieć mininmalnie 10 znaków")
               .max(60, "imie moze mieć maksymalnie 60 znaków")
               .required("required");
           } else if (view === AuthView.Login) {
@@ -18,7 +18,7 @@ export const AuthValidator = (view) => {
         }),
         email: Yup.string()
           .email("invalid email")
-          .min(5, "minimalnie 5 znaków")
+          .min(10, "minimalnie 10 znaków")
           .max(60, "maksymalnie 60 znaków")
           .required("required")
           .matches(EMAIL_VALIDATOR, "invalid email"),

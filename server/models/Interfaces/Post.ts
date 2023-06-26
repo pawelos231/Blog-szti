@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface BlogPost extends Document {
+export interface PostModel extends Document {
   Title?: string;
   CreatedAt?: Date;
   Tags?: string[];

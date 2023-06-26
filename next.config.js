@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  esmExternals: false,
   webpack: (config, { isServer }) => {
     if (!config.experiments) {
       config.experiments = {};

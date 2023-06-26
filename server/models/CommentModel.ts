@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
-import { Comment } from "./Interfaces/Comment";
+import { CommentModel } from "./Interfaces/Comment";
 
-const CommentSchema = new Schema<Comment>({
+const CommentSchema = new Schema<CommentModel>({
   UserId: {
     type: String,
     required: true,
@@ -27,7 +27,7 @@ const CommentSchema = new Schema<Comment>({
   UpdatedAt: {
     type: Date,
     validate: {
-      validator: function (this: Comment, updatedAt: Date) {
+      validator: function (this: CommentModel, updatedAt: Date) {
         return !updatedAt || !this.CreatedAt || updatedAt >= this.CreatedAt;
       },
       message:

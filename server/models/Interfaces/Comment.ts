@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface Comment extends Document {
+export interface CommentModel extends Document {
   UserId: string;
   PostId: string;
   CreatedAt: Date;

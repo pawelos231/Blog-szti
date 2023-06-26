@@ -1,23 +1,15 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { NOTAUTH } from "@constants/auth";
 
-export interface AuthenticatedPaginatedRequest extends NextApiRequest {
-  user?: any;
-  PAGE_SIZE: string;
-  skipValue: string;
-}
-
 export interface PaginatedRequest extends NextApiRequest {
   PAGE_SIZE: string;
   skipValue: string;
 }
 
-type Request = PaginatedRequest & AuthenticatedPaginatedRequest;
-
-type HandlerFunc = (req: Request, res: NextApiResponse<any>) => Promise<any>;
+type HandlerFunc<T> = (req: T, res: NextApiResponse<any>) => Promise<any>;
 
 export const paginateMiddleware =
-  (handler: HandlerFunc): HandlerFunc =>
+  <T extends PaginatedRequest>(handler: HandlerFunc<T>): HandlerFunc<T> =>
   async (req, res) => {
     const skipValue = req.headers["skipvalue"] as string;
     const PAGE_SIZE = req.headers["page_size"] as string;

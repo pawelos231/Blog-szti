@@ -46,7 +46,6 @@ const commentsSlice = createSlice({
       state.ErrorMessage = action.payload;
     },
     LikeComment(state, action: PayloadAction<unknown>) {},
-    getFilteredComments(state, action: PayloadAction<unknown>) {},
     addComment: (state, action) => {
       clearState(state);
       return state;
@@ -65,7 +64,6 @@ export const {
   getCommentsSuccess,
   addComment,
   addCommentSuccess,
-  getFilteredComments,
   addCommentFailure,
   addCommentUnathorized,
 } = commentsSlice.actions;

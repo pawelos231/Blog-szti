@@ -1,12 +1,4 @@
-import {
-  ChangeEvent,
-  useState,
-  useRef,
-  MutableRefObject,
-  useEffect,
-  useMemo,
-  useCallback,
-} from "react";
+import { ChangeEvent, useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { DESCRIPTION_URL } from "@constants/apisEndpoints";
 import { useRouter, NextRouter } from "next/router";
@@ -17,7 +9,9 @@ import withSidebar from "../HOCS/NavbarLayoutWrapper";
 import withDataLoading from "@components/Wrappers/LoadingHOC";
 import DescriptionComponentCurrent from "./DescLoggedUser";
 import Loader from "./DescLoggedUser/loading";
-import { forwardRef } from "react";
+import { UploadButton } from "@UI/upload";
+import "@uploadthing/react/styles.css";
+import { MultiUploader } from "@UI/multiUploadet";
 
 type Headers = {
   Authorization: string;
@@ -81,22 +75,7 @@ const ProfileDescription = withSidebar((): JSX.Element => {
             height={200}
           />
         </div>
-        <div className="p-2 w-[20%] m-2 text-center rounded-sm hover:scale-105 cursor-pointer transition-all">
-          <label
-            className="cursor-pointer text-green-500 "
-            htmlFor={"ProfilePicUpload"}
-          >
-            Zmień profilowe!
-          </label>
-          <input
-            id="ProfilePicUpload"
-            type="file"
-            className="hidden"
-            placeholder="zmień profilowe"
-            onChange={handleFileChange}
-            accept=".jpg, .jpeg, .png"
-          />
-        </div>
+        <div className="p-2 w-[20%] m-2 text-center rounded-sm hover:scale-105 cursor-pointer transition-all"></div>
         <DescriptionWrapped
           viewModal={viewModal}
           setViewModal={useCallback((value: boolean) => {

@@ -6,13 +6,10 @@ export interface AuthenticatedRequest extends NextApiRequest {
   user?: any;
 }
 
-type HandlerFunc = (
-  req: AuthenticatedRequest,
-  res: NextApiResponse<any>
-) => Promise<any>;
+type HandlerFunc<T> = (req: T, res: NextApiResponse<any>) => Promise<any>;
 
 export const authMiddleware =
-  (handler: HandlerFunc): HandlerFunc =>
+  <T extends AuthenticatedRequest>(handler: HandlerFunc<T>): HandlerFunc<T> =>
   async (req, res) => {
     const token: string = String(req.headers["authorization"]);
 
