@@ -2,14 +2,20 @@ import { verify } from "@server/helpers/validateToken";
 import { NextApiResponse, NextApiRequest } from "next";
 import { NOTAUTH } from "@constants/auth";
 
-export interface AuthenticatedRequest extends NextApiRequest {
-  user?: any;
+export interface IAuthRes extends NextApiRequest {
+  user: {
+    Email: string;
+    Name: string;
+  };
 }
 
-type HandlerFunc<T> = (req: T, res: NextApiResponse<any>) => Promise<any>;
+type HandlerFunc<T extends IAuthRes> = (
+  req: T,
+  res: NextApiResponse<any>
+) => Promise<any>;
 
 export const authMiddleware =
-  <T extends AuthenticatedRequest>(handler: HandlerFunc<T>): HandlerFunc<T> =>
+  <T extends IAuthRes>(handler: HandlerFunc<T>): HandlerFunc<T> =>
   async (req, res) => {
     const token: string = String(req.headers["authorization"]);
 

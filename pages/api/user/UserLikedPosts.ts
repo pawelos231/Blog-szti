@@ -1,8 +1,9 @@
 import { getLikedUserPosts, CountLikedPostssDB } from "@server/db/posts";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { paginateMiddleware } from "../middleware/paginate";
+import { IAuthPag } from "../middleware/types";
 
-export default authMiddleware(
+export default authMiddleware<IAuthPag>(
   paginateMiddleware(async function Handler(req, res) {
     try {
       const Name = String(req.user.Name);

@@ -2,8 +2,9 @@ import { getPostsByUser } from "@server/db/posts";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { paginateMiddleware } from "../middleware/paginate";
 import { CountCreatedPostssDB } from "@server/db/posts";
+import { IAuthPag } from "../middleware/types";
 
-export default authMiddleware(
+export default authMiddleware<IAuthPag>(
   paginateMiddleware(async function Handler(req, res) {
     try {
       const userEmail = String(req.user.Email);
