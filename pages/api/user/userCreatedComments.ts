@@ -1,8 +1,9 @@
 import { authMiddleware } from "../middleware/authMiddleware";
 import { CreatedCommentsDB, CountCreatedCommentsDB } from "@server/db/comments";
 import { paginateMiddleware } from "../middleware/paginate";
+import { IAuthPag } from "../middleware/types";
 
-export default authMiddleware(
+export default authMiddleware<IAuthPag>(
   paginateMiddleware(async function Handler(req, res) {
     const userEmail: string = req.user.Email;
     const skipValue = Number(req.skipValue);
