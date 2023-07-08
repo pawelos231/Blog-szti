@@ -99,8 +99,9 @@ export const RegisterUserDB = async (
       Email: email,
       Password: hash,
     });
+    await result.save();
 
-    return { result };
+    return { result: "pomyślnie dodano uzytkownika" };
   } catch (error) {
     return { error, result: undefined };
   }
