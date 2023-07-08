@@ -48,21 +48,15 @@ export default async function Handler(
           console.warn(error);
         }
 
-        await result.save();
-
-        res
-          .status(200)
-          .json({
-            message: { text: "udało się zalogować", status: 1 },
-            token: jwt,
-            name: name,
-          });
+        res.status(200).json({
+          message: { text: "udało się zalogować", status: 1 },
+          token: jwt,
+          name: name,
+        });
       } else {
-        res
-          .status(200)
-          .json({
-            message: { text: "uzytkownik o podanym mailu istnieje", status: 0 },
-          });
+        res.status(200).json({
+          message: { text: "uzytkownik o podanym mailu istnieje", status: 0 },
+        });
       }
     });
   });
