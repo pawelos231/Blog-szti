@@ -29,8 +29,8 @@ const CreateComment = ({ post }: CommentsProps) => {
     return state.comments;
   });
 
-  if (CommentState.Unathorized && !!CommentState.ErrorMessage) {
-    router.push("/");
+  if (CommentState.Unathorized || !!CommentState.ErrorMessage) {
+    router.push("/userLogin/login");
   }
 
   const {
