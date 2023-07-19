@@ -55,17 +55,20 @@ const FilteredPosts = ({
           })}
         </div>
         <ThemeProvider theme={theme}>
-          <div className="mt-20 mb-20">
-            <Pagination
-              color="secondary"
-              shape="rounded"
-              size="large"
-              variant="outlined"
-              count={count}
-              page={pageNumber}
-              onChange={handlePageChange}
-            />
-          </div>
+          <>
+            {count > 1 ? (
+              <Pagination
+                color="secondary"
+                shape="rounded"
+                size="large"
+                variant="outlined"
+                count={count}
+                page={pageNumber}
+                onChange={handlePageChange}
+              />
+            ) : null}
+          </>
+          <div className="mt-20 mb-20"></div>
         </ThemeProvider>
       </section>
     </div>

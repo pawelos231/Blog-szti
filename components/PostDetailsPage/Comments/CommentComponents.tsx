@@ -1,5 +1,3 @@
-import { IPostComment, IPost } from "@interfaces/PostsInterface";
-import { TransformedComments } from "@helpers/NormalizeComments";
 import {
   useState,
   useCallback,
@@ -12,13 +10,15 @@ import { loaderFor } from "@components/userDetailsPages/helpers";
 import SingleComment from "./SingleComment/SingleComment";
 import { memo } from "react";
 import { CommentScrollRef } from "./Comments";
+import { TransformedComments } from "@helpers/NormalizeComments";
+import { IPostComment, IPost } from "@interfaces/PostsInterface";
 
 type CommentsCompProps = {
   Comments: IPostComment[];
   post: IPost;
 };
 
-export const CommentsComp = memo(
+const CommentsComp = memo(
   forwardRef<CommentScrollRef, any>(
     ({ Comments, post }: CommentsCompProps, ref) => {
       const lastCommentRef = useRef<HTMLDivElement>(null);
@@ -57,63 +57,61 @@ export const CommentsComp = memo(
         setOpenedCommentsView(opened);
       }, []);
 
-      const generateChildren = (
-        itemInit: TransformedComments,
-        index: number = 0,
-        visibility: boolean = openedCommentsView
+      // Recursive function to generate nested comments
+      const generateNestedComments = (
+        comment: TransformedComments,
+        depth: number,
+        visibility: boolean
       ): JSX.Element | null => {
-        if (!itemInit?.children) return null;
-        const children: TransformedComments[] = itemInit.children;
-        let nestedLevel: number = index + 1;
+        if (!comment?.children) return null;
+        const children: TransformedComments[] = comment.children;
 
-        const CommentsArray: JSX.Element[] = children?.map(
-          (item, index: number) => {
-            return generateChildren(
-              item,
-              nestedLevel,
-              openedCommentsView ? false : true
-            );
-          }
-        );
+        const nestedComments = children.map((child, index) => {
+          return generateNestedComments(
+            child,
+            depth + 1,
+            openedCommentsView ? false : true
+          );
+        });
 
-        if (children && index === 0 && children.length === 0) {
+        if (children.length === 0 && depth === 0) {
           return (
             <SingleComment
-              key={index}
-              depth={index}
+              key={comment._id}
+              depth={depth}
               postId={post._id}
-              comment={itemInit}
+              comment={comment}
             />
           );
         }
 
         return (
           <>
-            <div style={{ paddingLeft: `${index * 45}px` }}>
-              {children && index === 0 && children.length !== 0 ? (
+            <div style={{ paddingLeft: `${depth * 45}px` }}>
+              {children && depth === 0 && children.length !== 0 ? (
                 <SingleComment
-                  key={index}
+                  key={comment._id}
                   parentShowCommentsFlag={true}
                   handleopenedCommentsView={handleOpenCommentsView}
                   openedCommentsView={openedCommentsView}
-                  depth={index}
-                  postId={post?._id}
-                  comment={itemInit}
+                  depth={depth}
+                  postId={post._id}
+                  comment={comment}
                 />
               ) : (
                 <>
                   {!visibility ? (
                     <SingleComment
-                      key={index}
-                      depth={index}
-                      postId={post?._id}
-                      comment={itemInit}
+                      key={comment._id}
+                      depth={depth}
+                      postId={post._id}
+                      comment={comment}
                     />
                   ) : null}
                 </>
               )}
             </div>
-            {CommentsArray}
+            {nestedComments}
           </>
         );
       };
@@ -121,9 +119,11 @@ export const CommentsComp = memo(
       return (
         <div className="flex" ref={lastCommentRef}>
           <div className="ml-2 w-full">
-            {Comments.map((item: TransformedComments) => {
-              return <div key={item?._id}>{generateChildren(item)}</div>;
-            })}
+            {Comments.map((comment: TransformedComments) => (
+              <div key={comment._id}>
+                {generateNestedComments(comment, 0, openedCommentsView)}
+              </div>
+            ))}
           </div>
         </div>
       );
@@ -131,8 +131,10 @@ export const CommentsComp = memo(
   )
 );
 
-export const CommentLoaderComp = () => (
+const CommentLoaderComp = () => (
   <div className="bg-red-100 w-screen relative">
     <SkeletonLoader LoaderFor={loaderFor.Comment} />
   </div>
 );
+
+export { CommentsComp, CommentLoaderComp };
