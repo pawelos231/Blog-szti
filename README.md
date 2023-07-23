@@ -47,7 +47,7 @@ As with any project, certain limitations exist:
 
 To run the blog locally or deploy it to a server, follow these steps:
 
-1. Clone the repository: `git clone [repository_url]`
+1. Clone the repository: `git clone https://github.com/pawelos231/Blog-szti.git`
 2. Install dependencies: `npm install` or `yarn install`
 3. Configure environment variables: Set up environment variables for MongoDB connection, Redis caching, and any necessary API keys.
 4. Start the development server: `npm run dev` or `yarn dev`
