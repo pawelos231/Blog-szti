@@ -17,15 +17,15 @@ The primary objective of this blog is to facilitate the learning process, and we
 
 1. **Fullstack TypeScript Development**: The blog encompasses both frontend and backend development using TypeScript, allowing us to write type-safe code and enhance the overall development experience.
 
-2. **Next.js Framework**: We have chosen Next.js for its ease of use and its capability to handle server-side rendering, static site generation, and client-side navigation, enabling a fast and smooth user experience.
+2. **Next.js Framework**: I have chosen Next.js for its ease of use and its capability to handle server-side rendering, static site generation, and client-side navigation, enabling a fast and smooth user experience.
 
-3. **MongoDB Database**: Our blog utilizes MongoDB as the database of choice, providing a flexible and scalable solution for data storage and retrieval.
+3. **MongoDB Database**:  PureBlog utilizes MongoDB as the database of choice, providing a flexible and scalable solution for data storage and retrieval.
 
 4. **Redis Caching Layer**: To optimize data fetching and reduce server load, we have implemented a server-side caching layer using Redis.
 
-5. **User Authentication**: The blog includes a user authentication system, allowing users to sign up, log in, and manage their profiles.
+5. **User Authentication**: The blog includes a user authentication system, allowing users to sign up, log in, and manage their profiles. All created without usage of any providers.
 
-6. **Create and Manage Blog Posts**: Authenticated users can create, edit, and delete their blog posts, offering an interactive and dynamic blogging experience.
+6. **Create and Manage Blog Posts**: Authenticated users can create, and delete their blog posts, offering an interactive and dynamic blogging experience.
 
 7. **Nested Comments**: Each blog post supports nested comments, enabling meaningful discussions and interactions among users.
 
@@ -39,9 +39,9 @@ The primary objective of this blog is to facilitate the learning process, and we
 
 As with any project, certain limitations exist:
 
-1. **Design**: While we acknowledge that design is a crucial aspect of a website, we are primarily focused on the technical implementation in this project. As a result, the visual appearance may not be as polished as desired.
+1. **Design**: While i acknowledge that design is a crucial aspect of a website, i am primarily focused on the technical implementation in this project. As a result, the visual appearance may not be as polished as desired.
 
-2. **Image Upload**: Due to budget constraints, we cannot currently offer users the ability to upload images for their blog posts. Hosting images on platforms like AWS or Google Cloud incurs expenses that we are unable to cover at this time. However, we plan to address this limitation in the future.
+2. **Image Upload**: Due to budget constraints (i dont want to spend money on this project XD), i cannot currently offer users the ability to upload images for their blog posts. Hosting images on platforms like AWS or Google Cloud incurs expenses that we are unable to cover at this time. However, i plan to address this limitation in the future.
 
 ## Installation and Setup
 
